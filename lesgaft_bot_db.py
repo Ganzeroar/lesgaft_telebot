@@ -17,4 +17,33 @@ def starting_insert_data(student_info):
 
     cursor.executemany("INSERT INTO users VALUES (?, ?, ?, ?, ?)", student_info)
     conn.commit()
-#create_db()
+
+def get_group_number(user_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    req = "SELECT number_of_group FROM users WHERE chat_id = '" + str(user_id) + "'"
+
+    cursor.execute(req)
+    return cursor.fetchall()
+
+def user_already_in_db(user_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    req = "SELECT chat_id FROM users"
+    cursor.execute(req)
+    users_list = [user_info[0] for user_info in cursor.fetchall()]
+
+    if user_id in users_list:
+        return True
+    else:
+        return False
+
+def update_group(user_id, group_number):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    string_sql = "UPDATE users SET number_of_group  = " + str(group_number) + " WHERE chat_id = " + str(user_id)
+    cursor.execute(string_sql)
+    conn.commit()
