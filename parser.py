@@ -58,11 +58,6 @@ def return_list_of_lists_of_dates(work_sheet):
             else:
                 final_list_of_dates.append(date)
 
-        #list_of_dates = [elem + '.' for elem in list_of_dates if elem[-1] != '.']
-        #list_of_dates = [elem + '.' for elem in 
-        #    [element.replace(' ', '') for 
-        #        element in work_sheet.cell(row = row, column = 1).value.rstrip().split('\n')] 
-        #            if elem[-1] != '.']
         returned_list.append(final_list_of_dates)
     return returned_list
 
@@ -110,9 +105,6 @@ def return_number_of_lessons_at_day(work_sheet, name_of_day):
                 #return counter_of_number_of_lessons
     #return False
     return 5
-
-
-
 
 def return_full_data_of_day(work_sheet, name_for_db, list_of_day_dates, row_of_first_lesson_of_day, number_of_lessons_at_day, row_of_groups_number):
     for date in list_of_day_dates:

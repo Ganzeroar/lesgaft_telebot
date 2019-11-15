@@ -8,14 +8,15 @@ def create_db():
     # Создание таблицы
     cursor.execute("""CREATE TABLE users
                       (chat_id integer, first_name text, last_name text,
-                      registarion_date integer, number_of_group integer)
+                      registration_date integer, number_of_group integer)
                    """)
 
-def starting_insert_data(student_info):
+def starting_insert_data(chat_id, first_name, last_name, date_of_registation):
+    y = [chat_id, first_name, last_name, date_of_registation]
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    cursor.executemany("INSERT INTO users VALUES (?, ?, ?, ?, ?)", student_info)
+    cursor.execute("INSERT INTO users(chat_id, first_name, last_name, registration_date) VALUES (?, ?, ?, ?)", (chat_id, first_name, last_name, date_of_registation))
     conn.commit()
 
 def get_group_number(user_id):
@@ -47,3 +48,4 @@ def update_group(user_id, group_number):
     string_sql = "UPDATE users SET number_of_group  = " + str(group_number) + " WHERE chat_id = " + str(user_id)
     cursor.execute(string_sql)
     conn.commit()
+

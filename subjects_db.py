@@ -54,31 +54,27 @@ def get_subjects_today(name_of_group, db_name, date):
     cursor.execute(columns_names_in_db)
     
     columns_names = [column_name[1] for column_name in cursor.fetchall()]
+    
     if name_of_group in columns_names:
         req = "SELECT " + str(name_of_group) + " FROM " + str(db_name) + " WHERE date = '" + str(date) + "'"
-        print(req)
         cursor.execute(req)
         return cursor.fetchall()
     else:
         return False
 
 def get_db_name(number_of_group):
-    if str(number_of_group)[0] == str(1):
-        return 'zovs_1_kurs'
-    elif str(number_of_group)[0] == str(2):
-        return 'zovs_2_kurs'
-    elif str(number_of_group)[0] == str(3):
-        return 'zovs_3_kurs'
-    elif str(number_of_group)[0] == str(4):
-        return 'zovs_4_kurs'
-    else:
-        return None
+    number_of_group = 'Группа_' + str(number_of_group)
 
-
-
-
-
-
-
-    
-
+    con = sqlite3.connect('subjects.db')
+    cursor = con.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    all_db_names = [db_name[0] for db_name in cursor.fetchall()]
+    for db_name in all_db_names:
+        cursor_for_name = con.cursor()
+        columns_names_in_db = "PRAGMA table_info(" + str(db_name) + ")"
+        cursor_for_name.execute(columns_names_in_db)
+        
+        column_name = [column_name[1] for column_name in cursor_for_name.fetchall()]
+        if number_of_group in column_name:
+            return db_name
+    return None   
