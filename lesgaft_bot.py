@@ -1,26 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
-
-
-
-
-
-
-
-#ДОБАВИТЬ ПРОВЕРКУ ВОСКРЕСЕНЬЯ, ПОТОМУ ЧТО В ВОСКРЕСЕНЬЕ СКОРЕЕ ВСЕГО ЧТО-ТО СЛОМАЕТСЯ
-#ПОСМОТРЕТЬ ВРЕМЯ НА СЕРВЕРЕ ТАК КАК ОН В ГЕРМАНИИ МБ ТАМ +4 
-#
-#
-#
-#
-
-
-
-
-
-
-
 import config
 import telebot
 import lesgaft_bot_db
@@ -28,6 +7,8 @@ import texts_for_lesgaft_bot
 import other_functions_for_bot
 import subjects_db
 import datetime
+import pytz
+import logging
 
 
 bot = telebot.TeleBot(config.token)
@@ -46,11 +27,14 @@ def start_message(message):
 @bot.message_handler(content_types=["text"])
 def main_func(message):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-    item1 = telebot.types.KeyboardButton('Где пара?')
+    #item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Когда на учёбу?')
-    main_keyboard.add(item1, item2, item3, item4)
+    #item4 = telebot.types.KeyboardButton('Когда на учёбу?')
+    main_keyboard.add(item2, item3)
+
+    msc_timezone = pytz.timezone('Europe/Moscow')
+
     if len(message.text) == 3 and message.text.isdigit():
         number_of_group = int(message.text)
         lesgaft_bot_db.update_group(message.from_user.id, number_of_group)
@@ -59,8 +43,16 @@ def main_func(message):
         print('User: ' + str(message.from_user.id) +  ' changed his group to ' + str(number_of_group))
 
     elif message.text == 'Какие сегодня пары?':
-        time_now = datetime.datetime.now()
-        number_of_group = lesgaft_bot_db.get_group_number(message.from_user.id)[0][0]
+        time_now = datetime.datetime.now(tz=msc_timezone)
+        day_of_week = other_functions_for_bot.return_russian_day_of_week(str(time_now.strftime('%a')))
+        if day_of_week == 'воскресенье':
+            bot.send_message(message.from_user.id, 'Сегодня воскресенье, не учимся!')
+            return
+        try:
+            number_of_group = lesgaft_bot_db.get_group_number(message.from_user.id)[0][0]
+        except:
+            bot.send_message(message.from_user.id, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.', reply_markup=main_keyboard)
+            return
         name_of_group = 'Группа_' + str(number_of_group)
         db_name = subjects_db.get_db_name(number_of_group)
         if db_name == None:
@@ -73,7 +65,6 @@ def main_func(message):
             else:
                 message_text = ''
                 list_of_times = ['9:45-11:15 \n', '11:30-13:30 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
-                day_of_week = other_functions_for_bot.return_russian_day_of_week(str(time_now.strftime('%a'))) 
                 number_of_date = time_now.strftime("%d.%m.%Y.")
                 message_text += f'Расписание на {day_of_week} ({number_of_date}) \n\n'
                 try:
@@ -86,22 +77,29 @@ def main_func(message):
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error)
 
     elif message.text == 'Какие завтра пары?':
-        time_now = datetime.datetime.now()
+        time_now = datetime.datetime.now(tz=msc_timezone)
         tomorrow = time_now + datetime.timedelta(days=1)
-        number_of_group = lesgaft_bot_db.get_group_number(message.from_user.id)[0][0]
+        day_of_week = other_functions_for_bot.return_russian_day_of_week(str(tomorrow.strftime('%a')))
+        if day_of_week == 'воскресенье':
+            bot.send_message(message.from_user.id, 'Завтра воскресенье, не учимся!')
+            return
+        try:
+            number_of_group = lesgaft_bot_db.get_group_number(message.from_user.id)[0][0]
+        except:
+            bot.send_message(message.from_user.id, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.', reply_markup=main_keyboard)
+            return
         name_of_group = 'Группа_' + str(number_of_group)
         db_name = subjects_db.get_db_name(number_of_group)
         if db_name == None:
             bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
         else:
-            tomorrow_date = str(time_now.day + 2) + '.' + str(time_now.month) + '.'
+            tomorrow_date = str(time_now.day + 1) + '.' + str(time_now.month) + '.'
             tomorrow_subjects = subjects_db.get_subjects_today(name_of_group, db_name, tomorrow_date)
             if tomorrow_subjects == False:
                 bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
             else:
                 message_text = ''
                 list_of_times = ['9:45-11:15 \n', '11:30-13:30 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
-                day_of_week = other_functions_for_bot.return_russian_day_of_week(str(tomorrow.strftime('%a'))) 
                 number_of_date = tomorrow.strftime("%d.%m.%Y.")
                 message_text += f'Расписание на {day_of_week} ({number_of_date}) \n\n'
                 try:
@@ -145,5 +143,11 @@ def main_func(message):
         bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
         print('User: ' + str(message.from_user.id) + ' send message ' + str(message.text))
 
+logging.basicConfig(filename="sample.log", level=logging.INFO)
+log = logging.getLogger("ex")
 if __name__ == '__main__':
-    bot.polling(none_stop=True)
+    try:
+        bot.polling(none_stop=True)
+    except:
+        print('ERRORERRORERROR')
+        log.exception('Error!')
