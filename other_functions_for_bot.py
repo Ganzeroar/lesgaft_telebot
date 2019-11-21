@@ -74,6 +74,8 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
         date_and_time_now = datetime.datetime.now(tz=msc_timezone)
         today_date = str(date_and_time_now.day) + '.' + str(date_and_time_now.month) + '.'
         today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+        if number_of_lesson >= 5:
+            return 'Сегодня у тебя больше нет пар.' 
         if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
             return texts_for_lesgaft_bot.error
         else:
