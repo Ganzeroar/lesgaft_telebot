@@ -154,7 +154,7 @@ def main_func(message):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 4)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
-            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 5)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
 
 
