@@ -23,9 +23,20 @@ def return_russian_day_of_week(eng_day):
     elif eng_day == 'Sun':
         return 'воскресенье'
     
+def is_time_between(begin_time, end_time, check_time=None):
+    msc_timezone = pytz.timezone('Europe/Moscow')
+
+    check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
+    #check_time = datetime.time(10,10)
+    if begin_time < end_time:
+        return check_time >= begin_time and check_time <= end_time
+    else: # crosses midnight
+        return check_time >= begin_time or check_time <= end_time
+
+
 def return_message_text_about_current_lesson(user_id, number_of_lesson):
 
-    msc_timezone = pytz.timezone('Europe/Moscow')
+    
 
     try:
         number_of_group = lesgaft_bot_db.get_group_number(user_id)[0][0]

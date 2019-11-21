@@ -115,48 +115,42 @@ def main_func(message):
 
     elif message.text == 'Где пара?':
         
-        def is_time_between(begin_time, end_time, check_time=None):
-            check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
-            #check_time = datetime.time(10,10)
-            if begin_time < end_time:
-                return check_time >= begin_time and check_time <= end_time
-            else: # crosses midnight
-                return check_time >= begin_time or check_time <= end_time
-
-        if is_time_between(datetime.time(00,00), datetime.time(9,44)):
+        
+        if other_functions_for_bot.is_time_between(datetime.time(00,00), datetime.time(9,44)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(9,45), datetime.time(11,15)):
+        elif other_functions_for_bot.is_time_between(datetime.time(9,45), datetime.time(11,15)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 0)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(11,16), datetime.time(11,29)):
+        elif other_functions_for_bot.is_time_between(datetime.time(11,16), datetime.time(11,29)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 1)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(11,30), datetime.time(13,00)):
+        elif other_functions_for_bot.is_time_between(datetime.time(11,30), datetime.time(13,00)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 1)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(13,1), datetime.time(13,29)):
+        elif other_functions_for_bot.is_time_between(datetime.time(13,1), datetime.time(13,29)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 2)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(13,30), datetime.time(15,00)):
+        elif other_functions_for_bot.is_time_between(datetime.time(13,30), datetime.time(15,00)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 2)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(15,1), datetime.time(15,14)):
+        elif other_functions_for_bot.is_time_between(datetime.time(15,1), datetime.time(15,14)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 3)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(15,15), datetime.time(16,45)):
+        elif other_functions_for_bot.is_time_between(datetime.time(15,15), datetime.time(16,45)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 3)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(16,46), datetime.time(16,59)):
+        elif other_functions_for_bot.is_time_between(datetime.time(16,46), datetime.time(16,59)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 4)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(17,00), datetime.time(18,30)):
+        elif other_functions_for_bot.is_time_between(datetime.time(17,00), datetime.time(18,30)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 4)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
+        elif other_functions_for_bot.is_time_between(datetime.time(18,31), datetime.time(23,59)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 5)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
 
+        print('User: ' + str(message.from_user.id) +  ' from ' + str(number_of_group) + ' ask about where the lesson' )
 
 
 
