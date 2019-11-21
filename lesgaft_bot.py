@@ -40,29 +40,29 @@ def main_func(message):
         number_of_group = int(message.text)
         lesgaft_bot_db.update_group(message.from_user.id, number_of_group)
         text = f'Ваша группа {number_of_group} записана!' +  texts_for_lesgaft_bot.group_saved
-        bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         print('User: ' + str(message.from_user.id) +  ' changed his group to ' + str(number_of_group))
 
     elif message.text == 'Какие сегодня пары?':
         time_now = datetime.datetime.now(tz=msc_timezone)
         day_of_week = other_functions_for_bot.return_russian_day_of_week(str(time_now.strftime('%a')))
         if day_of_week == 'воскресенье':
-            bot.send_message(message.from_user.id, 'Сегодня воскресенье, не учимся!')
+            bot.send_message(message.from_user.id, 'Сегодня воскресенье, не учимся!', reply_markup = main_keyboard)
             return
         try:
             number_of_group = lesgaft_bot_db.get_group_number(message.from_user.id)[0][0]
         except:
-            bot.send_message(message.from_user.id, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.', reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.', reply_markup = main_keyboard)
             return
         name_of_group = 'Группа_' + str(number_of_group)
         db_name = subjects_db.get_db_name(number_of_group)
         if db_name == None:
-            bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
         else:
             today_date = str(time_now.day) + '.' + str(time_now.month) + '.'
             today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
             if today_subjects == False:
-                bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
+                bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
             else:
                 message_text = ''
                 list_of_times = ['9:45-11:15 \n', '11:30-13:30 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
@@ -71,34 +71,34 @@ def main_func(message):
                 try:
                     for x in range(5):
                         message_text += list_of_times[x] + today_subjects[x][0] + '\n\n'
-                    bot.send_message(message.from_user.id, message_text)
+                    bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
                     print('User: ' + str(message.from_user.id) +  ' from ' + str(number_of_group) + ' ask about ' + str(number_of_date))
                 except Exception as exception:
                     print(exception)
-                    bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error)
+                    bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
     elif message.text == 'Какие завтра пары?':
         time_now = datetime.datetime.now(tz=msc_timezone)
         tomorrow = time_now + datetime.timedelta(days=1)
         day_of_week = other_functions_for_bot.return_russian_day_of_week(str(tomorrow.strftime('%a')))
         if day_of_week == 'воскресенье':
-            bot.send_message(message.from_user.id, 'Завтра воскресенье, не учимся!')
+            bot.send_message(message.from_user.id, 'Завтра воскресенье, не учимся!', reply_markup = main_keyboard)
             return
         try:
             number_of_group = lesgaft_bot_db.get_group_number(message.from_user.id)[0][0]
         except:
-            bot.send_message(message.from_user.id, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.', reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.', reply_markup = main_keyboard)
             return
         name_of_group = 'Группа_' + str(number_of_group)
         db_name = subjects_db.get_db_name(number_of_group)
         if db_name == None:
-            bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
 
         else:
             tomorrow_date = str(time_now.day + 1) + '.' + str(time_now.month) + '.'
             tomorrow_subjects = subjects_db.get_subjects_today(name_of_group, db_name, tomorrow_date)
             if tomorrow_subjects == False:
-                bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
+                bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
             else:
                 message_text = ''
                 list_of_times = ['9:45-11:15 \n', '11:30-13:00 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
@@ -107,11 +107,11 @@ def main_func(message):
                 try:
                     for x in range(5):
                         message_text += list_of_times[x] + tomorrow_subjects[x][0] + '\n\n'
-                    bot.send_message(message.from_user.id, message_text)
+                    bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
                     print('User: ' + str(message.from_user.id) +  ' from ' + str(number_of_group) + ' ask about ' + str(number_of_date))
                 except Exception as exception:
                     print(exception)
-                    bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error)
+                    bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
     elif message.text == 'Где пара?':
         
@@ -125,37 +125,37 @@ def main_func(message):
 
         if is_time_between(datetime.time(00,00), datetime.time(9,44)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(9,45), datetime.time(11,15)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 0)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(11,16), datetime.time(11,29)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 1)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(11,30), datetime.time(13,00)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 1)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(13,1), datetime.time(13,29)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 2)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(13,30), datetime.time(15,00)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 2)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(15,1), datetime.time(15,14)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 3)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(15,15), datetime.time(16,45)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 3)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(16,46), datetime.time(16,59)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 4)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(17,00), datetime.time(18,30)):
             text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 4)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
-            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
 
 
 
@@ -166,7 +166,7 @@ def main_func(message):
 
     else:
         text = texts_for_lesgaft_bot.invalid_text
-        bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         print('User: ' + str(message.from_user.id) + ' send message ' + str(message.text))
 
 logging.basicConfig(filename="sample.log", level=logging.INFO)
