@@ -7,6 +7,7 @@ import texts_for_lesgaft_bot
 import other_functions_for_bot
 import subjects_db
 import datetime
+import time
 import pytz
 import logging
 
@@ -27,11 +28,11 @@ def start_message(message):
 @bot.message_handler(content_types=["text"])
 def main_func(message):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-    #item1 = telebot.types.KeyboardButton('Где пара?')
+    item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
     #item4 = telebot.types.KeyboardButton('Когда на учёбу?')
-    main_keyboard.add(item2, item3)
+    main_keyboard.add(item1, item2, item3)
 
     msc_timezone = pytz.timezone('Europe/Moscow')
 
@@ -92,6 +93,7 @@ def main_func(message):
         db_name = subjects_db.get_db_name(number_of_group)
         if db_name == None:
             bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
+
         else:
             tomorrow_date = str(time_now.day + 1) + '.' + str(time_now.month) + '.'
             tomorrow_subjects = subjects_db.get_subjects_today(name_of_group, db_name, tomorrow_date)
@@ -99,7 +101,7 @@ def main_func(message):
                 bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup=main_keyboard)
             else:
                 message_text = ''
-                list_of_times = ['9:45-11:15 \n', '11:30-13:30 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
+                list_of_times = ['9:45-11:15 \n', '11:30-13:00 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
                 number_of_date = tomorrow.strftime("%d.%m.%Y.")
                 message_text += f'Расписание на {day_of_week} ({number_of_date}) \n\n'
                 try:
@@ -111,28 +113,52 @@ def main_func(message):
                     print(exception)
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error)
 
-    #elif message.text == 'Где пара?':
-    #    time_now = datetime.datetime.now()
-    #    print(time_now)
-    #    time_now = datetime.datetime.utcnow().time()
-    #    print(time_now)
-    #    hour_now = int(time_now.strftime('%H'))
-    #    minute_now = int(time_now.strftime('%M'))
-    #    
-#
-    #    def is_time_between(begin_time, end_time, check_time=None):
-    #        # If check time is not given, default to current UTC time
-    #        check_time = check_time or datetime.datetime.utcnow().time()
-    #        if begin_time < end_time:
-    #            return check_time >= begin_time and check_time <= end_time
-    #        else: # crosses midnight
-    #            return check_time >= begin_time or check_time <= end_time
-#
-    #    # Original test case from OP
-    #    print(is_time_between(datetime.time(10,30), datetime.time(16,30)))
-#
-#
-    #    print(time_now.strftime('%H : %M'))
+    elif message.text == 'Где пара?':
+        
+        def is_time_between(begin_time, end_time, check_time=None):
+            check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
+            #check_time = datetime.time(10,10)
+            if begin_time < end_time:
+                return check_time >= begin_time and check_time <= end_time
+            else: # crosses midnight
+                return check_time >= begin_time or check_time <= end_time
+
+        if is_time_between(datetime.time(00,00), datetime.time(9,44)):
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(9,45), datetime.time(11,15)):
+            text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 0)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(11,16), datetime.time(11,29)):
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 1)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(11,30), datetime.time(13,00)):
+            text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 1)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(13,1), datetime.time(13,29)):
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 2)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(13,30), datetime.time(15,00)):
+            text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 2)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(15,1), datetime.time(15,14)):
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 3)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(15,15), datetime.time(16,45)):
+            text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 3)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(16,46), datetime.time(16,59)):
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 4)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(17,00), datetime.time(18,30)):
+            text = other_functions_for_bot.return_message_text_about_current_lesson(message.from_user.id, 4)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+        elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
+            text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
+            bot.send_message(message.from_user.id, text, reply_markup=main_keyboard)
+
+
+
 
         # высчитать время, узнать какая сейчас и какая следующая
         # спростить базу, оставить только название пары
@@ -147,7 +173,8 @@ logging.basicConfig(filename="sample.log", level=logging.INFO)
 log = logging.getLogger("ex")
 if __name__ == '__main__':
     try:
-        bot.polling(none_stop=True)
+        bot.polling(none_stop=False)
     except:
         print('ERRORERRORERROR')
+        bot.send_message(206171081, 'Я умер')
         log.exception('Error!')
