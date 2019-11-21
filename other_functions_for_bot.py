@@ -35,9 +35,8 @@ def is_time_between(begin_time, end_time, check_time=None):
 
 
 def return_message_text_about_current_lesson(user_id, number_of_lesson):
-
+    msc_timezone = pytz.timezone('Europe/Moscow')
     
-
     try:
         number_of_group = lesgaft_bot_db.get_group_number(user_id)[0][0]
     except:

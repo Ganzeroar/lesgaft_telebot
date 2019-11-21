@@ -114,8 +114,6 @@ def main_func(message):
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
     elif message.text == 'Где пара?':
-        
-        
         if other_functions_for_bot.is_time_between(datetime.time(00,00), datetime.time(9,44)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
@@ -150,7 +148,7 @@ def main_func(message):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 5)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
 
-        print('User: ' + str(message.from_user.id) +  ' from ' + str(number_of_group) + ' ask about where the lesson' )
+        print('User: ' + str(message.from_user.id) + ' ask about where the lesson' )
 
 
 
