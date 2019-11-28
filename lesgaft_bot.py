@@ -119,7 +119,7 @@ def main_func(message):
             if message_text == None:
                 message_text = 'Такой аудитории я не знаю'
             bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
-            print('User: ' + str(message.from_user.id) + ' ask about location' + str(num_of_class))
+            print('User: ' + str(message.from_user.id) + ' ask about location ' + str(num_of_class))
 
     elif message.text.lower() == 'где пара?':
         time_now = datetime.datetime.now(tz=msc_timezone)

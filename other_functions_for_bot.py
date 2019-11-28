@@ -27,7 +27,7 @@ def is_time_between(begin_time, end_time, check_time=None):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
     check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
-    #check_time = datetime.time(13,10)
+    #check_time = datetime.time(10,10)
     if begin_time < end_time:
         return check_time >= begin_time and check_time <= end_time
     else: # crosses midnight
@@ -109,234 +109,235 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
 
 
 def find_class_location_used_number(number_of_class):
+    list_of_all_classes = [1, 2, 3, 6, 9, 14, 17, 18, 19, 20, 21, 26, 28, 33, 34, 35, 36, 39, 40, 42, 43, 44, 45, 46, 54, 55, 64, 71, 72, 73, 78, 
+                            79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 90, 93, 94, 96, 97, 98, 99, 104, 105, 119, 121, 122, 123, 124, 125, 126, 127, 
+                            128, 129, 131, 132, 135, 150, 223, 233, 303, 304, 305, 306, 307, 308, 310, 312, 313, 315, 317, 321, 322, 323,401, 402, 
+                            403, 404, 405, 407, 409, 410, 411, 412, 413, 414, 416, 418, 419, 421, 422, 423, 426]
     if '1' in number_of_class:
         if '10' in number_of_class:
-            if '104' in number_of_class:
+            if '104' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо'
-            elif '105' in number_of_class:
+            elif '105' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо'
         elif '11' in number_of_class:
-            if '119' in number_of_class:
+            if '119' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, направо'
         elif '12' in number_of_class:
-            if '121' in number_of_class:
+            if '121' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '122' in number_of_class:
+            elif '122' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '123' in number_of_class:
+            elif '123' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '124' in number_of_class:
+            elif '124' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '125' in number_of_class:
+            elif '125' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '126' in number_of_class:
+            elif '126' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '127' in number_of_class:
+            elif '127' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-            elif '128' in number_of_class:
+            elif '128' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
-            elif '129' in number_of_class:
+            elif '129' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
         elif '13' in number_of_class:
-            if '131' in number_of_class:
+            if '131' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
-            elif '132' in number_of_class:
+            elif '132' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
-            elif '135' in number_of_class:
+            elif '135' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
         elif '15' in number_of_class:
-            if '150' in number_of_class:
+            if '150' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, справа от спуска к выходу от охранника на втором этаже'
-        
-        if '14' in number_of_class:
+        if '14' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, третий этаж, от лестницы направо, по правую сторону'
-        elif '17' in number_of_class:
+        elif '17' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-        elif '18' in number_of_class:
+        elif '18' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-        elif '19' in number_of_class:
+        elif '19' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-        else:
+        elif len(number_of_class) == 1:
             return ' Мойка, третий этаж, от лестницы налево'
     elif '2' in number_of_class:
-        if '20' in number_of_class:
+        if '20' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-        elif '21' in number_of_class:
+        elif '21' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по правую сторону'
         elif '22' in number_of_class:
-            if '223' in number_of_class:
+            if '223' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, второй этаж, направо от охранника, по левую сторону'
         elif '23' in number_of_class:
-            if '233' in number_of_class:
+            if '233' in number_of_class and len(number_of_class) == 3:
                 return ' Мойка, третий этаж, сразу после лестницы'
-        elif '26' in number_of_class:
+        elif '26' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по левую сторону'
-        elif '28' in number_of_class:
+        elif '28' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, налево от охранника, по левую сторону'
-        else:
+        elif len(number_of_class) == 1:
             return ' Мойка, третий этаж, от лестницы налево'
     elif '3' in number_of_class:
         if '30' in number_of_class:
-            if '303' in number_of_class:
+            if '303' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы направо'
-            elif '304' in number_of_class:
+            elif '304' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы прямо'
-            elif '305' in number_of_class:
+            elif '305' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы налево, по левую сторону'
-            elif '306' in number_of_class:
+            elif '306' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы налево, по правую сторону'
-            elif '307' in number_of_class:
+            elif '307' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы налево, по левую сторону'
-            elif '308' in number_of_class:
+            elif '308' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы налево, по правую сторону'
         elif '31' in number_of_class:
-            if '310' in number_of_class:
+            if '310' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от маленькой лестницы налево, по правую сторону'
-            elif '312' in number_of_class:
+            elif '312' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, прямо'
-            elif '313' in number_of_class:
+            elif '313' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по левой стороне'
-            elif '315' in number_of_class:
+            elif '315' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по левой стороне'
-            elif '317' in number_of_class:
+            elif '317' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по левой стороне'
         elif '32' in number_of_class:
-            if '321' in number_of_class:
+            if '321' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от главной лестницы налево'
-            elif '322' in number_of_class:
+            elif '322' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от главной лестницы прямо'
-            elif '323' in number_of_class:
+            elif '323' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, второй этаж, от главной лестницы направо'
     
-        elif '33' in number_of_class:
+        elif '33' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-        elif '34' in number_of_class:
+        elif '34' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-        elif '35' in number_of_class:
+        elif '35' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-        elif '36' in number_of_class:
+        elif '36' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-        elif '39' in number_of_class:
+        elif '39' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-        else:
+        elif len(number_of_class) == 1:
             return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо'
     
     elif '4' in number_of_class:
         if '40' in number_of_class:
-            if '401' in number_of_class:
+            if '401' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-            elif '402' in number_of_class:
+            elif '402' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-            elif '403' in number_of_class:
+            elif '403' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо, направо и прямо'
-            elif '404' in number_of_class:
+            elif '404' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-            elif '405' in number_of_class:
+            elif '405' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-            elif '407' in number_of_class:
+            elif '407' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-            elif '409' in number_of_class:
+            elif '409' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-            else:
+            elif len(number_of_class) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по левую сторону'
         elif '41' in number_of_class:
-            if '410' in number_of_class:
+            if '410' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-            elif '411' in number_of_class:
+            elif '411' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-            elif '412' in number_of_class:
+            elif '412' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-            elif '413' in number_of_class:
+            elif '413' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-            elif '414' in number_of_class:
+            elif '414' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы направо и прямо'
-            elif '416' in number_of_class:
+            elif '416' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево прямо'
-            elif '418' in number_of_class:
+            elif '418' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
-            elif '419' in number_of_class:
+            elif '419' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
         elif '42' in number_of_class:
-            if '421' in number_of_class:
+            if '421' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
-            elif '421' in number_of_class:
-                return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
-            elif '422' in number_of_class:
+            elif '422' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
-            elif '423' in number_of_class:
+            elif '423' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
-            elif '426' in number_of_class:
+            elif '426' in number_of_class and len(number_of_class) == 3:
                 return ' Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
-            else:
+            elif len(number_of_class) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-        elif '43' in number_of_class:
+        elif '43' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-        elif '44' in number_of_class:
+        elif '44' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-        elif '45' in number_of_class:
+        elif '45' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-        elif '46' in number_of_class:
+        elif '46' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-        else:
+        elif len(number_of_class) == 2:
             return ' Мойка, третий этаж, от лестницы направо, по левую сторону'
     
     elif '5' in number_of_class:
-        if '54' in number_of_class:
+        if '54' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, до конца'
-        elif '55' in number_of_class:
+        elif '55' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, до конца'
     
     elif '6' in number_of_class:
-        if '64' in number_of_class:
+        if '64' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, до конца'
-        else:
+        elif len(number_of_class) == 2:
             return ' Справа за аркой, что справа от входа в Мойку, который на территории университета'
     elif '7' in number_of_class:
-        if '71' in number_of_class:
+        if '71' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, по левую сторону'
-        elif '72' in number_of_class:
+        elif '72' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, по левую сторону'
-        elif '73' in number_of_class:
+        elif '73' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, по левую сторону'
-        elif '78' in number_of_class:
+        elif '78' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, до конца'
-        elif '79' in number_of_class:
+        elif '79' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, до конца'
     
     elif '8' in number_of_class:
-        if '80' in number_of_class:
+        if '80' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, до конца'
-        elif '81' in number_of_class:
+        elif '81' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, по правую сторону'
-        elif '82' in number_of_class:
+        elif '82' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, по правую сторону'
-        elif '83' in number_of_class:
+        elif '83' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, по правую сторону'
-        elif '85' in number_of_class:
+        elif '85' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево'
-        elif '86' in number_of_class:
+        elif '86' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо и налево'
-        elif '87' in number_of_class:
+        elif '87' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо'
-        elif '88' in number_of_class:
+        elif '88' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы прямо и направо'
-        elif '89' in number_of_class:
+        elif '89' in number_of_class  and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы направо'
-    
+
     elif '9' in number_of_class:
-        if '90' in number_of_class:
+        if '90' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, второй этаж, после угловой лестницы слева'
-        elif '93' in number_of_class:
+        elif '93' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, первый этаж, после входа направо'
-        elif '94' in number_of_class:
+        elif '94' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, первый этаж, после входа направо'
-        elif '96' in number_of_class:
+        elif '96' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, первый этаж, после входа направо, налево и направо, по левую стороуе'
-        elif '97' in number_of_class:
+        elif '97' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, первый этаж, после входа направо, налево и направо, по левую сторону'
-        elif '98' in number_of_class:
+        elif '98' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, первый этаж, после входа направо, налево и направо, по левую сторону'
-        elif '99' in number_of_class:
+        elif '99' in number_of_class and len(number_of_class) == 2:
             return ' Мойка, первый этаж, после входа направо и налево'
         else:
             return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
@@ -348,232 +349,229 @@ def find_class_location(subject):
     if 'ауд.' in subject:
         if '1' in subject:
             if '10' in subject:
-                if '104' in subject:
+                if '104' in subject and len(subject) == 3:
                     return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо'
-                elif '105' in subject:
+                elif '105' in subject and len(subject) == 3:
                     return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо'
             elif '11' in subject:
-                if '119' in subject:
+                if '119' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, направо'
             elif '12' in subject:
-                if '121' in subject:
+                if '121' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '122' in subject:
+                elif '122' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '123' in subject:
+                elif '123' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '124' in subject:
+                elif '124' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '125' in subject:
+                elif '125' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '126' in subject:
+                elif '126' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '127' in subject:
+                elif '127' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по правую сторону'
-                elif '128' in subject:
+                elif '128' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
-                elif '129' in subject:
+                elif '129' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
             elif '13' in subject:
-                if '131' in subject:
+                if '131' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
-                elif '132' in subject:
+                elif '132' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
-                elif '135' in subject:
+                elif '135' in subject and len(subject) == 3:
                     return ' Мойка, первый этаж, после входа налево, направо, налево, по левую сторону'
             elif '15' in subject:
-                if '150' in subject:
+                if '150' in subject and len(subject) == 3:
                     return ' Мойка, справа от спуска к выходу от охранника на втором этаже'
-            
-            if '14' in subject:
+            if '14' in subject and len(subject) == 2:
                 return ' Мойка, третий этаж, от лестницы направо, по правую сторону'
-            elif '17' in subject:
+            elif '17' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-            elif '18' in subject:
+            elif '18' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-            elif '19' in subject:
+            elif '19' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-            else:
+            elif len(subject) == 1:
                 return ' Мойка, третий этаж, от лестницы налево'
         elif '2' in subject:
-            if '20' in subject:
+            if '20' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по правую сторону'
-            elif '21' in subject:
+            elif '21' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по правую сторону'
             elif '22' in subject:
-                if '223' in subject:
+                if '223' in subject and len(subject) == 3:
                     return ' Мойка, второй этаж, направо от охранника, по левую сторону'
             elif '23' in subject:
-                if '233' in subject:
+                if '233' in subject and len(subject) == 3:
                     return ' Мойка, третий этаж, сразу после лестницы'
-            elif '26' in subject:
+            elif '26' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по левую сторону'
-            elif '28' in subject:
+            elif '28' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, налево от охранника, по левую сторону'
-            else:
+            elif len(subject) == 1:
                 return ' Мойка, третий этаж, от лестницы налево'
         elif '3' in subject:
             if '30' in subject:
-                if '303' in subject:
+                if '303' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы направо'
-                elif '304' in subject:
+                elif '304' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы прямо'
-                elif '305' in subject:
+                elif '305' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы налево, по левую сторону'
-                elif '306' in subject:
+                elif '306' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы налево, по правую сторону'
-                elif '307' in subject:
+                elif '307' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы налево, по левую сторону'
-                elif '308' in subject:
+                elif '308' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы налево, по правую сторону'
             elif '31' in subject:
-                if '310' in subject:
+                if '310' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от маленькой лестницы налево, по правую сторону'
-                elif '312' in subject:
+                elif '312' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, прямо'
-                elif '313' in subject:
+                elif '313' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по левой стороне'
-                elif '315' in subject:
+                elif '315' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по левой стороне'
-                elif '317' in subject:
+                elif '317' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по левой стороне'
             elif '32' in subject:
-                if '321' in subject:
+                if '321' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от главной лестницы налево'
-                elif '322' in subject:
+                elif '322' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от главной лестницы прямо'
-                elif '323' in subject:
+                elif '323' in subject and len(subject) == 3:
                     return ' Главный корпус, второй этаж, от главной лестницы направо'
-        
-            elif '33' in subject:
+
+            elif '33' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-            elif '34' in subject:
+            elif '34' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-            elif '35' in subject:
+            elif '35' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-            elif '36' in subject:
+            elif '36' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-            elif '39' in subject:
+            elif '39' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-            else:
+            elif len(subject) == 1:
                 return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо'
-        
+
         elif '4' in subject:
             if '40' in subject:
-                if '401' in subject:
+                if '401' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-                elif '402' in subject:
+                elif '402' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-                elif '403' in subject:
+                elif '403' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо, направо и прямо'
-                elif '404' in subject:
+                elif '404' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-                elif '405' in subject:
+                elif '405' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-                elif '407' in subject:
+                elif '407' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-                elif '409' in subject:
+                elif '409' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-                else:
+                elif len(subject) == 2:
                     return ' Мойка, второй этаж, направо от охранника, по левую сторону'
             elif '41' in subject:
-                if '410' in subject:
+                if '410' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-                elif '411' in subject:
+                elif '411' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-                elif '412' in subject:
+                elif '412' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
-                elif '413' in subject:
+                elif '413' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и направо, по правую сторону'
-                elif '414' in subject:
+                elif '414' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы направо и прямо'
-                elif '416' in subject:
+                elif '416' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево прямо'
-                elif '418' in subject:
+                elif '418' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
-                elif '419' in subject:
+                elif '419' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
             elif '42' in subject:
-                if '421' in subject:
+                if '421' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
-                elif '421' in subject:
-                    return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
-                elif '422' in subject:
+                elif '422' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
-                elif '423' in subject:
+                elif '423' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону'
-                elif '426' in subject:
+                elif '426' in subject and len(subject) == 3:
                     return ' Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
-                else:
+                elif len(subject) == 2:
                     return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-            elif '43' in subject:
+            elif '43' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-            elif '44' in subject:
+            elif '44' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-            elif '45' in subject:
+            elif '45' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по правую сторону'
-            elif '46' in subject:
+            elif '46' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, направо от охранника, по левую сторону'
-            else:
+            elif len(subject) == 2:
                 return ' Мойка, третий этаж, от лестницы направо, по левую сторону'
-        
+
         elif '5' in subject:
-            if '54' in subject:
+            if '54' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, до конца'
-            elif '55' in subject:
+            elif '55' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, до конца'
-        
+
         elif '6' in subject:
-            if '64' in subject:
+            if '64' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, до конца'
-            else:
+            elif len(subject) == 2:
                 return ' Справа за аркой, что справа от входа в Мойку, который на территории университета'
         elif '7' in subject:
-            if '71' in subject:
+            if '71' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, по левую сторону'
-            elif '72' in subject:
+            elif '72' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, по левую сторону'
-            elif '73' in subject:
+            elif '73' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, налево, по левую сторону'
-            elif '78' in subject:
+            elif '78' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, до конца'
-            elif '79' in subject:
+            elif '79' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, до конца'
-        
+
         elif '8' in subject:
-            if '80' in subject:
+            if '80' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, до конца'
-            elif '81' in subject:
+            elif '81' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, направо, по правую сторону'
-            elif '82' in subject:
+            elif '82' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, по правую сторону'
-            elif '83' in subject:
+            elif '83' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево, направо, по правую сторону'
-            elif '85' in subject:
+            elif '85' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо, налево, налево'
-            elif '86' in subject:
+            elif '86' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо и налево'
-            elif '87' in subject:
+            elif '87' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо'
-            elif '88' in subject:
+            elif '88' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы прямо и направо'
-            elif '89' in subject:
+            elif '89' in subject  and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы направо'
-        
+
         elif '9' in subject:
-            if '90' in subject:
+            if '90' in subject and len(subject) == 2:
                 return ' Мойка, второй этаж, после угловой лестницы слева'
-            elif '93' in subject:
+            elif '93' in subject and len(subject) == 2:
                 return ' Мойка, первый этаж, после входа направо'
-            elif '94' in subject:
+            elif '94' in subject and len(subject) == 2:
                 return ' Мойка, первый этаж, после входа направо'
-            elif '96' in subject:
+            elif '96' in subject and len(subject) == 2:
                 return ' Мойка, первый этаж, после входа направо, налево и направо, по левую стороуе'
-            elif '97' in subject:
+            elif '97' in subject and len(subject) == 2:
                 return ' Мойка, первый этаж, после входа направо, налево и направо, по левую сторону'
-            elif '98' in subject:
+            elif '98' in subject and len(subject) == 2:
                 return ' Мойка, первый этаж, после входа направо, налево и направо, по левую сторону'
-            elif '99' in subject:
+            elif '99' in subject and len(subject) == 2:
                 return ' Мойка, первый этаж, после входа направо и налево'
             else:
                 return ' Главный корпус, третий этаж, после лестницы направо и направо, по левую сторону'
