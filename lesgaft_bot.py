@@ -112,14 +112,23 @@ def main_func(message):
                     print(exception)
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
-    elif len(str(message.text)) > 9:
-        if str(message.text).lower()[:9].strip() == 'где пара?':
-            num_of_class = message.text[9:].strip()
-            message_text = other_functions_for_bot.find_class_location_used_number(num_of_class)
-            if message_text == None:
-                message_text = 'Такой аудитории я не знаю'
-            bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
-            print('User: ' + str(message.from_user.id) + ' ask about location ' + str(num_of_class))
+    elif message.text[-1] == '?':
+        number_of_class = message.text[:-1]
+        if len(number_of_class) > 3:
+            text = texts_for_lesgaft_bot.invalid_text
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+            return
+        try:
+            int(number_of_class)
+        except:
+            text = texts_for_lesgaft_bot.invalid_text
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+            return
+        message_text = other_functions_for_bot.find_class_location_used_number(number_of_class)
+        if message_text == None:
+            message_text = 'Такой аудитории я не знаю..'
+        bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
+        print('User: ' + str(message.from_user.id) + ' ask about location ' + str(number_of_class))
 
     elif message.text.lower() == 'где пара?':
         time_now = datetime.datetime.now(tz=msc_timezone)
