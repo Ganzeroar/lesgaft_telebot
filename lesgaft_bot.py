@@ -74,7 +74,6 @@ def main_func(message):
                     bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
                     print('User: ' + str(message.from_user.id) +  ' from ' + str(number_of_group) + ' ask about ' + str(number_of_date))
                 except Exception as exception:
-                    print(exception)
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
     elif message.text == 'Какие завтра пары?':
@@ -113,7 +112,22 @@ def main_func(message):
                     print(exception)
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
-    elif message.text == 'Где пара?':
+    elif len(str(message.text)) > 9:
+        if str(message.text).lower()[:9].strip() == 'где пара?':
+            num_of_class = message.text[9:].strip()
+            message_text = other_functions_for_bot.find_class_location_used_number(num_of_class)
+            if message_text == None:
+                message_text = 'Такой аудитории я не знаю'
+            bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
+            print('User: ' + str(message.from_user.id) + ' ask about location' + str(num_of_class))
+
+    elif message.text.lower() == 'где пара?':
+        time_now = datetime.datetime.now(tz=msc_timezone)
+        day_of_week = other_functions_for_bot.return_russian_day_of_week(str(time_now.strftime('%a')))
+        if day_of_week == 'воскресенье':
+            bot.send_message(message.from_user.id, 'Сегодня воскресенье, не учимся!', reply_markup = main_keyboard)
+            return
+
         if other_functions_for_bot.is_time_between(datetime.time(00,00), datetime.time(9,44)):
             text = other_functions_for_bot.return_message_text_to_about_time_before_lesson(message.from_user.id, 0)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
