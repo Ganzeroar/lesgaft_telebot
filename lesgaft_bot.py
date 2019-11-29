@@ -115,7 +115,7 @@ def main_func(message):
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
         number_of_class = message.text[3:].strip()
         if len(number_of_class) > 3:
-            text = texts_for_lesgaft_bot.invalid_text
+            text = 'Такой аудитории я не знаю'
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
             return
         try:
@@ -125,8 +125,8 @@ def main_func(message):
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
             return
         message_text = other_functions_for_bot.find_class_location_used_number(number_of_class)
-        if message_text == None:
-            message_text = 'Такой аудитории я не знаю..'
+        #if message_text == None:
+        #    message_text = 'Такой аудитории я не знаю'
         bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
         print('User: ' + str(message.from_user.id) + ' ask about location ' + str(number_of_class))
 
