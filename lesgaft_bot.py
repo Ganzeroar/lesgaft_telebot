@@ -112,8 +112,8 @@ def main_func(message):
                     print(exception)
                     bot.send_message(message.from_user.id, texts_for_lesgaft_bot.error, reply_markup = main_keyboard)
 
-    elif message.text[-1] == '?':
-        number_of_class = message.text[:-1]
+    elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
+        number_of_class = message.text[3:].strip()
         if len(number_of_class) > 3:
             text = texts_for_lesgaft_bot.invalid_text
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
