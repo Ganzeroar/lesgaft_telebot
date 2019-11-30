@@ -106,8 +106,6 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
         except Exception as exception:
             print('error ' + str(exception))
 
-
-
 def find_class_location_used_number(number_of_class):
     dict_of_all_classes = {
         '1' : ' Мойка, третий этаж, от лестницы налево', 

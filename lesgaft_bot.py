@@ -11,7 +11,6 @@ import time
 import pytz
 import logging
 
-
 bot = telebot.TeleBot(config.token)
 
 @bot.message_handler(commands=['start'])
@@ -24,14 +23,12 @@ def start_message(message):
         message_text = texts_for_lesgaft_bot.greeting_text
         bot.send_message(message.from_user.id, message_text)
         
-
 @bot.message_handler(content_types=["text"])
 def main_func(message):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Когда на учёбу?')
     main_keyboard.add(item1, item2, item3)
 
     msc_timezone = pytz.timezone('Europe/Moscow')
@@ -125,8 +122,6 @@ def main_func(message):
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
             return
         message_text = other_functions_for_bot.find_class_location_used_number(number_of_class)
-        #if message_text == None:
-        #    message_text = 'Такой аудитории я не знаю'
         bot.send_message(message.from_user.id, message_text, reply_markup = main_keyboard)
         print('User: ' + str(message.from_user.id) + ' ask about location ' + str(number_of_class))
 
@@ -172,12 +167,6 @@ def main_func(message):
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
 
         print('User: ' + str(message.from_user.id) + ' ask about where the lesson' )
-
-
-
-        # высчитать время, узнать какая сейчас и какая следующая
-        # спростить базу, оставить только название пары
-        # спросить базу, узнать о местонахождении
 
     else:
         text = texts_for_lesgaft_bot.invalid_text

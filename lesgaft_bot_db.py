@@ -1,11 +1,9 @@
 import sqlite3
 
-
 def create_db():
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
     
-    # Создание таблицы
     cursor.execute("""CREATE TABLE users
                       (chat_id integer, first_name text, last_name text,
                       registration_date integer, number_of_group integer)
@@ -24,7 +22,6 @@ def get_group_number(user_id):
     cursor = conn.cursor()
 
     req = "SELECT number_of_group FROM users WHERE chat_id = '" + str(user_id) + "'"
-
     cursor.execute(req)
     return cursor.fetchall()
 
