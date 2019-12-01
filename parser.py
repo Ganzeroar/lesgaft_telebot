@@ -45,10 +45,7 @@ def return_list_of_lists_of_dates(work_sheet):
                 list_of_times_first_lessons.append(row)
     returned_list = []
     for row in list_of_times_first_lessons:
-         # КОРОЧЕ ХУЁ МОЁ ИНДЕКС ХУИНДЕКС У ЛИСТА ЛИСТОВ ТАКОЙ ЖЕ КАК И У
-         # ВНИЗУ 2 КОММЕНТА СВЯЗАНЫ ИНДЕКСАМИ, ИСХОДЯ ИЗ ЭТОЙ СВЯЗИ ДЕЛАТЬ ПАРСЕР
-         # ПЕРЕБИРАЯ РЕЙНДЖИ
-        
+
         list_of_dates = [element.replace(' ', '') for element in work_sheet.cell(row = row, column = 1).value.rstrip().split('\n')]
         final_list_of_dates = []
         for date in list_of_dates:
@@ -77,7 +74,6 @@ def get_value_of_merged_call(work_sheet, row, column):
             result_value = work_sheet.cell(row = row_coor, column = column_coor).value
             return result_value
     
-
 def return_number_of_lessons_at_day(work_sheet, name_of_day):
     # Должна считать количество пар в день, но в 18 есть не у всех, потому
     # сейчас дефолтом вернёт 5
@@ -135,8 +131,6 @@ def return_full_data_of_day(work_sheet, name_for_db, list_of_day_dates, row_of_f
                     elif subject == None:
                         subjects_db.save_subj(name_for_db, date, time, group_cell_value, 'Нет предмета')
 
-# Нужно для создания БД
-#row_of_groups_number = return_row_of_groups_number(main_work_sheet)
 def return_list_of_groups(work_sheet, row_of_groups_number):
     list_of_groups = []
     for column in range(4, 25):
@@ -149,8 +143,6 @@ def return_list_of_groups(work_sheet, row_of_groups_number):
             list_of_groups.append(group_cell_value)
     return list_of_groups
 
-# Нужно для создания БД 
-# return_number_of_lessons_at_day(main_work_sheet, day_name)
 def return_list_of_times(work_sheet, number_of_lessons_at_day):
     first_lesson = '9:45'
     second_lesson = '11:30'
@@ -169,7 +161,6 @@ def return_list_of_times(work_sheet, number_of_lessons_at_day):
     elif number_of_lessons_at_day == 5:
         return [first_lesson, second_lesson, third_lesson, fourth_lesson, fifth_lesson]
     
-
 def return_db_name(file_name):
     if '1_kurs_zovs' in file_name:
          return 'zovs_1_kurs'
@@ -219,7 +210,8 @@ def pars_files_create_dbfiles():
         print('Done' + str(work_file))
     print('All is Done')
 
-pars_files_create_dbfiles()
+if __name__ == "__main__":
+    pars_files_create_dbfiles()
         
         
 

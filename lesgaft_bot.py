@@ -56,7 +56,11 @@ def main_func(message):
         if db_name == None:
             bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
         else:
-            today_date = str(time_now.day) + '.' + str(time_now.month) + '.'
+            day = str(time_now.day)
+            if len(day) == 1:
+                day = '0' + day
+            today_date = day + '.' + str(time_now.month) + '.'
+            
             today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
             if today_subjects == False:
                 bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
@@ -91,7 +95,11 @@ def main_func(message):
             bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
 
         else:
-            tomorrow_date = str(time_now.day + 1) + '.' + str(time_now.month) + '.'
+            day = str(time_now.day + 1)
+            if len(day) == 1:
+                day = '0' + day
+            tomorrow_date = day + '.' + str(time_now.month) + '.'
+
             tomorrow_subjects = subjects_db.get_subjects_today(name_of_group, db_name, tomorrow_date)
             if tomorrow_subjects == False:
                 bot.send_message(message.from_user.id, 'Твоей группы не существует. Измени номер группы.', reply_markup = main_keyboard)
