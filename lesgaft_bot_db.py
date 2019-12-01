@@ -46,3 +46,5 @@ def update_group(user_id, group_number):
     cursor.execute(string_sql)
     conn.commit()
 
+if __name__ == "__main__":
+    create_db()
