@@ -63,7 +63,7 @@ def return_message_text_about_current_lesson(user_id, number_of_lesson):
             if today_subjects[number_of_lesson][0] != 'Нет предмета':
                 current_subject = today_subjects[number_of_lesson][0]
                 class_location = find_class_location(current_subject)
-                text = f'Сейчас у вас {current_subject} в {class_location}'
+                text = f'Сейчас у вас {current_subject} {class_location}'
                 return text
             if today_subjects[number_of_lesson][0] == 'Нет предмета':
                 return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
@@ -106,7 +106,7 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
                 next_start_time = datetime.datetime.strptime(list_of_times[number_of_lesson], formate_of_time)
                 time_to_lesson = str(next_start_time - today_date)[0:4]
                 class_location = find_class_location(next_subject)
-                text = f'Через {time_to_lesson} начнётся {next_subject}, {class_location}' # вот тут добавить где 
+                text = f'Через {time_to_lesson} начнётся {next_subject} {class_location}' 
                 return text
             if today_subjects[number_of_lesson][0] == 'Нет предмета':
                 return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
@@ -138,9 +138,9 @@ def find_class_location_used_number(number_of_class):
         '28' : ' Мойка, второй этаж, налево от охранника, по левую сторону',
         '33' : ' Мойка, второй этаж, направо от охранника, по левую сторону',
         '34' : ' Мойка, второй этаж, направо от охранника, по левую сторону',
-        '35' :  'Мойка, второй этаж, направо от охранника, по правую сторону',
-        '36' :  'Мойка, второй этаж, направо от охранника, по правую сторону',
-        '39' :  'Мойка, второй этаж, направо от охранника, по правую сторону',
+        '35' : ' Мойка, второй этаж, направо от охранника, по правую сторону',
+        '36' : ' Мойка, второй этаж, направо от охранника, по правую сторону',
+        '39' : ' Мойка, второй этаж, направо от охранника, по правую сторону',
         '40' : ' Мойка, второй этаж, направо от охранника, по левую сторону',
         '42' : ' Мойка, второй этаж, направо от охранника, по левую сторону',
         '43' : ' Мойка, второй этаж, направо от охранника, по правую сторону',
@@ -234,44 +234,46 @@ def find_class_location(subject):
         splitted = subject.split(' ')
         for element in splitted:
             if 'ауд.' in element:
-                return find_class_location_used_number(element[4:])
+                return ',' + find_class_location_used_number(element[4:])
     elif 'Зал' in subject:
         if '№2' in subject:
-            return ' Манеж, первый этаж'
+            return ', Манеж, первый этаж'
         elif '№3' in subject:
-            return ' Манеж, третий этаж'
+            return ', Манеж, третий этаж'
         elif '№5' in subject:
-            return ' '
+            return ''
     elif 'Мойка' in subject:
         if 'к.2' in subject:
             if 'ауд. 7' in subject:
-                return ' Вход со стороны стадиона, второй этаж'
+                return ', вход со стороны стадиона, второй этаж'
             elif 'ауд. 8' in subject:
-                return ' Вход со стороны стадиона, второй этаж'
+                return ', вход со стороны стадиона, второй этаж'
             elif 'ауд. 9' in subject:
-                return ' Вход со стороны стадиона, второй этаж'
+                return ', вход со стороны стадиона, второй этаж'
     elif 'Кафедра' in subject:
         if 'ТиМФОР' in subject:
-            return ' '
+            return ''
         elif 'ТиМИВС' in subject:
-            return ' '
+            return ''
         elif 'ПСС' in subject:
-            return ' '
+            return ''
         elif 'Элективные дисциплины' in subject:
-            return ' '
+            return ''
         elif 'Педагогики' in subject:
-            return ' Мойка, третий этаж, от лестницы направо'
+            return ', Мойка, третий этаж, от лестницы направо'
+        else:
+            return ''
     elif 'Каф.' in subject:
         if 'проф.мед.' in subject:
-            return ' Главный корпус, маленькая лестница с выходом к Ленину, второй этаж'
+            return ', Главный корпус, маленькая лестница с выходом к Ленину, второй этаж'
         elif 'анатомии' in subject:
-            return ' Главный корпус, по лестнице с клеткой на втором этаже вниз, затем направо'
+            return ', Главный корпус, по лестнице с клеткой на втором этаже вниз, затем направо'
         elif 'ин.языков' in subject:
-            return ' '
+            return ''
     elif 'Бассейн' in subject:
-        return ' '
+        return ''
     elif 'Манеж' in subject:
-        return ' '
+        return ''
     elif 'Кавголово' in subject:
-        return ' '
+        return ''
             
