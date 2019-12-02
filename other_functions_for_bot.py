@@ -27,6 +27,7 @@ def is_time_between(begin_time, end_time, check_time=None):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
     check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
+    print(check_time)
     #check_time = datetime.time(10,10)
     if begin_time < end_time:
         return check_time >= begin_time and check_time <= end_time
@@ -50,7 +51,10 @@ def return_message_text_about_current_lesson(user_id, number_of_lesson):
         #t = datetime.time(10, 10)
         #date_and_time_now =  datetime.datetime.combine(d, t)
         date_and_time_now = datetime.datetime.now(tz=msc_timezone)
-        today_date = str(date_and_time_now.day) + '.' + str(date_and_time_now.month) + '.'
+        day = str(date_and_time_now.day)
+        if len(day) == 1:
+            day = '0' + day
+        today_date = day + '.' + str(date_and_time_now.month) + '.'
         today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
         if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
             return texts_for_lesgaft_bot.error
@@ -82,7 +86,10 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
         #t = datetime.time(6, 0)
         #date_and_time_now =  datetime.datetime.combine(d, t)
         date_and_time_now = datetime.datetime.now(tz=msc_timezone)
-        today_date = str(date_and_time_now.day) + '.' + str(date_and_time_now.month) + '.'
+        day = str(date_and_time_now.day)
+        if len(day) == 1:
+            day = '0' + day
+        today_date = day + '.' + str(date_and_time_now.month) + '.'
         today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
         if number_of_lesson >= 5:
             return 'Сегодня у тебя больше нет пар.' 
