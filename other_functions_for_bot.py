@@ -276,4 +276,6 @@ def find_class_location(subject):
         return ''
     elif 'Кавголово' in subject:
         return ''
+    else:
+        return ''
             
