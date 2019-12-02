@@ -27,7 +27,6 @@ def is_time_between(begin_time, end_time, check_time=None):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
     check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
-    print(check_time)
     #check_time = datetime.time(10,10)
     if begin_time < end_time:
         return check_time >= begin_time and check_time <= end_time
@@ -63,7 +62,8 @@ def return_message_text_about_current_lesson(user_id, number_of_lesson):
         try:
             if today_subjects[number_of_lesson][0] != 'Нет предмета':
                 current_subject = today_subjects[number_of_lesson][0]
-                text = f'Сейчас у вас {current_subject}'
+                class_location = find_class_location(current_subject)
+                text = f'Сейчас у вас {current_subject} в {class_location}'
                 return text
             if today_subjects[number_of_lesson][0] == 'Нет предмета':
                 return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
@@ -230,9 +230,8 @@ def find_class_location_used_number(number_of_class):
         return 'Такой аудитории я не знаю'
 
 def find_class_location(subject):  
-    
     if 'ауд.' in subject:
-        splitted = subject.split('\n')
+        splitted = subject.split(' ')
         for element in splitted:
             if 'ауд.' in element:
                 return find_class_location_used_number(element[4:])
