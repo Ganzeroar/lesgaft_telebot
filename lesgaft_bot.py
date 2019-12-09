@@ -12,6 +12,15 @@ import today_and_tomorrow_lessons
 
 bot = telebot.TeleBot(config.token)
 
+def send_custom_message(user_id, text):
+    try:
+        user_id = int(user_id)
+        text = str(text)
+    except:
+        print('Error with sending')
+        return 
+    bot.send_message(user_id, text)
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
 
