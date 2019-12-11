@@ -24,7 +24,11 @@ def get_group_number(user_id):
 
     req = "SELECT number_of_group FROM users WHERE chat_id = '" + str(user_id) + "'"
     cursor.execute(req)
-    return cursor.fetchall()
+    data = cursor.fetchall()
+    if data == []:
+        return False
+    else:
+        return data[0][0]
 
 def user_already_in_db(user_id):
     conn = sqlite3.connect("students.db")

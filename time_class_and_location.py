@@ -49,81 +49,77 @@ def is_time_between(begin_time, end_time, check_time=None):
 def return_message_text_about_current_lesson(user_id, number_of_lesson):
     msc_timezone = pytz.timezone('Europe/Moscow')
     
-    try:
-        number_of_group = only_students_db.get_group_number(user_id)[0][0]
-    except:
+    number_of_group = only_students_db.get_group_number(user_id)
+    if number_of_group == False:    
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
     db_name = subjects_db.get_db_name(number_of_group)
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
+    
+    date_and_time_now = datetime.datetime.now(tz=msc_timezone)
+    day = str(date_and_time_now.day)
+    if len(day) == 1:
+        day = '0' + day
+    today_date = day + '.' + str(date_and_time_now.month) + '.'
+    today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+    if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
+        return texts_for_lesgaft_bot.error
     else:
-        #d = datetime.date(2019, 11, 18)
-        #t = datetime.time(10, 10)
-        #date_and_time_now =  datetime.datetime.combine(d, t)
-        date_and_time_now = datetime.datetime.now(tz=msc_timezone)
-        day = str(date_and_time_now.day)
-        if len(day) == 1:
-            day = '0' + day
-        today_date = day + '.' + str(date_and_time_now.month) + '.'
-        today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
-        if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
-            return texts_for_lesgaft_bot.error
+        list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
+    try:
+        if today_subjects[number_of_lesson][0] != 'Нет предмета':
+            current_subject = today_subjects[number_of_lesson][0]
+            class_location = find_class_location.find_class_location(current_subject)
+            text = f'Сейчас у вас {current_subject}\n\n{class_location}'
+            return text
+        if today_subjects[number_of_lesson][0] == 'Нет предмета':
+            return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
         else:
-            list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
-        try:
-            if today_subjects[number_of_lesson][0] != 'Нет предмета':
-                current_subject = today_subjects[number_of_lesson][0]
-                class_location = find_class_location.find_class_location(current_subject)
-                text = f'Сейчас у вас {current_subject}\n\n{class_location}'
-                return text
-            if today_subjects[number_of_lesson][0] == 'Нет предмета':
-                return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
-        except Exception as exception:
-            print('error ' + str(exception))
+            return [[]]
+    except Exception as exception:
+        print('error ' + str(exception))
     
 def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
-    try:
-        number_of_group = only_students_db.get_group_number(user_id)[0][0]
-    except:
+    number_of_group = only_students_db.get_group_number(user_id)
+    if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
     db_name = subjects_db.get_db_name(number_of_group)
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
+    
+    date_and_time_now = datetime.datetime.now(tz=msc_timezone)
+    day = str(date_and_time_now.day)
+    if len(day) == 1:
+        day = '0' + day
+    today_date = day + '.' + str(date_and_time_now.month) + '.'
+    today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+    if number_of_lesson >= 5:
+        return 'Сегодня у тебя больше нет пар.' 
+    if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
+        return texts_for_lesgaft_bot.error
     else:
-        #d = datetime.date(2019, 11, 21)
-        #t = datetime.time(6, 0)
-        #date_and_time_now =  datetime.datetime.combine(d, t)
-        date_and_time_now = datetime.datetime.now(tz=msc_timezone)
-        day = str(date_and_time_now.day)
-        if len(day) == 1:
-            day = '0' + day
-        today_date = day + '.' + str(date_and_time_now.month) + '.'
-        today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
-        if number_of_lesson >= 5:
-            return 'Сегодня у тебя больше нет пар.' 
-        if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
-            return texts_for_lesgaft_bot.error
+        list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
+    try:
+        if today_subjects[number_of_lesson][0] != 'Нет предмета':
+            next_subject = today_subjects[number_of_lesson][0]
+            formate_of_time = '%H:%M' 
+            today_time = date_and_time_now.strftime("%H:%M")
+            today_date = datetime.datetime.strptime(today_time, formate_of_time)
+            next_start_time = datetime.datetime.strptime(list_of_times[number_of_lesson], formate_of_time)
+            time_to_lesson = str(next_start_time - today_date)[0:4]
+            class_location = find_class_location.find_class_location(next_subject)
+            text = f'Через {time_to_lesson} начнётся {next_subject}\n\n{class_location}' 
+            return text
+        if today_subjects[number_of_lesson][0] == 'Нет предмета':
+            return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
         else:
-            list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
-        try:
-            if today_subjects[number_of_lesson][0] != 'Нет предмета':
-                next_subject = today_subjects[number_of_lesson][0]
-                formate_of_time = '%H:%M' 
-                today_time = date_and_time_now.strftime("%H:%M")
-                today_date = datetime.datetime.strptime(today_time, formate_of_time)
-                next_start_time = datetime.datetime.strptime(list_of_times[number_of_lesson], formate_of_time)
-                time_to_lesson = str(next_start_time - today_date)[0:4]
-                class_location = find_class_location.find_class_location(next_subject)
-                text = f'Через {time_to_lesson} начнётся {next_subject}\n\n{class_location}' 
-                return text
-            if today_subjects[number_of_lesson][0] == 'Нет предмета':
-                return return_message_text_to_about_time_before_lesson(user_id, number_of_lesson + 1)
-        except Exception as exception:
-            print('error ' + str(exception))
+            return []
+    except Exception as exception:
+        print('error ' + str(exception))
 
 
 def return_time_class_location(user_id):

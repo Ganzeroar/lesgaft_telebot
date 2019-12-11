@@ -45,38 +45,38 @@ def main_func(message):
     if len(message.text) == 3 and message.text.isdigit():
         text = only_students_db.overwrite_group(message.text, message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in overwrite' 
+            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in overwrite at time {message.date}' 
             print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text == 'Какие сегодня пары?':
         text = today_and_tomorrow_lessons.return_today_lessons(message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in today lessons' 
+            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in today lessons at time {message.date}' 
             print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text == 'Какие завтра пары?':        
         text = today_and_tomorrow_lessons.return_tomorrow_lessons(message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in tomorrow lessons' 
+            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in tomorrow lessons at time {message.date}' 
             print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
         text = time_class_and_location.return_location_of_class(message.from_user.id, message.text)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in location of class' 
+            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in location of class at time {message.date}' 
             print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'где пара?':
         text = time_class_and_location.return_time_class_location(message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in time and location' 
+            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in time and location at time {message.date}' 
             print(text_for_error)
             text = 'Если ты видишь это сообщение, значит ты - тот самый редчайший пользователь, который каким-то необъяснимым образом меня сломал. Пожалуйста, свяжись с моим создателем в телеграме ( @ganzeroar) или вк, сообщи ему об этом. Тем самым ты сделаешь меня чуточку лучше и приблизишь момент нахождения и исправлния этой магической ошибки. Заранее спасибо =)'
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
         text = texts_for_lesgaft_bot.invalid_text
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in invalid text' 
+            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in invalid text at time {message.date}' 
             print(text_for_error)
 
         logging.basicConfig(filename="users_messages.log", level=logging.INFO)
