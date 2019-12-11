@@ -15,9 +15,8 @@ def return_today_lessons(user_id):
     day_of_week = time_class_and_location.return_russian_day_of_week(str(time_now.strftime('%a')))
     if day_of_week == 'воскресенье':
         return 'Сегодня воскресенье, не учимся!'
-    try:
-        number_of_group = only_students_db.get_group_number(user_id)[0][0]
-    except:
+    number_of_group = only_students_db.get_group_number(user_id)
+    if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
     db_name = subjects_db.get_db_name(number_of_group)
@@ -55,9 +54,8 @@ def return_tomorrow_lessons(user_id):
     day_of_week = time_class_and_location.return_russian_day_of_week(str(tomorrow.strftime('%a')))
     if day_of_week == 'воскресенье':
         return 'Завтра воскресенье, не учимся!'
-    try:
-        number_of_group = only_students_db.get_group_number(user_id)[0][0]
-    except:
+    number_of_group = only_students_db.get_group_number(user_id)
+    if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
     db_name = subjects_db.get_db_name(number_of_group)
