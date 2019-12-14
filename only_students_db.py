@@ -11,7 +11,6 @@ def create_db():
                    """)
 
 def starting_insert_data(chat_id, first_name, last_name, date_of_registation):
-    y = [chat_id, first_name, last_name, date_of_registation]
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 

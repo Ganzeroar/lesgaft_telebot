@@ -48,13 +48,13 @@ def main_func(message):
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in overwrite at time {message.date}' 
             print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-    elif message.text == 'Какие сегодня пары?':
+    elif message.text.lower() == 'какие сегодня пары?' or message.text.lower() == 'какие пары сегодня?' or message.text.lower() == 'какие сегодня пары' or message.text.lower() == 'какие пары сегодня':
         text = today_and_tomorrow_lessons.return_today_lessons(message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in today lessons at time {message.date}' 
             print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-    elif message.text == 'Какие завтра пары?':        
+    elif message.text.lower() == 'какие завтра пары?' or message.text.lower() == 'какие завтра пары' or message.text.lower() == 'расписание на завтра':        
         text = today_and_tomorrow_lessons.return_tomorrow_lessons(message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in tomorrow lessons at time {message.date}' 
