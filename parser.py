@@ -162,28 +162,28 @@ def return_list_of_times(work_sheet, number_of_lessons_at_day):
         return [first_lesson, second_lesson, third_lesson, fourth_lesson, fifth_lesson]
     
 def return_db_name(file_name):
-    if '1_kurs_zovs' in file_name:
+    if 'zovs_1_kurs' in file_name:
          return 'zovs_1_kurs'
-    elif '2_kurs_zovs' in file_name:
+    elif 'zovs_2_kurs' in file_name:
          return 'zovs_2_kurs'
-    elif '3_kurs_zovs' in file_name:
+    elif 'zovs_3_kurs' in file_name:
          return 'zovs_3_kurs'
-    elif '4_kurs_zovs' in file_name:
+    elif 'zovs_4_kurs' in file_name:
          return 'zovs_4_kurs'
-    elif '1_kurs_lovs' in file_name:
+    elif 'lovs_1_kurs' in file_name:
          return 'lovs_1_kurs'
-    elif '2_kurs_lovs' in file_name:
+    elif 'lovs_2_kurs' in file_name:
          return 'lovs_2_kurs'
-    elif '3_kurs_lovs' in file_name:
+    elif 'lovs_3_kurs' in file_name:
          return 'lovs_3_kurs'
-    elif '4_kurs_lovs' in file_name:
+    elif 'lovs_4_kurs' in file_name:
          return 'lovs_4_kurs'
 
 def pars_files_create_dbfiles():
     work_files = glob.glob('./*.xlsx')
     for work_file in work_files:
         db_name = return_db_name(work_file)
-        subjects_db.create_db (db_name)
+        subjects_db.create_db(db_name)
         work_book = load_workbook(work_file)
         for work_sheet_for_groups in work_book.sheetnames:
             main_work_sheet = work_book[work_sheet_for_groups]
