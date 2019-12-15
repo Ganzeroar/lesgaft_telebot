@@ -5,7 +5,7 @@ import site_parser
 def job():
     site_parser.parse_and_searching_changes()
 
-schedule.every(2).hour.do(job)
+schedule.every(2).hours.do(job)
 
 while True:
     schedule.run_pending()
