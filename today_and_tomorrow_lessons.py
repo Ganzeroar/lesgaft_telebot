@@ -14,6 +14,7 @@ def return_today_lessons(user_id):
     time_now = datetime.datetime.now(tz=msc_timezone)
     day_of_week = time_class_and_location.return_russian_day_of_week(str(time_now.strftime('%a')))
     if day_of_week == 'воскресенье':
+        print('User: ' + str(user_id) +  ' from ask about today sunday')
         return 'Сегодня воскресенье, не учимся!'
     number_of_group = only_students_db.get_group_number(user_id)
     if number_of_group == False:
@@ -53,6 +54,7 @@ def return_tomorrow_lessons(user_id):
     tomorrow = time_now + datetime.timedelta(days=1)
     day_of_week = time_class_and_location.return_russian_day_of_week(str(tomorrow.strftime('%a')))
     if day_of_week == 'воскресенье':
+        print('User: ' + str(user_id) +  ' from ask about tomorrow sunday')
         return 'Завтра воскресенье, не учимся!'
     number_of_group = only_students_db.get_group_number(user_id)
     if number_of_group == False:
