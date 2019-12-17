@@ -4,7 +4,7 @@ def create_db(db_name):
     
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    
+    cursor.executescript("DROP TABLE IF EXISTS " + db_name)
     cursor.execute("CREATE TABLE " + db_name + " (date text, time text)")
 
 def save_groups(db_name, list_of_groups):
