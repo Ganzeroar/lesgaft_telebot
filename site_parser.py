@@ -4,97 +4,10 @@ import pytz
 import logging
 from bs4 import BeautifulSoup
 
-import db_functions_for_site_parser
+import db_functions_for_site_parser as db 
 import parser
 
-def parse_and_download_files():
-    url = 'http://www.lesgaft.spb.ru/ru/schedule'
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, "lxml")
-
-    element = soup.find_all('div', class_ = 'views-row views-row-2 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/1_kurs_lovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-3 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/1_kurs_zovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-4 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/2_kurs_lovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-5 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/2_kurs_zovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-6 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/3_kurs_lovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-7 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/3_kurs_zovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-8 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/4_kurs_lovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
-    element = soup.find_all('div', class_ = 'views-row views-row-9 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link = element_2[0].find_all('a', href=True)[0]['href']
-
-    f = open('/home/ganzeroar/Python/my_progs/lesgaft_telebot/4_kurs_zovs.xlsx', 'wb')
-    url = file_link
-    req = requests.get(url)
-    f.write(req.content)
-    f.close()
-
 def parse_and_searching_changes():
-
-    logging.basicConfig(filename="parsing_info.log", level=logging.INFO)
 
     url = 'http://www.lesgaft.spb.ru/ru/schedule'
     resp = requests.get(url)
@@ -105,268 +18,60 @@ def parse_and_searching_changes():
 
     activate_parser = False
 
-    current_file_link_lovs_1 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('lovs_1_kurs')
-    current_file_link_zovs_1 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('zovs_1_kurs')
-    current_file_link_lovs_2 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('lovs_2_kurs')
-    current_file_link_zovs_2 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('zovs_2_kurs')
-    current_file_link_lovs_3 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('lovs_3_kurs')
-    current_file_link_zovs_3 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('zovs_3_kurs')
-    current_file_link_lovs_4 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('lovs_4_kurs')
-    current_file_link_zovs_4 = db_functions_for_site_parser.get_current_link_of_course_and_faculty('zovs_4_kurs')
+    course_names = ['lovs_1_kurs','zovs_1_kurs','lovs_2_kurs','zovs_2_kurs',
+        'lovs_3_kurs','zovs_3_kurs','lovs_4_kurs','zovs_4_kurs']
 
-    element = soup.find_all('div', class_ = 'views-row views-row-2 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_lovs_1 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_lovs_1 == False:
-        # Для первого запуска
-        activate_parser = True
+    for x in range(8):
+        number_of_row = x + 2
+        if number_of_row % 2 == 0:
+            even_or_odd = 'even'
+        else:
+            even_or_odd = 'odd'
 
-        excel_file = open('lovs_1_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_1)
-        excel_file.write(resp.content)
-        excel_file.close()
+        name_of_course = course_names[x]
+        current_file_link = db.get_current_link(name_of_course)
 
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_1_kurs', str(file_link_lovs_1), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('lovs_1_kurs', str(file_link_lovs_1))
-        log_text = f'Отсутствие текущей ссылки у lovs_1 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_1 == file_link_lovs_1:
-        log_text = f'Текущая и полученная ссылки одинаковы у lovs_1 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_1 != file_link_lovs_1:
-        activate_parser = True
+        element = soup.find_all('div', class_ = f'views-row views-row-{number_of_row} views-row-{even_or_odd}')
+        element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
+        new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+        if current_file_link == False:
+            print('первый запуск')
+            # Для первого запуска
+            activate_parser = True
 
-        excel_file = open('lovs_1_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_1)
-        excel_file.write(resp.content)
-        excel_file.close()
-        
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_1_kurs', str(file_link_lovs_1), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('lovs_1_kurs', str(file_link_lovs_1))
-        
-        log_text = f'Полученная ссылка отлична от текущей у lovs_1 в {date_and_time_now}'
-        logging.info(log_text)
-    element = soup.find_all('div', class_ = 'views-row views-row-3 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_zovs_1 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_zovs_1 == False:
-        
-        excel_file = open('zovs_1_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_1)
-        excel_file.write(resp.content)
-        excel_file.close()
+            excel_file = open(f'{name_of_course}.xlsx', 'wb')
+            resp = requests.get(new_file_link)
+            excel_file.write(resp.content)
+            excel_file.close()
 
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_1_kurs', str(file_link_zovs_1), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('zovs_1_kurs', str(file_link_zovs_1))
-        log_text = f'Отсутствие текущей ссылки у zovs_1 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_1 == file_link_zovs_1:
-        log_text = f'Текущая и полученная ссылки одинаковы у zovs_1 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_1 != file_link_zovs_1:
-        activate_parser = True
+            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
+            db.insert_link_to_current_links(name_of_course, str(new_file_link))
+            log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
+            logging.info(log_text)
+        elif current_file_link == new_file_link:
+            print('одинаковые ссылки')
+            log_text = f'Текущая и полученная ссылки одинаковы у {name_of_course} в {date_and_time_now}'
+            logging.info(log_text)
+        elif current_file_link != new_file_link:
+            print(f'различные ссылки новая ссылка: {new_file_link} и новое имя: {name_of_course}')
+            activate_parser = True
 
-        excel_file = open('zovs_1_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_1)
-        excel_file.write(resp.content)
-        excel_file.close()
+            log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
+            logging.info(log_text)
 
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_1_kurs', str(file_link_zovs_1), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('zovs_1_kurs', str(file_link_zovs_1))
-        
-        log_text = f'Полученная ссылка отлична от текущей у zovs_1 в {date_and_time_now}'
-        logging.info(log_text)
+            excel_file = open(f'{name_of_course}.xlsx', 'wb')
+            resp = requests.get(new_file_link)
+            excel_file.write(resp.content)
+            excel_file.close()
 
-    element = soup.find_all('div', class_ = 'views-row views-row-4 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_lovs_2 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_lovs_2 == False:
-
-        excel_file = open('lovs_2_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_2)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_2_kurs', str(file_link_lovs_2), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('lovs_2_kurs', str(file_link_lovs_2))
-        log_text = f'Отсутствие текущей ссылки у lovs_2 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_2 == file_link_lovs_2:
-        log_text = f'Текущая и полученная ссылки одинаковы у lovs_2 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_2 != file_link_lovs_2:
-        activate_parser = True
-
-        excel_file = open('lovs_2_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_2)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_2_kurs', str(file_link_lovs_2), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('lovs_2_kurs', str(file_link_lovs_2))
-        
-        log_text = f'Полученная ссылка отлична от текущей у lovs_2 в {date_and_time_now}'
-        logging.info(log_text)
-
-
-    element = soup.find_all('div', class_ = 'views-row views-row-5 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_zovs_2 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_zovs_2 == False:
-
-        excel_file = open('zovs_2_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_2)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_2_kurs', str(file_link_zovs_2), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('zovs_2_kurs', str(file_link_zovs_2))
-        log_text = f'Отсутствие текущей ссылки у zovs_2 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_2 == file_link_zovs_2:
-        log_text = f'Текущая и полученная ссылки одинаковы у zovs_2 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_2 != file_link_zovs_2:
-        activate_parser = True
-
-        excel_file = open('zovs_2_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_2)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_2_kurs', str(file_link_zovs_2), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('zovs_2_kurs', str(file_link_zovs_2))
-        
-        log_text = f'Полученная ссылка отлична от текущей у zovs_2 в {date_and_time_now}'
-        logging.info(log_text)
-
-    element = soup.find_all('div', class_ = 'views-row views-row-6 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_lovs_3 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_lovs_3 == False:
-
-        excel_file = open('lovs_3_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_3)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_3_kurs', str(file_link_lovs_3), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('lovs_3_kurs', str(file_link_lovs_3))
-        log_text = f'Отсутствие текущей ссылки у lovs_3 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_3 == file_link_lovs_3:
-        log_text = f'Текущая и полученная ссылки одинаковы у lovs_3 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_3 != file_link_lovs_3:
-        activate_parser = True
-
-        excel_file = open('lovs_3_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_3)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_3_kurs', str(file_link_lovs_3), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('lovs_3_kurs', str(file_link_lovs_3))
-        
-        log_text = f'Полученная ссылка отлична от текущей у lovs_3 в {date_and_time_now}'
-        logging.info(log_text)
-
-    element = soup.find_all('div', class_ = 'views-row views-row-7 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_zovs_3 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_zovs_3 == False:
-
-        excel_file = open('zovs_3_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_3)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_3_kurs', str(file_link_zovs_3), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('zovs_3_kurs', str(file_link_zovs_3))
-        log_text = f'Отсутствие текущей ссылки у zovs_3 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_3 == file_link_zovs_3:
-        log_text = f'Текущая и полученная ссылки одинаковы у zovs_3 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_3 != file_link_zovs_3:
-        activate_parser = True
-
-        excel_file = open('zovs_3_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_3)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_3_kurs', str(file_link_zovs_3), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('zovs_3_kurs', str(file_link_zovs_3))
-        
-        log_text = f'Полученная ссылка отлична от текущей у zovs_3 в {date_and_time_now}'
-        logging.info(log_text)
-
-    element = soup.find_all('div', class_ = 'views-row views-row-8 views-row-even')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_lovs_4 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_lovs_4 == False:
-
-        excel_file = open('lovs_4_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_4)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_4_kurs', str(file_link_lovs_4), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('lovs_4_kurs', str(file_link_lovs_4))
-        log_text = f'Отсутствие текущей ссылки у lovs_4 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_4 == file_link_lovs_4:
-        log_text = f'Текущая и полученная ссылки одинаковы у lovs_4 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_lovs_4 != file_link_lovs_4:
-        activate_parser = True
-
-        excel_file = open('lovs_4_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_lovs_4)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('lovs_4_kurs', str(file_link_lovs_4), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('lovs_4_kurs', str(file_link_lovs_4))
-        
-        log_text = f'Полученная ссылка отлична от текущей у lovs_4 в {date_and_time_now}'
-        logging.info(log_text)
-
-    element = soup.find_all('div', class_ = 'views-row views-row-9 views-row-odd')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    file_link_zovs_4 = element_2[0].find_all('a', href=True)[0]['href']
-    if current_file_link_zovs_4 == False:
-
-        excel_file = open('zovs_4_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_4)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_4_kurs', str(file_link_zovs_4), date_and_time_now)
-        db_functions_for_site_parser.insert_link_to_current_links('zovs_4_kurs', str(file_link_zovs_4))
-        log_text = f'Отсутствие текущей ссылки у zovs_1 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_4 == file_link_zovs_4:
-        log_text = f'Текущая и полученная ссылки одинаковы у zovs_4 в {date_and_time_now}'
-        logging.info(log_text)
-    elif current_file_link_zovs_4 != file_link_zovs_4:
-        activate_parser = True
-
-        excel_file = open('time_tables/zovs_4_kurs.xlsx', 'wb')
-        resp = requests.get(file_link_zovs_4)
-        excel_file.write(resp.content)
-        excel_file.close()
-
-        db_functions_for_site_parser.insert_link_to_all_links('zovs_4_kurs', str(file_link_zovs_4), date_and_time_now)
-        db_functions_for_site_parser.change_link_in_current_links('zovs_4_kurs', str(file_link_zovs_4))
-        
-        log_text = f'Полученная ссылка отлична от текущей у zovs_4 в {date_and_time_now}'
-        logging.info(log_text)
+            db.insert_link_to_all_links(f'{name_of_course}', str(new_file_link), date_and_time_now)
+            db.change_link_in_current_links(f'{name_of_course}', str(new_file_link))
     if activate_parser:
+        print('парсер запущен')
         log_text = f'Парсер файлов запущен в {date_and_time_now}'
         logging.info(log_text)
         parser.pars_files_create_dbfiles()
+
 if __name__ == "__main__":
     parse_and_searching_changes()
 

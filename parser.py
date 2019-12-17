@@ -206,8 +206,8 @@ def pars_files_create_dbfiles():
                 row_of_groups_number = return_row_of_groups_number(main_work_sheet)
 
                 return_full_data_of_day(main_work_sheet, db_name, list_of_day_dates, row_of_first_lesson_of_day, number_of_lessons_at_day, row_of_groups_number)
-            print('Done WS' + str(work_sheet))
-        print('Done' + str(work_file))
+            print('Done WS ' + str(work_sheet))
+        print('Done ' + str(work_file))
     print('All is Done')
 
 if __name__ == "__main__":

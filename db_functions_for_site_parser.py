@@ -25,8 +25,7 @@ def insert_link_to_current_links(course_and_faculty, link):
 def change_link_in_current_links(course_and_faculty, link):
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
-
-    cursor.execute(f'UPDATE current_links SET link = {link} WHERE course_and_faculty = {course_and_faculty}')
+    cursor.execute(f"UPDATE current_links SET link = '{link}' WHERE course_and_faculty = '{course_and_faculty}'")
     conn.commit()
 
 def get_current_links():
@@ -38,7 +37,7 @@ def get_current_links():
     data = cursor.fetchall()
     return data
 
-def get_current_link_of_course_and_faculty(course_and_faculty):
+def get_current_link(course_and_faculty):
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
 
