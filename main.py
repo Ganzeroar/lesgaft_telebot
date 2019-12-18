@@ -3,12 +3,15 @@
 import telebot
 import time
 import logging
+import datetime
+import pytz
 
 import config
 import db_funcs_for_students_db
 import texts_for_lesgaft_bot
 import time_class_and_location
 import today_and_tomorrow_lessons
+import handler_of_unusual_requests as handler
 
 bot = telebot.TeleBot(config.token)
 
@@ -44,27 +47,18 @@ def main_func(message):
 
     if len(message.text) == 3 and message.text.isdigit():
         text = db_funcs_for_students_db.overwrite_group(message.text, message.from_user.id)
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in overwrite at time {message.date}' 
-            print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'какие сегодня пары?' or message.text.lower() == 'какие пары сегодня?' or message.text.lower() == 'какие сегодня пары' or message.text.lower() == 'какие пары сегодня':
-        text = today_and_tomorrow_lessons.return_today_lessons(message.from_user.id)
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in today lessons at time {message.date}' 
-            print(text_for_error)
+        time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+        text = today_and_tomorrow_lessons.return_lessons_at_date(message.from_user.id, time_now)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'какие завтра пары?' or message.text.lower() == 'какие завтра пары' or message.text.lower() == 'расписание на завтра' or message.text.lower() == 'какие завтра пары ?' or message.text.lower() == 'какие пары завтра ?':        
-        text = today_and_tomorrow_lessons.return_tomorrow_lessons(message.from_user.id)
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in tomorrow lessons at time {message.date}' 
-            print(text_for_error)
+        time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+        tomorrow = time_now + datetime.timedelta(days=1)
+        text = today_and_tomorrow_lessons.return_lessons_at_date(message.from_user.id, tomorrow)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
         text = time_class_and_location.return_location_of_class(message.from_user.id, message.text)
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in location of class at time {message.date}' 
-            print(text_for_error)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'где пара?':
         text = time_class_and_location.return_time_class_location(message.from_user.id)
@@ -74,7 +68,7 @@ def main_func(message):
             text = 'Если ты видишь это сообщение, значит ты - тот самый редчайший пользователь, который каким-то необъяснимым образом меня сломал. Пожалуйста, свяжись с моим создателем в телеграме ( @ganzeroar) или вк, сообщи ему об этом. Тем самым ты сделаешь меня чуточку лучше и приблизишь момент нахождения и исправлния этой магической ошибки. Заранее спасибо =)'
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
-        text = texts_for_lesgaft_bot.invalid_text
+        text = handler.find_message_value(message.text, message.from_user.id) #texts_for_lesgaft_bot.invalid_text
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in invalid text at time {message.date}' 
             print(text_for_error)
