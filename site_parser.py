@@ -4,7 +4,7 @@ import pytz
 import logging
 from bs4 import BeautifulSoup
 
-import db_functions_for_site_parser as db 
+import db_funcs_for_site_parser as db 
 import parser
 
 def parse_and_searching_changes():

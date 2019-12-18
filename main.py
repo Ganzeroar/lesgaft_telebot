@@ -5,7 +5,7 @@ import time
 import logging
 
 import config
-import only_students_db
+import db_funcs_for_students_db
 import texts_for_lesgaft_bot
 import time_class_and_location
 import today_and_tomorrow_lessons
@@ -24,10 +24,10 @@ def send_custom_message(user_id, text):
 @bot.message_handler(commands=['start'])
 def start_message(message):
 
-    if only_students_db.user_already_in_db(message.from_user.id):
+    if db_funcs_for_students_db.user_already_in_db(message.from_user.id):
         bot.send_message(message.from_user.id, 'С возвращением!')
     else:
-        only_students_db.starting_insert_data(int(message.chat.id), str(message.from_user.first_name), str(message.from_user.last_name), int(message.date))
+        db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(message.from_user.first_name), str(message.from_user.last_name), int(message.date))
         text = texts_for_lesgaft_bot.greeting_text
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in greeting' 
@@ -43,7 +43,7 @@ def main_func(message):
     main_keyboard.add(item1, item2, item3)
 
     if len(message.text) == 3 and message.text.isdigit():
-        text = only_students_db.overwrite_group(message.text, message.from_user.id)
+        text = db_funcs_for_students_db.overwrite_group(message.text, message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in overwrite at time {message.date}' 
             print(text_for_error)

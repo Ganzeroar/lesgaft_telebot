@@ -3,7 +3,7 @@
 import pytz
 import datetime
 import time_class_and_location
-import only_students_db
+import db_funcs_for_students_db
 import subjects_db
 import texts_for_lesgaft_bot
 
@@ -16,7 +16,7 @@ def return_today_lessons(user_id):
     if day_of_week == 'воскресенье':
         print('User: ' + str(user_id) +  ' from ask about today sunday')
         return 'Сегодня воскресенье, не учимся!'
-    number_of_group = only_students_db.get_group_number(user_id)
+    number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
@@ -56,7 +56,7 @@ def return_tomorrow_lessons(user_id):
     if day_of_week == 'воскресенье':
         print('User: ' + str(user_id) +  ' from ask about tomorrow sunday')
         return 'Завтра воскресенье, не учимся!'
-    number_of_group = only_students_db.get_group_number(user_id)
+    number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)

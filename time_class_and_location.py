@@ -2,7 +2,7 @@
 
 import pytz
 import datetime
-import only_students_db
+import db_funcs_for_students_db
 import subjects_db
 import texts_for_lesgaft_bot
 import find_class_location
@@ -49,7 +49,7 @@ def is_time_between(begin_time, end_time, check_time=None):
 def return_message_text_about_current_lesson(user_id, number_of_lesson):
     msc_timezone = pytz.timezone('Europe/Moscow')
     
-    number_of_group = only_students_db.get_group_number(user_id)
+    number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:    
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
@@ -83,7 +83,7 @@ def return_message_text_about_current_lesson(user_id, number_of_lesson):
 def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
-    number_of_group = only_students_db.get_group_number(user_id)
+    number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
