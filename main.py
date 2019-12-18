@@ -68,7 +68,7 @@ def main_func(message):
             text = 'Если ты видишь это сообщение, значит ты - тот самый редчайший пользователь, который каким-то необъяснимым образом меня сломал. Пожалуйста, свяжись с моим создателем в телеграме ( @ganzeroar) или вк, сообщи ему об этом. Тем самым ты сделаешь меня чуточку лучше и приблизишь момент нахождения и исправлния этой магической ошибки. Заранее спасибо =)'
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
-        text = handler.find_message_value(message.text, message.from_user.id) #texts_for_lesgaft_bot.invalid_text
+        text = texts_for_lesgaft_bot.invalid_text #handler.find_message_value(message.text, message.from_user.id) #texts_for_lesgaft_bot.invalid_text
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in invalid text at time {message.date}' 
             print(text_for_error)
