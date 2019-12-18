@@ -3,7 +3,7 @@
 import pytz
 import datetime
 import db_funcs_for_students_db
-import subjects_db
+import db_funcs_for_subjects_db
 import texts_for_lesgaft_bot
 import find_class_location
 
