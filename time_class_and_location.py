@@ -53,7 +53,7 @@ def return_message_text_about_current_lesson(user_id, number_of_lesson):
     if number_of_group == False:    
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
-    db_name = subjects_db.get_db_name(number_of_group)
+    db_name = db_funcs_for_subjects_db.get_db_name(number_of_group)
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
     
@@ -62,7 +62,7 @@ def return_message_text_about_current_lesson(user_id, number_of_lesson):
     if len(day) == 1:
         day = '0' + day
     today_date = day + '.' + str(date_and_time_now.month) + '.'
-    today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+    today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, today_date)
     if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
         return texts_for_lesgaft_bot.error
     else:
@@ -87,7 +87,7 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
-    db_name = subjects_db.get_db_name(number_of_group)
+    db_name = db_funcs_for_subjects_db.get_db_name(number_of_group)
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
     
@@ -96,7 +96,7 @@ def return_message_text_to_about_time_before_lesson(user_id, number_of_lesson):
     if len(day) == 1:
         day = '0' + day
     today_date = day + '.' + str(date_and_time_now.month) + '.'
-    today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+    today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, today_date)
     if number_of_lesson >= 5:
         return 'Сегодня у тебя больше нет пар.' 
     if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:

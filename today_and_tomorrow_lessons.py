@@ -4,7 +4,7 @@ import pytz
 import datetime
 import time_class_and_location
 import db_funcs_for_students_db
-import subjects_db
+import db_funcs_for_subjects_db
 import texts_for_lesgaft_bot
 
 def return_today_lessons(user_id):
@@ -20,7 +20,7 @@ def return_today_lessons(user_id):
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
-    db_name = subjects_db.get_db_name(number_of_group)
+    db_name = db_funcs_for_subjects_db.get_db_name(number_of_group)
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
     
@@ -30,7 +30,7 @@ def return_today_lessons(user_id):
         day = '0' + day
     today_date = day + '.' + str(time_now.month) + '.'
     
-    today_subjects = subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+    today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, today_date)
     if today_subjects == False:
         return 'Твоей группы не существует. Измени номер группы.'
     
@@ -60,7 +60,7 @@ def return_tomorrow_lessons(user_id):
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
-    db_name = subjects_db.get_db_name(number_of_group)
+    db_name = db_funcs_for_subjects_db.get_db_name(number_of_group)
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
 
@@ -69,7 +69,7 @@ def return_tomorrow_lessons(user_id):
         # нужно для базы данных, в которой формат дат состоит из двух чисел
         day = '0' + day
     tomorrow_date = day + '.' + str(time_now.month) + '.'
-    tomorrow_subjects = subjects_db.get_subjects_today(name_of_group, db_name, tomorrow_date)
+    tomorrow_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, tomorrow_date)
     if tomorrow_subjects == False:
         return 'Твоей группы не существует. Измени номер группы.'
     
