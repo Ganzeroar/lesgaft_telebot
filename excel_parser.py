@@ -2,7 +2,7 @@ import time
 from openpyxl import Workbook, load_workbook, utils
 import glob
 
-import subjects_db
+import db_funcs_for_subjects_db
 
 # возвращает номер ряда, в котором в ячейках группы
 def return_row_of_groups_number(work_sheet):
@@ -125,11 +125,11 @@ def return_full_data_of_day(work_sheet, name_for_db, list_of_day_dates, row_of_f
                     subject = work_sheet.cell(row = row_of_first_lesson_of_day + num_of_lesson, column = group_column).value
                     if isMerged(work_sheet, row_of_first_lesson_of_day + num_of_lesson, group_column):
                         merged_subject = get_value_of_merged_call(work_sheet, row_of_first_lesson_of_day + num_of_lesson, group_column)
-                        subjects_db.save_subj(name_for_db, date, time, group_cell_value, merged_subject.replace("\n"," "))
+                        db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, merged_subject.replace("\n"," "))
                     elif type(subject) == str:
-                        subjects_db.save_subj(name_for_db, date, time, group_cell_value, subject.replace("\n"," "))
+                        db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, subject.replace("\n"," "))
                     elif subject == None:
-                        subjects_db.save_subj(name_for_db, date, time, group_cell_value, 'Нет предмета')
+                        db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, 'Нет предмета')
 
 def return_list_of_groups(work_sheet, row_of_groups_number):
     list_of_groups = []
@@ -183,19 +183,19 @@ def pars_files_create_dbfiles():
     work_files = glob.glob('./*.xlsx')
     for work_file in work_files:
         db_name = return_db_name(work_file)
-        subjects_db.create_db(db_name)
+        db_funcs_for_subjects_db.create_db(db_name)
         work_book = load_workbook(work_file)
         for work_sheet_for_groups in work_book.sheetnames:
             main_work_sheet = work_book[work_sheet_for_groups]
             row_of_groups_number = return_row_of_groups_number(main_work_sheet)
             list_of_groups = return_list_of_groups(main_work_sheet, row_of_groups_number)
-            subjects_db.save_groups(db_name, list_of_groups)
+            db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
             break
         for work_sheet in work_book.sheetnames:
             main_work_sheet = work_book[work_sheet]
             list_of_dates = return_list_of_lists_of_dates(main_work_sheet)
             list_of_times = return_list_of_times(main_work_sheet, 5)
-            subjects_db.save_dates_and_times(db_name, list_of_dates, list_of_times)
+            db_funcs_for_subjects_db.save_dates_and_times(db_name, list_of_dates, list_of_times)
 
             days_names = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота']
             for i in range(6):
