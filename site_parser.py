@@ -49,11 +49,11 @@ def parse_and_searching_changes():
             log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
             logging.info(log_text)
         elif current_file_link == new_file_link:
-            print('одинаковые ссылки')
+            print(f'одинаковые ссылки в {date_and_time_now}')
             log_text = f'Текущая и полученная ссылки одинаковы у {name_of_course} в {date_and_time_now}'
             logging.info(log_text)
         elif current_file_link != new_file_link:
-            print(f'различные ссылки новая ссылка: {new_file_link} и новое имя: {name_of_course}')
+            print(f'различные ссылки новая ссылка: {new_file_link} у: {name_of_course} в {date_and_time_now}')
             activate_parser = True
 
             log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
@@ -74,22 +74,3 @@ def parse_and_searching_changes():
 
 if __name__ == "__main__":
     parse_and_searching_changes()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
