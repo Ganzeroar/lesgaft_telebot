@@ -10,7 +10,7 @@ import config
 import db_funcs_for_students_db
 import texts_for_lesgaft_bot
 import time_class_and_location
-import today_and_tomorrow_lessons
+import find_lessons_at_date
 import handler_of_unusual_requests as handler
 
 bot = telebot.TeleBot(config.token)
@@ -50,12 +50,12 @@ def main_func(message):
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'какие сегодня пары?' or message.text.lower() == 'какие пары сегодня?' or message.text.lower() == 'какие сегодня пары' or message.text.lower() == 'какие пары сегодня':
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
-        text = today_and_tomorrow_lessons.return_lessons_at_date(message.from_user.id, time_now)
+        text = find_lessons_at_date.return_lessons_at_date(message.from_user.id, time_now)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'какие завтра пары?' or message.text.lower() == 'какие завтра пары' or message.text.lower() == 'расписание на завтра' or message.text.lower() == 'какие завтра пары ?' or message.text.lower() == 'какие пары завтра ?':        
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         tomorrow = time_now + datetime.timedelta(days=1)
-        text = today_and_tomorrow_lessons.return_lessons_at_date(message.from_user.id, tomorrow)
+        text = find_lessons_at_date.return_lessons_at_date(message.from_user.id, tomorrow)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
         text = time_class_and_location.return_location_of_class(message.from_user.id, message.text)
