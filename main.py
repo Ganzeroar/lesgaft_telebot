@@ -9,7 +9,7 @@ import pytz
 import config
 import db_funcs_for_students_db
 import texts_for_lesgaft_bot
-import time_class_and_location
+import find_time_and_location
 import find_lessons_at_date
 import handler_of_unusual_requests as handler
 
@@ -58,10 +58,10 @@ def main_func(message):
         text = find_lessons_at_date.return_lessons_at_date(message.from_user.id, tomorrow)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
-        text = time_class_and_location.return_location_of_class(message.from_user.id, message.text)
+        text = find_time_and_location.return_location_of_class(message.from_user.id, message.text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif message.text.lower() == 'где пара?':
-        text = time_class_and_location.return_time_class_location(message.from_user.id)
+        text = find_time_and_location.return_time_class_location(message.from_user.id)
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in time and location at time {message.date}' 
             print(text_for_error)

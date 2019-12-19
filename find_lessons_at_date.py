@@ -2,14 +2,14 @@
 
 import pytz
 import datetime
-import time_class_and_location
+import find_time_and_location
 import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import texts_for_lesgaft_bot
 
 def return_lessons_at_date(user_id, date):
     
-    day_of_week = time_class_and_location.return_russian_day_of_week(str(date.strftime('%a')))
+    day_of_week = find_time_and_location.return_russian_day_of_week(str(date.strftime('%a')))
     if day_of_week == 'воскресенье':
         print('User: ' + str(user_id) +  ' from ask about tomorrow sunday')
         return 'Завтра воскресенье, не учимся!'
