@@ -5,7 +5,13 @@ import logging
 from bs4 import BeautifulSoup
 
 import db_funcs_for_site_parser as db 
-import parser
+import excel_parser
+
+def create_table(name_of_course, new_file_link):
+    excel_file = open(f'time_tables/{name_of_course}.xlsx', 'wb')
+    resp = requests.get(new_file_link)
+    excel_file.write(resp.content)
+    excel_file.close()
 
 def parse_and_searching_changes():
 
@@ -39,11 +45,7 @@ def parse_and_searching_changes():
             # Для первого запуска
             activate_parser = True
 
-            excel_file = open(f'{name_of_course}.xlsx', 'wb')
-            resp = requests.get(new_file_link)
-            excel_file.write(resp.content)
-            excel_file.close()
-
+            create_table(name_of_course, new_file_link)
             db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
             db.insert_link_to_current_links(name_of_course, str(new_file_link))
             log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
@@ -59,18 +61,14 @@ def parse_and_searching_changes():
             log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
             logging.info(log_text)
 
-            excel_file = open(f'{name_of_course}.xlsx', 'wb')
-            resp = requests.get(new_file_link)
-            excel_file.write(resp.content)
-            excel_file.close()
-
+            create_table(name_of_course, new_file_link)
             db.insert_link_to_all_links(f'{name_of_course}', str(new_file_link), date_and_time_now)
             db.change_link_in_current_links(f'{name_of_course}', str(new_file_link))
     if activate_parser:
         print('парсер запущен')
         log_text = f'Парсер файлов запущен в {date_and_time_now}'
         logging.info(log_text)
-        parser.pars_files_create_dbfiles()
+        excel_parser.pars_files_create_dbfiles()
 
 if __name__ == "__main__":
     parse_and_searching_changes()

@@ -163,24 +163,24 @@ def return_list_of_times(work_sheet, number_of_lessons_at_day):
     
 def return_db_name(file_name):
     if 'zovs_1_kurs' in file_name:
-         return 'zovs_1_kurs'
+        return 'zovs_1_kurs'
     elif 'zovs_2_kurs' in file_name:
-         return 'zovs_2_kurs'
+        return 'zovs_2_kurs'
     elif 'zovs_3_kurs' in file_name:
-         return 'zovs_3_kurs'
+        return 'zovs_3_kurs'
     elif 'zovs_4_kurs' in file_name:
-         return 'zovs_4_kurs'
+        return 'zovs_4_kurs'
     elif 'lovs_1_kurs' in file_name:
-         return 'lovs_1_kurs'
+        return 'lovs_1_kurs'
     elif 'lovs_2_kurs' in file_name:
-         return 'lovs_2_kurs'
+        return 'lovs_2_kurs'
     elif 'lovs_3_kurs' in file_name:
-         return 'lovs_3_kurs'
+        return 'lovs_3_kurs'
     elif 'lovs_4_kurs' in file_name:
-         return 'lovs_4_kurs'
+        return 'lovs_4_kurs'
 
 def pars_files_create_dbfiles():
-    work_files = glob.glob('./*.xlsx')
+    work_files = glob.glob('time_tables/*.xlsx')
     for work_file in work_files:
         db_name = return_db_name(work_file)
         db_funcs_for_subjects_db.create_db(db_name)
