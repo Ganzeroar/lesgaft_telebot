@@ -16,6 +16,7 @@ import handler_of_unusual_requests as handler
 bot = telebot.TeleBot(config.token)
 
 def send_custom_message(user_id, text):
+    # функция ддя внештатной отправки сообщения пользователю
     try:
         user_id = int(user_id)
         text = str(text)
@@ -48,11 +49,18 @@ def main_func(message):
     if len(message.text) == 3 and message.text.isdigit():
         text = db_funcs_for_students_db.overwrite_group(message.text, message.from_user.id)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-    elif message.text.lower() == 'какие сегодня пары?' or message.text.lower() == 'какие пары сегодня?' or message.text.lower() == 'какие сегодня пары' or message.text.lower() == 'какие пары сегодня':
+    elif message.text.lower() == 'где пара?':
+        text = find_time_and_location.return_time_before_class_and_location(message.from_user.id)
+        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
+            text_for_error = f'ERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in time and location at time {message.date}' 
+            print(text_for_error)
+            text = texts_for_lesgaft_bot.mystical_error_text
+        bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+    elif message.text.lower() == 'какие сегодня пары?':
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         text = find_lessons_at_date.return_lessons_at_date(message.from_user.id, time_now)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-    elif message.text.lower() == 'какие завтра пары?' or message.text.lower() == 'какие завтра пары' or message.text.lower() == 'расписание на завтра' or message.text.lower() == 'какие завтра пары ?' or message.text.lower() == 'какие пары завтра ?':        
+    elif message.text.lower() == 'какие завтра пары?':
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         tomorrow = time_now + datetime.timedelta(days=1)
         text = find_lessons_at_date.return_lessons_at_date(message.from_user.id, tomorrow)
@@ -60,25 +68,15 @@ def main_func(message):
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
         text = find_time_and_location.return_location_of_class(message.from_user.id, message.text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-    elif message.text.lower() == 'где пара?':
-        text = find_time_and_location.return_time_class_location(message.from_user.id)
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in time and location at time {message.date}' 
-            print(text_for_error)
-            text = 'Если ты видишь это сообщение, значит ты - тот самый редчайший пользователь, который каким-то необъяснимым образом меня сломал. Пожалуйста, свяжись с моим создателем в телеграме ( @ganzeroar) или вк, сообщи ему об этом. Тем самым ты сделаешь меня чуточку лучше и приблизишь момент нахождения и исправлния этой магической ошибки. Заранее спасибо =)'
-        bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
-        #text = texts_for_lesgaft_bot.invalid_text #handler.find_message_value(message.text, message.from_user.id)
         text = handler.find_message_value(message.text, message.from_user.id)
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in invalid text at time {message.date}' 
-            print(text_for_error)
-
-        logging.basicConfig(filename="users_messages.log", level=logging.INFO)
-        log_text = f'User: {message.from_user.id} send message: {message.text} at time: {message.date}'
-        logging.info(log_text)
-        bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
+        # новый код, протестировать
+        if text == False:
+            logging.basicConfig(filename="users_messages.log", level=logging.INFO)
+            log_text = f'User: {message.from_user.id} send message: {message.text} at time: {message.date}'
+            logging.info(log_text)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+            print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
 
 if __name__ == '__main__':
     try:
@@ -86,6 +84,6 @@ if __name__ == '__main__':
     except:
         logging.basicConfig(filename="sample.log", level=logging.INFO)
         log = logging.getLogger("ex")
-        print('ERRORERRORERROR')
+        print('ERROR')
         bot.send_message(206171081, 'Я умер')
         log.exception('Error!')

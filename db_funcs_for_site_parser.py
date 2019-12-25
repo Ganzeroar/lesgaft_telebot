@@ -29,7 +29,7 @@ def change_link_in_current_links(course_and_faculty, link):
     conn.commit()
 
 def get_current_links():
-    # пока нигде не используется
+    # нигде не используется
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
 

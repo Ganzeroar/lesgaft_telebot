@@ -31,9 +31,9 @@ def return_lessons_at_date(user_id, date):
         return 'Твоей группы не существует. Измени номер группы.'
     
     message_text = ''
-    list_of_times = ['9:45-11:15 \n', '11:30-13:00 \n', '13:30-15:00 \n', '15:15-16:45 \n', '17:00-18:30 \n']
+    list_of_times = ['9:45-11:15\n', '11:30-13:00\n', '13:30-15:00\n', '15:15-16:45\n', '17:00-18:30\n']
     number_of_date = date.strftime("%d.%m.%Y.")
-    message_text += f'Расписание на {day_of_week} ({number_of_date}) \n\n'
+    message_text += f'Расписание на {day_of_week} ({number_of_date})\n\n'
     try:
         for x in range(5):
             message_text += list_of_times[x] + subjects[x][0] + '\n\n'

@@ -104,7 +104,6 @@ def return_number_of_lessons_at_day(work_sheet, name_of_day):
 
 def return_full_data_of_day(work_sheet, name_for_db, list_of_day_dates, row_of_first_lesson_of_day, number_of_lessons_at_day, row_of_groups_number):
     for date in list_of_day_dates:
-        pred_final_dict = {}
         for num_of_lesson in range(number_of_lessons_at_day):
             time = work_sheet.cell(row = row_of_first_lesson_of_day + num_of_lesson, column = 3).value
             if type(time) != str:
@@ -113,24 +112,27 @@ def return_full_data_of_day(work_sheet, name_for_db, list_of_day_dates, row_of_f
                 time = time.replace('0', '')
             time = time.replace('.', ':')
             
-            pred_final_dict[time] = []
-            
             for group_column in range(4, 25):
                 group_cell_value = work_sheet.cell(row = row_of_groups_number, column = group_column).value
                 if type(group_cell_value) == str and 'Группа' in group_cell_value:
-                    if '  ' in group_cell_value:
-                        group_cell_value = group_cell_value.replace('  ', ' ')
-                    if ' ' in group_cell_value:
-                        group_cell_value = group_cell_value.replace(' ', '_')
-                    subject = work_sheet.cell(row = row_of_first_lesson_of_day + num_of_lesson, column = group_column).value
-                    if isMerged(work_sheet, row_of_first_lesson_of_day + num_of_lesson, group_column):
-                        merged_subject = get_value_of_merged_call(work_sheet, row_of_first_lesson_of_day + num_of_lesson, group_column)
-                        db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, merged_subject.replace("\n"," "))
-                    elif type(subject) == str:
-                        db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, subject.replace("\n"," "))
-                    elif subject == None:
-                        db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, 'Нет предмета')
-
+                    try:
+                        if '  ' in group_cell_value:
+                            group_cell_value = group_cell_value.replace('  ', ' ')
+                        if ' ' in group_cell_value:
+                            group_cell_value = group_cell_value.replace(' ', '_')
+                        subject = work_sheet.cell(row = row_of_first_lesson_of_day + num_of_lesson, column = group_column).value
+                        if isMerged(work_sheet, row_of_first_lesson_of_day + num_of_lesson, group_column):
+                            merged_subject = get_value_of_merged_call(work_sheet, row_of_first_lesson_of_day + num_of_lesson, group_column)
+                            db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, merged_subject.replace("\n"," "))
+                        elif type(subject) == str:
+                            db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, subject.replace("\n"," "))
+                        elif subject == None:
+                            db_funcs_for_subjects_db.save_subj(name_for_db, date, time, group_cell_value, 'Нет предмета')
+                    except:
+                        print(group_cell_value)
+                        print(name_for_db)
+                        print('ERROR Появилась новая группа')
+                        return False
 def return_list_of_groups(work_sheet, row_of_groups_number):
     list_of_groups = []
     for column in range(4, 25):
@@ -179,17 +181,20 @@ def return_db_name(file_name):
     elif 'lovs_4_kurs' in file_name:
         return 'lovs_4_kurs'
 
+def create_groups_in_db(work_book, work_sheet_for_create_groups, db_name):
+    main_work_sheet = work_book[work_sheet_for_create_groups]
+    row_of_groups_number = return_row_of_groups_number(main_work_sheet)
+    list_of_groups = return_list_of_groups(main_work_sheet, row_of_groups_number)
+    db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
+    
 def pars_files_create_dbfiles():
     work_files = glob.glob('time_tables/*.xlsx')
     for work_file in work_files:
         db_name = return_db_name(work_file)
         db_funcs_for_subjects_db.create_db(db_name)
         work_book = load_workbook(work_file)
-        for work_sheet_for_groups in work_book.sheetnames:
-            main_work_sheet = work_book[work_sheet_for_groups]
-            row_of_groups_number = return_row_of_groups_number(main_work_sheet)
-            list_of_groups = return_list_of_groups(main_work_sheet, row_of_groups_number)
-            db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
+        for work_sheet_for_create_groups in work_book.sheetnames:
+            create_groups_in_db(work_book, work_sheet_for_create_groups, db_name)
             break
         for work_sheet in work_book.sheetnames:
             main_work_sheet = work_book[work_sheet]
@@ -209,7 +214,7 @@ def pars_files_create_dbfiles():
             print('Done WS ' + str(work_sheet))
         print('Done ' + str(work_file))
     print('All is Done')
-
+    return True
 if __name__ == "__main__":
     pars_files_create_dbfiles()
         

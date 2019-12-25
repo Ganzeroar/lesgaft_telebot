@@ -17,7 +17,8 @@ def return_location_of_class(user_id, text):
     except:
         return texts_for_lesgaft_bot.invalid_text
     print('User: ' + str(user_id) + ' ask about location ' + str(number_of_class))
-    return find_class_location.find_class_location_used_number(number_of_class)
+    text = find_class_location.find_class_location_used_number(number_of_class)
+    return text
 
 
 def return_russian_day_of_week(eng_day):
@@ -39,21 +40,26 @@ def return_russian_day_of_week(eng_day):
 def is_time_between(begin_time, end_time, check_time=None):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
-    check_time = check_time or datetime.datetime.now(tz=msc_timezone).time()
-    #check_time = datetime.time(10,10)
+    if check_time:
+        check_time = check_time
+    else:
+        check_time = datetime.datetime.now(tz=msc_timezone).time()
+        #date = datetime.datetime.now(tz=msc_timezone)
+        #check_time = date.time()
+    print(check_time)
     if begin_time < end_time:
         return check_time >= begin_time and check_time <= end_time
     else: # crosses midnight
         return check_time >= begin_time or check_time <= end_time
     
-def return_message_about_time_before_lesson_with_location(user_id, number_of_lesson, before_or_during = 'before'):
+def return_text_about_time_before_lesson_with_location(user_id, number_of_lesson, before_or_during = 'before'):
     number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'Группа_' + str(number_of_group)
     db_name = db_funcs_for_subjects_db.get_db_name(number_of_group)
     if db_name == None:
-        return 'Твоей группы не существует. Измени номер группы.'
+        return 'Такой группы не существует. Измени номер группы.'
     
     msc_timezone = pytz.timezone('Europe/Moscow')
     date_and_time_now = datetime.datetime.now(tz=msc_timezone)
@@ -62,8 +68,8 @@ def return_message_about_time_before_lesson_with_location(user_id, number_of_les
         day = '0' + day
     today_date = day + '.' + str(date_and_time_now.month) + '.'
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, today_date)
-    if number_of_lesson >= 5:                                                        #
-        return 'Сегодня у тебя больше нет пар.'                                      #
+    if number_of_lesson >= 5:
+        return 'Сегодня у тебя больше нет пар.'
     if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
         return texts_for_lesgaft_bot.error
     list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
@@ -77,6 +83,7 @@ def return_message_about_time_before_lesson_with_location(user_id, number_of_les
                 next_start_time = datetime.datetime.strptime(list_of_times[number_of_lesson], formate_of_time)
                 time_to_lesson = str(next_start_time - today_date)[0:4]
                 class_location = find_class_location.find_class_location(next_subject)
+                print(class_location)
                 text = f'Через {time_to_lesson} начнётся {next_subject}\n\n{class_location}' 
                 return text
             elif before_or_during == 'during':
@@ -85,14 +92,14 @@ def return_message_about_time_before_lesson_with_location(user_id, number_of_les
                 text = f'Сейчас у вас {current_subject}\n\n{class_location}'
                 return text
         if today_subjects[number_of_lesson][0] == 'Нет предмета':
-            return return_message_about_time_before_lesson_with_location(user_id, number_of_lesson + 1)
+            return return_text_about_time_before_lesson_with_location(user_id, number_of_lesson + 1)
         else:
             return []
     except Exception as exception:
         print('error ' + str(exception))
 
 
-def return_time_class_location(user_id): #return_time_with_class_location
+def return_time_before_class_and_location(user_id):
     msc_timezone = pytz.timezone('Europe/Moscow')
 
     time_now = datetime.datetime.now(tz=msc_timezone)
@@ -100,29 +107,27 @@ def return_time_class_location(user_id): #return_time_with_class_location
     if day_of_week == 'воскресенье':
         return 'Сегодня воскресенье, не учимся!'
 
-    text = ''
-
     if is_time_between(datetime.time(00,00), datetime.time(9,44)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 0)
+        text = return_text_about_time_before_lesson_with_location(user_id, 0)
     elif is_time_between(datetime.time(9,45), datetime.time(11,15)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 0, 'during')
+        text = return_text_about_time_before_lesson_with_location(user_id, 0, 'during')
     elif is_time_between(datetime.time(11,16), datetime.time(11,29)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 1)
+        text = return_text_about_time_before_lesson_with_location(user_id, 1)
     elif is_time_between(datetime.time(11,30), datetime.time(13,00)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 1, 'during')
+        text = return_text_about_time_before_lesson_with_location(user_id, 1, 'during')
     elif is_time_between(datetime.time(13,1), datetime.time(13,29)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 2)
+        text = return_text_about_time_before_lesson_with_location(user_id, 2)
     elif is_time_between(datetime.time(13,30), datetime.time(15,00)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 2, 'during')
+        text = return_text_about_time_before_lesson_with_location(user_id, 2, 'during')
     elif is_time_between(datetime.time(15,1), datetime.time(15,14)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 3)
+        text = return_text_about_time_before_lesson_with_location(user_id, 3)
     elif is_time_between(datetime.time(15,15), datetime.time(16,45)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 3, 'during')
+        text = return_text_about_time_before_lesson_with_location(user_id, 3, 'during')
     elif is_time_between(datetime.time(16,46), datetime.time(16,59)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 4)
+        text = return_text_about_time_before_lesson_with_location(user_id, 4)
     elif is_time_between(datetime.time(17,00), datetime.time(18,30)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 4, 'during')
+        text = return_text_about_time_before_lesson_with_location(user_id, 4, 'during')
     elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
-        text = return_message_about_time_before_lesson_with_location(user_id, 5)
+        text = return_text_about_time_before_lesson_with_location(user_id, 5)
     print('User: ' + str(user_id) + ' ask about where the lesson')
     return text
