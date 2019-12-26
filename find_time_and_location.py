@@ -44,9 +44,6 @@ def is_time_between(begin_time, end_time, check_time=None):
         check_time = check_time
     else:
         check_time = datetime.datetime.now(tz=msc_timezone).time()
-        #date = datetime.datetime.now(tz=msc_timezone)
-        #check_time = date.time()
-    print(check_time)
     if begin_time < end_time:
         return check_time >= begin_time and check_time <= end_time
     else: # crosses midnight

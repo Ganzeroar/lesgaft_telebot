@@ -69,7 +69,8 @@ def main_func(message):
         text = find_time_and_location.return_location_of_class(message.from_user.id, message.text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
-        text = handler.find_message_value(message.text, message.from_user.id)
+        text = message.text.lower()
+        text = handler.find_message_value(text, message.from_user.id)
         # новый код, протестировать
         if text == False:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)
