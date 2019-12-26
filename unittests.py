@@ -26,6 +26,12 @@ class Test_find_time_and_location(unittest.TestCase):
     def test_return_location_of_class_take_current_text_return_real_answer(self):
         result = find_time_and_location.return_location_of_class(123456789, 'где 10')
         self.assertEqual(result, 'ИЭиСТ, первый этаж')
+    def test_return_location_of_class_take_current_faculty_return_real_answer(self):
+        result = find_time_and_location.return_location_of_class(123456789, 'где факультет зимних олимпийских видов спорта')
+        self.assertEqual(result, 'Мойка, вход со стороны стадиона, третий этаж')
+    def test_return_location_of_class_take_current_department_return_real_answer(self):
+        result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
+        self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
     @patch('db_funcs_for_students_db.get_group_number', return_value = False)
     def test_return_text_about_time_before_lesson_with_location_user_id_not_in_db(self, get_group_number):
@@ -107,13 +113,6 @@ class Test_find_lessons_at_date(unittest.TestCase):
         time_now = datetime.datetime.now()
         result = find_lessons_at_date.return_lessons_at_date(123, time_now)
         self.assertEqual(result, texts_for_lesgaft_bot.error)
-
-class Text_excel_parser(unittest.TestCase):
-
-    @patch('work_sheet.cell', return_value = 'Группа 111.')
-    def test_return_full_data_of_day(self, return_db_name, create_db):
-        result = excel_parser.return_full_data_of_day()
-        self.assertEqual(result, False)
 
 
 if __name__ == '__main__':

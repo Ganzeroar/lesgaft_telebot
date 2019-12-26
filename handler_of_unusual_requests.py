@@ -97,9 +97,6 @@ def find_message_value(text, user_id):
         tomorrow = time_now + datetime.timedelta(days=1)
         message = find_lessons_at_date.return_lessons_at_date(user_id, tomorrow)
         return message
-    #try:
-    #    text = 123
-    #    return text
-    #except:
-    return texts_for_lesgaft_bot.invalid_text
+    else:
+        return texts_for_lesgaft_bot.invalid_text
     

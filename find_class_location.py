@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import texts_for_lesgaft_bot
+
 def find_class_location_used_number(number_of_class):
-    dict_of_all_classes = {
+    locations = {
         '1' : 'Мойка, третий этаж, от лестницы налево', 
         '2' : 'Мойка, третий этаж, от лестницы налево',
         '3' : 'Главный корпус, по лестнице с клеткой на втором этаже вниз, затем налево и прямо',
@@ -111,10 +113,82 @@ def find_class_location_used_number(number_of_class):
         '426' : 'Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону'
     }   
     try:
-        text = dict_of_all_classes[number_of_class]
-        return text
+        location = locations[number_of_class]
+        return location
     except:
         return 'Такой аудитории я не знаю'
+
+
+def find_department_location(name_of_department):
+
+    locations = {
+    'кафедра комплексной реабилитации' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра анатомии' : 'Главный корпус, по лестнице с клеткой на втором этаже вниз, затем направо',
+    'кафедра биомеханики' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра биохимии' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра иностранных языков' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра менеджмента и экономики спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра педагогики' : 'Мойка, третий этаж, после лестницы направо, прямо',
+    'кафедра права и гражданской безопасности' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра профилактической медицины и основ здоровья' : 'Главный корпус, маленькая лестница с выходом к Ленину, второй этаж',
+    'кафедра психологии' : 'Главный корпус, второй этаж, от лестницы к кафедре анатомии направо, налево, по правую сторону',
+    'кафедра социально-гуманитарных дисциплин' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра социальных технологий и массовых коммуникаций в спорте' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра специальной психологии и психиатрии' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра спортивной медицины и технологий здоровья' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра спортивных сооружений и индустрии, доступной среды' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики адаптивного спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики адаптивной физической культуры' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики атлетизма' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики биатлона' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики бокса' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики борьбы (тим борьбы)' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики борьбы' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики велосипедного спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики водно-моторного и парусного видов спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики гимнастики' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики гребного спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики керлинга' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики конькобежного спорта и фигурного катания' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики легкой атлетики имени в.в. ухова' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики лыжного спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики массовой физкультурно-оздоровительной работы' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики неолимпийских видов спорта' : 'Мойка, третий этаж, после лестницы направо, по левую сторону',
+    'кафедра теории и методики плавания (т и м плавания)' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики плавания' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики спортивных игр' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики фехтования' : 'Мойка, третий этаж, после лестницы налево',
+    'кафедра теории и методики физической культуры' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики футбола' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра теории и методики хоккея' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра физиологии' : texts_for_lesgaft_bot.havent_way_to_place,
+    'кафедра физической реабилитации' : texts_for_lesgaft_bot.havent_way_to_place,
+    'теории и методики гимнастики' : texts_for_lesgaft_bot.havent_way_to_place,
+    }
+    try:
+        location = locations[name_of_department]
+        return location
+    except:
+        return 'Такой аудитории я не знаю'
+
+def find_faculty_location(name_of_faculty):
+    locations = {
+    'факультет учебно-профессиональных практик' :  texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет подготовки научно-педагогических работников' : texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет образовательных технологий адаптивной физической культуры' : texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет летних олимпийских видов спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет индивидуальных образовательных и спортивных технологий' : texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет зимних олимпийских видов спорта' : 'Мойка, вход со стороны стадиона, третий этаж',
+    'факультет здоровья и реабилитологии' : texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет единоборств и неолимпийских видов спорта' : texts_for_lesgaft_bot.havent_way_to_place,
+    'факультет довузовской подготовки' : texts_for_lesgaft_bot.havent_way_to_place,
+    }
+    try:
+        location = locations[name_of_faculty]
+        return location
+    except:
+        return 'Такой аудитории я не знаю'
+
 
 def find_class_location(subject):  
     if 'ауд.' in subject:
@@ -128,7 +202,7 @@ def find_class_location(subject):
         elif '№3' in subject:
             return 'Манеж, третий этаж'
         elif '№5' in subject:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
     elif 'Мойка' in subject:
         if 'к.2' in subject:
             if 'ауд. 7' in subject:
@@ -139,30 +213,30 @@ def find_class_location(subject):
                 return 'Мойка, вход со стороны стадиона, второй этаж'
     elif 'Кафедра' in subject:
         if 'ТиМФОР' in subject:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
         elif 'ТиМИВС' in subject:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
         elif 'ПСС' in subject:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
         elif 'Элективные дисциплины' in subject:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
         elif 'Педагогики' in subject:
             return 'Мойка, третий этаж, от лестницы направо'
         else:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
     elif 'Каф.' in subject:
         if 'проф.мед.' in subject:
             return 'Главный корпус, маленькая лестница с выходом к Ленину, второй этаж'
         elif 'анатомии' in subject:
             return 'Главный корпус, по лестнице с клеткой на втором этаже вниз, затем направо'
         elif 'ин.языков' in subject:
-            return ''
+            return texts_for_lesgaft_bot.havent_way_to_place
     elif 'Бассейн' in subject:
-        return ''
+        return texts_for_lesgaft_bot.havent_way_to_place
     elif 'Манеж' in subject:
-        return ''
+        return texts_for_lesgaft_bot.havent_way_to_place
     elif 'Кавголово' in subject:
-        return ''
+        return texts_for_lesgaft_bot.havent_way_to_place
     else:
         return ''
             

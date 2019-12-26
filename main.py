@@ -66,7 +66,8 @@ def main_func(message):
         text = find_lessons_at_date.return_lessons_at_date(message.from_user.id, tomorrow)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     elif str(message.text[:3]).lower() == 'где' and message.text.lower() != 'где пара?':
-        text = find_time_and_location.return_location_of_class(message.from_user.id, message.text)
+        message_text = message.text.lower()
+        text = find_time_and_location.return_location_of_class(message.from_user.id, message_text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
         request = message.text.lower()

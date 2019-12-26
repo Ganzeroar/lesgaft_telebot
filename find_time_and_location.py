@@ -9,16 +9,23 @@ import find_class_location
 
 
 def return_location_of_class(user_id, text):
-    number_of_class = text[3:].strip()
-    if len(number_of_class) > 3:
+    name_of_location = text[3:].strip()
+    if len(name_of_location) <= 3:
+        try:
+            int(name_of_location)
+        except:
+            return texts_for_lesgaft_bot.invalid_text
+        print('User: ' + str(user_id) + ' ask about location ' + str(name_of_location))
+        location = find_class_location.find_class_location_used_number(name_of_location)
+        return location
+    elif 'кафедра' in name_of_location:
+        location = find_class_location.find_department_location(name_of_location)
+        return location
+    elif 'факультет' in name_of_location:
+        location = find_class_location.find_faculty_location(name_of_location)
+        return location
+    else:
         return 'Такой аудитории я не знаю'
-    try:
-        int(number_of_class)
-    except:
-        return texts_for_lesgaft_bot.invalid_text
-    print('User: ' + str(user_id) + ' ask about location ' + str(number_of_class))
-    text = find_class_location.find_class_location_used_number(number_of_class)
-    return text
 
 
 def return_russian_day_of_week(eng_day):
