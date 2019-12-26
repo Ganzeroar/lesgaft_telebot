@@ -71,16 +71,14 @@ def main_func(message):
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
         request = message.text.lower()
-        if message.from_user.id == 206171081:
-            text = handler.find_message_value(request, message.from_user.id)
+        text = handler.find_message_value(request, message.from_user.id)
+        if text != False:
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-        # новый код, протестировать
-        #if text == False:
-        else:
+        elif text == False:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)
             log_text = f'User: {message.from_user.id} send message: {message.text} at time: {message.date}'
             logging.info(log_text)
-            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+            bot.send_message(message.from_user.id, texts_for_lesgaft_bot.invalid_text, reply_markup = main_keyboard)
             print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
 
 if __name__ == '__main__':
