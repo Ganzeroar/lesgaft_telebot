@@ -5,22 +5,21 @@ import pytz
 import find_lessons_at_date
 import texts_for_lesgaft_bot
 
-def next_weekday(date, weekday):
+def next_weekday(weekday):
+    #0 - monday
+    #1 - tuesday etc.
+    msc_timezone = pytz.timezone('Europe/Moscow')
+    date_and_time_now = datetime.datetime.now(tz=msc_timezone)
+
+    day = date_and_time_now.day
+    mounh = date_and_time_now.month
+    year = date_and_time_now.year
+    date = datetime.date(year, mounh, day)
+
     days_ahead = weekday - date.weekday()
     if days_ahead <= 0: # Target day already happened this week
         days_ahead += 7
     return date + datetime.timedelta(days_ahead)
-
-msc_timezone = pytz.timezone('Europe/Moscow')
-date_and_time_now = datetime.datetime.now(tz=msc_timezone)
-
-day = date_and_time_now.day
-mounh = date_and_time_now.month
-year = date_and_time_now.year
-date = datetime.date(year, mounh, day)
-
-next_monday = next_weekday(date, 0)
-print(next_monday) # 2019-12-23
 
 monday_lessons_requests = ['какие в понедельник пары','какие в понедельник пары?',
     'какие в понедельник пары ?','какие пары в понедельник','какие пары в понедельник?',
@@ -46,16 +45,56 @@ saturday_lessons_requests = ['какие в субботу пары','какие
     'какие в субботу пары ?','какие пары в субботу','какие пары в субботу?',
     'какие пары в субботу ?','расписание на субботу','суббота',]
 
-tomorrow_lessons_requests = ['какие пары завтра','какие пары завтра?','какие пары завтра ?',
-    'какие завтра пары','какие завтра пары ?','завтра', 'какое завтра расписание']
+today_lessons_requests = ['какие пары сегодня','какие пары сегодня?',
+    'какие пары сегодня ?', 'какие сегодня пары','какие сегодня пары ?',
+    'сегодня', 'какое сегодня расписание', 'расписание на сегодня', 
+    'что сегодня','что сегодня?','что сегодня ?', 'на сегодня']
 
-stupid_requests = ['какие послезавтра пары','что сегодня', 'на сегодня', 'когда на учёбу']
+tomorrow_lessons_requests = ['какие пары завтра','какие пары завтра?',
+    'какие пары завтра ?', 'какие завтра пары','какие завтра пары ?',
+    'завтра', 'какое завтра расписание', 'расписание на завтра', 'что завтра',
+    'что завтра?', 'что завтра ?', 'на завтра']
+
+day_after_tomorrow_lessond_requests = ['какие послезавтра пары', 
+    'какие послезавтра пары?', 'какие послезавтра пары ?']
 
 # добавить поиск по КАФЕДРАМ 
 
 def find_message_value(text, user_id):
-    #  or message.text.lower() == 'какие пары сегодня?' or message.text.lower() == 'какие сегодня пары' or message.text.lower() == 'какие пары сегодня'
-    #  or message.text.lower() == 'какие завтра пары' or message.text.lower() == 'расписание на завтра' or message.text.lower() == 'какие завтра пары ?' or message.text.lower() == 'какие пары завтра ?'
+
+    if text in monday_lessons_requests:
+        next_monday = next_weekday(0)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        return message
+    elif text in tuesday_lessons_requests:
+        next_monday = next_weekday(1)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        return message
+    elif text in wednesday_lessons_requests:
+        next_monday = next_weekday(2)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        return message
+    elif text in thursday_lessons_requests:
+        next_monday = next_weekday(3)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        return message
+    elif text in friday_lessons_requests:
+        next_monday = next_weekday(4)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        return message
+    elif text in saturday_lessons_requests:
+        next_monday = next_weekday(5)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        return message
+    elif text in today_lessons_requests:
+        time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+        message = find_lessons_at_date.return_lessons_at_date(message.from_user.id, time_now)
+        return message
+    elif text in tomorrow_lessons_requests:
+        time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+        tomorrow = time_now + datetime.timedelta(days=1)
+        message = find_lessons_at_date.return_lessons_at_date(message.from_user.id, tomorrow)
+        return message
     #try:
     #    text = 123
     #    return text

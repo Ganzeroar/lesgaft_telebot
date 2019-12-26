@@ -70,7 +70,9 @@ def main_func(message):
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
         text = message.text.lower()
-        text = handler.find_message_value(text, message.from_user.id)
+        if '555' in message.text:
+            message = handler.find_message_value(text, message.from_user.id)
+            bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         # новый код, протестировать
         if text == False:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)

@@ -110,23 +110,6 @@ class Test_find_lessons_at_date(unittest.TestCase):
 
 class Text_excel_parser(unittest.TestCase):
 
-    #@patch('return_db_name', return_value = 'zovs_1_kurs')
-    #@patch('db_funcs_for_subjects_db.create_db', return_value = True)
-    #@patch('load_workbook', return_value = True)
-    #@patch('create_groups_in_db', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #@patch('return_db_name', return_value = True)
-    #def test_pars_files_create_dbfiles_take_(self, return_db_name, create_db):
-    #    result = excel_parser.pars_files_create_dbfiles()
-    #    self.assertEqual(result, True)
     @patch('work_sheet.cell', return_value = 'Группа 111.')
     def test_return_full_data_of_day(self, return_db_name, create_db):
         result = excel_parser.return_full_data_of_day()
