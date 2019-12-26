@@ -25,9 +25,9 @@ monday_lessons_requests = ['какие в понедельник пары','ка
     'какие в понедельник пары ?','какие пары в понедельник','какие пары в понедельник?',
     'какие пары в понедельник ?','расписание на понедельник','понедельник',]
 
-tuesday_lessons_requests = ['какие в вторник пары','какие в вторник пары?',
-    'какие в вторник пары ?','какие пары в вторник','какие пары в вторник?',
-    'какие пары в вторник ?','расписание на вторник','вторник',]
+tuesday_lessons_requests = ['какие во вторник пары','какие во вторник пары?',
+    'какие во вторник пары ?','какие пары во вторник','какие пары во вторник?',
+    'какие пары во вторник ?','расписание на вторник','вторник',]
 
 wednesday_lessons_requests = ['какие в среду пары','какие в среду пары?',
     'какие в среду пары ?','какие пары в среду','какие пары в среду?',
@@ -56,7 +56,9 @@ tomorrow_lessons_requests = ['какие пары завтра','какие па
     'что завтра?', 'что завтра ?', 'на завтра']
 
 day_after_tomorrow_lessond_requests = ['какие послезавтра пары', 
-    'какие послезавтра пары?', 'какие послезавтра пары ?']
+    'какие послезавтра пары?', 'какие послезавтра пары ?', 
+    'какие пары послезавтра', 'какие пары послезавтра?', 
+    'какие пары послезавтра ?']
 
 # добавить поиск по КАФЕДРАМ 
 
@@ -88,12 +90,12 @@ def find_message_value(text, user_id):
         return message
     elif text in today_lessons_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
-        message = find_lessons_at_date.return_lessons_at_date(message.from_user.id, time_now)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, time_now)
         return message
     elif text in tomorrow_lessons_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         tomorrow = time_now + datetime.timedelta(days=1)
-        message = find_lessons_at_date.return_lessons_at_date(message.from_user.id, tomorrow)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, tomorrow)
         return message
     #try:
     #    text = 123
