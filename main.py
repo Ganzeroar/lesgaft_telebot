@@ -70,8 +70,8 @@ def main_func(message):
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
         request = message.text.lower()
-        text = handler.find_message_value(request, message.from_user.id)
-        if '555' in request:
+        if message.from_user.id == 206171081:
+            text = handler.find_message_value(request, message.from_user.id)
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         # новый код, протестировать
         #if text == False:
