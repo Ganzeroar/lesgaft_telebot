@@ -69,12 +69,13 @@ def main_func(message):
         text = find_time_and_location.return_location_of_class(message.from_user.id, message.text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
     else:
-        text = message.text.lower()
-        if '555' in message.text:
-            message = handler.find_message_value(text, message.from_user.id)
+        request = message.text.lower()
+        text = handler.find_message_value(request, message.from_user.id)
+        if '555' in request:
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         # новый код, протестировать
-        if text == False:
+        #if text == False:
+        else:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)
             log_text = f'User: {message.from_user.id} send message: {message.text} at time: {message.date}'
             logging.info(log_text)
