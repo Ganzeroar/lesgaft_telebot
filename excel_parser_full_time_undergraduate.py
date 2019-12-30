@@ -51,7 +51,6 @@ def return_list_of_lists_of_dates(work_sheet):
             del list_of_dates[0]
 
         final_list_of_dates = []
-        print(list_of_dates)
         for date in list_of_dates:
             if date[-1] != '.':
                 date = str(date) + '.'
@@ -197,7 +196,6 @@ def create_groups_in_db(work_book, work_sheet_for_create_groups, db_name):
 def pars_files_create_dbfiles():
     work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
     for work_file in work_files:
-        print(work_file)
         db_name = return_db_name(work_file)
         db_funcs_for_subjects_db.create_db(db_name)
         work_book = load_workbook(work_file)
