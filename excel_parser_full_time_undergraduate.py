@@ -47,7 +47,11 @@ def return_list_of_lists_of_dates(work_sheet):
     for row in list_of_times_first_lessons:
 
         list_of_dates = [element.replace(' ', '') for element in work_sheet.cell(row = row, column = 1).value.rstrip().split('\n')]
+        if list_of_dates[0] == '':
+            del list_of_dates[0]
+
         final_list_of_dates = []
+        print(list_of_dates)
         for date in list_of_dates:
             if date[-1] != '.':
                 date = str(date) + '.'
@@ -58,6 +62,7 @@ def return_list_of_lists_of_dates(work_sheet):
         returned_list.append(final_list_of_dates)
     return returned_list
 
+# проверяет соединены ли соседние ячейки
 def isMerged(work_sheet, row, column):
     cell = work_sheet.cell(row, column)
     for mergedCell in work_sheet.merged_cells.ranges:
@@ -65,6 +70,7 @@ def isMerged(work_sheet, row, column):
             return True
     return False
 
+# берёт значение у соединённой чейки
 def get_value_of_merged_call(work_sheet, row, column):
     cell = work_sheet.cell(row, column)
     for mergedCell in work_sheet.merged_cells.ranges:
@@ -133,6 +139,7 @@ def return_full_data_of_day(work_sheet, name_for_db, list_of_day_dates, row_of_f
                         print(name_for_db)
                         print('ERROR Появилась новая группа')
                         return False
+                        
 def return_list_of_groups(work_sheet, row_of_groups_number):
     list_of_groups = []
     for column in range(4, 25):
@@ -188,8 +195,9 @@ def create_groups_in_db(work_book, work_sheet_for_create_groups, db_name):
     db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
     
 def pars_files_create_dbfiles():
-    work_files = glob.glob('time_tables/*.xlsx')
+    work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
     for work_file in work_files:
+        print(work_file)
         db_name = return_db_name(work_file)
         db_funcs_for_subjects_db.create_db(db_name)
         work_book = load_workbook(work_file)

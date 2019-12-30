@@ -73,6 +73,7 @@ def main_func(message):
         request = message.text.lower()
         text = handler.find_message_value(request, message.from_user.id)
         if text != False:
+            print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif text == False:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)

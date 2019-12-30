@@ -5,19 +5,30 @@ import logging
 from bs4 import BeautifulSoup
 
 import db_funcs_for_site_parser as db 
-import excel_parser
+import excel_parser_full_time_undergraduate
 
 def create_table(name_of_course, new_file_link):
-    excel_file = open(f'time_tables/{name_of_course}.xlsx', 'wb')
+    excel_file = open(f'time_tables/full_time_undergraduate/{name_of_course}.xlsx', 'wb')
     resp = requests.get(new_file_link)
     excel_file.write(resp.content)
     excel_file.close()
 
-def parse_and_searching_changes():
-
+def return_file_link_from_site(number_of_row, even_or_odd):
     url = 'http://www.lesgaft.spb.ru/ru/schedule'
     resp = requests.get(url)
     soup = BeautifulSoup(resp.text, "lxml")
+    element = soup.find_all('div', class_ = f'views-row views-row-{number_of_row} views-row-{even_or_odd}')
+    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
+    new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+    return new_file_link
+
+def return_even_or_odd(number_of_row):
+    if number_of_row % 2 == 0:
+        return 'even'
+    else:
+        return 'odd'
+
+def parse_and_searching_changes():
 
     msc_timezone = pytz.timezone('Europe/Moscow')
     date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
@@ -28,18 +39,15 @@ def parse_and_searching_changes():
         'lovs_3_kurs','zovs_3_kurs','lovs_4_kurs','zovs_4_kurs']
 
     for x in range(8):
+        # необходимо что бы правильно определить HTML код нужного расписания
+        # ввиду плохого нейминга элементов на сайте
         number_of_row = x + 2
-        if number_of_row % 2 == 0:
-            even_or_odd = 'even'
-        else:
-            even_or_odd = 'odd'
+        even_or_odd = return_even_or_odd(number_of_row)
 
         name_of_course = course_names[x]
         current_file_link = db.get_current_link(name_of_course)
 
-        element = soup.find_all('div', class_ = f'views-row views-row-{number_of_row} views-row-{even_or_odd}')
-        element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-        new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+        new_file_link = return_file_link_from_site(number_of_row, even_or_odd)
         if current_file_link == False:
             print('первый запуск')
             # Для первого запуска
@@ -62,13 +70,13 @@ def parse_and_searching_changes():
             logging.info(log_text)
 
             create_table(name_of_course, new_file_link)
-            db.insert_link_to_all_links(f'{name_of_course}', str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(f'{name_of_course}', str(new_file_link))
+            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
+            db.change_link_in_current_links(name_of_course, str(new_file_link))
     if activate_parser:
         print('парсер запущен')
         log_text = f'Парсер файлов запущен в {date_and_time_now}'
         logging.info(log_text)
-        excel_parser.pars_files_create_dbfiles()
+        excel_parser_full_time_undergraduate.pars_files_create_dbfiles()
 
 if __name__ == "__main__":
     parse_and_searching_changes()

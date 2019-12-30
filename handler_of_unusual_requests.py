@@ -98,5 +98,5 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(user_id, tomorrow)
         return message
     else:
-        return texts_for_lesgaft_bot.invalid_text
+        return False
     
