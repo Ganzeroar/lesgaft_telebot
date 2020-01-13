@@ -70,7 +70,10 @@ def return_text_about_time_before_lesson_with_location(user_id, number_of_lesson
     day = str(date_and_time_now.day)
     if len(day) == 1:
         day = '0' + day
-    today_date = day + '.' + str(date_and_time_now.month) + '.'
+    month = str(date_and_time_now.month)
+    if len(month) == 1:
+        month = '0' + month
+    today_date = day + '.' + month + '.'
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, today_date)
     if number_of_lesson >= 5:
         return 'Сегодня у тебя больше нет пар.'
