@@ -70,6 +70,13 @@ def return_text_about_time_before_lesson_with_location(user_id, number_of_lesson
     day = str(date_and_time_now.day)
     if len(day) == 1:
         day = '0' + day
+        #
+        #
+        #
+        # вынести этот код в отдельную функцию в этом методе и в методе обрабатывающем "какие сегодня пары" " какие завтра пары"
+        #
+        #
+        #
     month = str(date_and_time_now.month)
     if len(month) == 1:
         month = '0' + month
@@ -90,7 +97,6 @@ def return_text_about_time_before_lesson_with_location(user_id, number_of_lesson
                 next_start_time = datetime.datetime.strptime(list_of_times[number_of_lesson], formate_of_time)
                 time_to_lesson = str(next_start_time - today_date)[0:4]
                 class_location = find_class_location.find_class_location(next_subject)
-                print(class_location)
                 text = f'Через {time_to_lesson} начнётся {next_subject}\n\n{class_location}' 
                 return text
             elif before_or_during == 'during':
