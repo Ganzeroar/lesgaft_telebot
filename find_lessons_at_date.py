@@ -25,10 +25,14 @@ def return_lessons_at_date(user_id, date):
     if len(day) == 1:
         # нужно для базы данных, в которой формат дат состоит из двух чисел
         day = '0' + day
-    current_date = day + '.' + str(date.month) + '.'
+    month = str(date.month)
+    if len(month) == 1:
+        # нужно для базы данных, в которой формат дат состоит из двух чисел
+        month = '0' + month
+    current_date = day + '.' + month + '.'
     subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, current_date)
     if bool(subjects) == False:
-        return 'Скорее всего сейчас у тебя каникулы, с наступающим =)'
+        return 'Твоей группы не существует. Измени номер группы.'
     
     message_text = ''
     list_of_times = ['9:45-11:15\n', '11:30-13:00\n', '13:30-15:00\n', '15:15-16:45\n', '17:00-18:30\n']

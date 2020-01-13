@@ -54,10 +54,6 @@ def get_subjects_today(name_of_group, db_name, date):
     cursor.execute(columns_names_in_db)
     
     columns_names = [column_name[1] for column_name in cursor.fetchall()]
-    print(columns_names)
-    print(name_of_group)
-    print(db_name)
-    print(date)
     if name_of_group in columns_names:
         req = "SELECT " + str(name_of_group) + " FROM " + str(db_name) + " WHERE date = '" + str(date) + "'"
         cursor.execute(req)
