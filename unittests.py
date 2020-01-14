@@ -8,8 +8,6 @@ import texts_for_lesgaft_bot
 
 import find_lessons_at_date
 
-import excel_parser
-
 
 class Test_find_time_and_location(unittest.TestCase):
 

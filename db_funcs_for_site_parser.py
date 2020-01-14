@@ -37,7 +37,7 @@ def get_current_links():
     data = cursor.fetchall()
     return data
 
-def get_current_link(course_and_faculty):
+def get_current_link(name):
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
 
@@ -47,7 +47,7 @@ def get_current_link(course_and_faculty):
     if bool(cursor.fetchall()) == False:
         create_db()
 
-    req = f"SELECT link FROM current_links WHERE course_and_faculty = '{course_and_faculty}'"
+    req = f"SELECT link FROM current_links WHERE course_and_faculty = '{name}'"
     cursor.execute(req)
     data = cursor.fetchall()
     if data == []:
