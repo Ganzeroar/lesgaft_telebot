@@ -120,6 +120,8 @@ def return_time_before_class_and_location(user_id):
     if day_of_week == 'воскресенье':
         return 'Сегодня воскресенье, не учимся!'
 
+    text = False
+
     if is_time_between(datetime.time(00,00), datetime.time(9,44)):
         text = return_text_about_time_before_lesson_with_location(user_id, 0)
     elif is_time_between(datetime.time(9,45), datetime.time(11,15)):
@@ -143,4 +145,8 @@ def return_time_before_class_and_location(user_id):
     elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
         text = return_text_about_time_before_lesson_with_location(user_id, 5)
     print('User: ' + str(user_id) + ' ask about where the lesson')
+
+    if text == False:
+        print(time_now)
+
     return text
