@@ -122,27 +122,27 @@ def return_time_before_class_and_location(user_id):
 
     text = False
 
-    if is_time_between(datetime.time(00,00), datetime.time(9,44)):
+    if is_time_between(datetime.time(00,00), datetime.time(9,45)):
         text = return_text_about_time_before_lesson_with_location(user_id, 0)
     elif is_time_between(datetime.time(9,45), datetime.time(11,15)):
         text = return_text_about_time_before_lesson_with_location(user_id, 0, 'during')
-    elif is_time_between(datetime.time(11,16), datetime.time(11,29)):
+    elif is_time_between(datetime.time(11,15), datetime.time(11,30)):
         text = return_text_about_time_before_lesson_with_location(user_id, 1)
     elif is_time_between(datetime.time(11,30), datetime.time(13,00)):
         text = return_text_about_time_before_lesson_with_location(user_id, 1, 'during')
-    elif is_time_between(datetime.time(13,1), datetime.time(13,29)):
+    elif is_time_between(datetime.time(13,00), datetime.time(13,30)):
         text = return_text_about_time_before_lesson_with_location(user_id, 2)
     elif is_time_between(datetime.time(13,30), datetime.time(15,00)):
         text = return_text_about_time_before_lesson_with_location(user_id, 2, 'during')
-    elif is_time_between(datetime.time(15,1), datetime.time(15,14)):
+    elif is_time_between(datetime.time(15,00), datetime.time(15,15)):
         text = return_text_about_time_before_lesson_with_location(user_id, 3)
     elif is_time_between(datetime.time(15,15), datetime.time(16,45)):
         text = return_text_about_time_before_lesson_with_location(user_id, 3, 'during')
-    elif is_time_between(datetime.time(16,46), datetime.time(16,59)):
+    elif is_time_between(datetime.time(16,45), datetime.time(17,00)):
         text = return_text_about_time_before_lesson_with_location(user_id, 4)
     elif is_time_between(datetime.time(17,00), datetime.time(18,30)):
         text = return_text_about_time_before_lesson_with_location(user_id, 4, 'during')
-    elif is_time_between(datetime.time(18,31), datetime.time(23,59)):
+    elif is_time_between(datetime.time(18,30), datetime.time(00,00)):
         text = return_text_about_time_before_lesson_with_location(user_id, 5)
     print('User: ' + str(user_id) + ' ask about where the lesson')
 
