@@ -2,5 +2,6 @@ subjects.db
 students.db
 *.db
 *.log
-*pyc
+*.pyc
+*.xlsx
 config.py
