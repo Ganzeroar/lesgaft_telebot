@@ -17,6 +17,16 @@ def starting_insert_data(chat_id, first_name, last_name, date_of_registation):
     cursor.execute("INSERT INTO users(chat_id, first_name, last_name, registration_date) VALUES (?, ?, ?, ?)", (chat_id, first_name, last_name, date_of_registation))
     conn.commit()
 
+def get_all_users():
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    req = "SELECT chat_id FROM users;"
+    cursor.execute(req)
+    users = cursor.fetchall()
+    return users
+
+
 def get_group_number(user_id):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
@@ -50,14 +60,12 @@ def update_group(user_id, group_number):
     cursor.execute(string_sql)
     conn.commit()
 
-
 def overwrite_group(message_text, user_id):
     number_of_group = int(message_text)
     update_group(user_id, number_of_group)
     text = f'Ваша группа {number_of_group} записана!' + texts_for_lesgaft_bot.group_saved
     print('User: ' + str(user_id) +  ' changed his group to ' + str(number_of_group))
     return text
-
 
 if __name__ == "__main__":
     create_db()
