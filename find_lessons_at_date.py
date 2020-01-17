@@ -12,7 +12,7 @@ def return_lessons_at_date(user_id, date):
     day_of_week = find_time_and_location.return_russian_day_of_week(str(date.strftime('%a')))
     if day_of_week == 'воскресенье':
         print('User: ' + str(user_id) +  ' from ask about tomorrow sunday')
-        return 'Завтра воскресенье, не учимся!'
+        return 'Воскресенье, не учимся!'
     number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
