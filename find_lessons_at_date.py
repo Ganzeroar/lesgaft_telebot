@@ -10,7 +10,6 @@ import texts_for_lesgaft_bot
 def return_lessons_at_date(user_id, date):
     
     day_of_week = find_time_and_location.return_russian_day_of_week(str(date.strftime('%a')))
-    print(day_of_week)
     if day_of_week == 'воскресенье':
         print('User: ' + str(user_id) +  ' from ask about tomorrow sunday')
         return 'Завтра воскресенье, не учимся!'

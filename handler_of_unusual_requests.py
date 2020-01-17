@@ -101,6 +101,7 @@ def find_message_value(text, user_id):
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         after_tomorrow = time_now + datetime.timedelta(days=2)
         message = find_lessons_at_date.return_lessons_at_date(user_id, after_tomorrow)
+        return message
     else:
         return False
     
