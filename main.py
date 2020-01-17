@@ -77,7 +77,7 @@ def main_func(message):
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif text == False:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)
-            log_text = f'User: {message.from_user.id} send message: {message.text} at time: {message.date}'
+            log_text = f'User: {message.from_user.id} send UNEXPECTED message: {message.text} at time: {message.date}'
             logging.info(log_text)
             bot.send_message(message.from_user.id, texts_for_lesgaft_bot.invalid_text, reply_markup = main_keyboard)
             print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
