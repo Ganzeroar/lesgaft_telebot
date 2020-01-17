@@ -97,6 +97,10 @@ def find_message_value(text, user_id):
         tomorrow = time_now + datetime.timedelta(days=1)
         message = find_lessons_at_date.return_lessons_at_date(user_id, tomorrow)
         return message
+    elif text in day_after_tomorrow_lessond_requests:
+        time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+        tomorrow = time_now + datetime.timedelta(days=2)
+        message = find_lessons_at_date.return_lessons_at_date(user_id, tomorrow)
     else:
         return False
     
