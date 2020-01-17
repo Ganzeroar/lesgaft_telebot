@@ -26,13 +26,10 @@ def send_custom_message_to_user(user_id, text):
 
 def send_message_to_all_users(text):
     users = db_funcs_for_students_db.get_all_users()
-    print(users)    
     for user_id in users:
-        print(user_id[0])
+        bot.send_message(user_id[0], text)
+        print(f'message was sended to {user_id}')
         time.sleep(1)
-    #    bot.send_message(user_id, text)
-    #    print(f'message was sended to {user_id}')
-    #    time.sleep(1)
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
