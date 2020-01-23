@@ -47,7 +47,10 @@ def start_message(message):
         if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
             text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in greeting' 
             print(text_for_error)
-        bot.send_message(message.from_user.id, text)
+        try:
+            bot.send_message(message.from_user.id, text)
+        except Exception as exception:
+            print(exception)
 
 @bot.message_handler(content_types=["text"])
 def main_func(message):
@@ -83,7 +86,7 @@ def main_func(message):
     else:
         request = message.text.lower()
         text = handler.find_message_value(request, message.from_user.id)
-        if text != False:
+        if bool(text) == True:
             print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
             bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif text == False:
@@ -93,7 +96,7 @@ def main_func(message):
             bot.send_message(message.from_user.id, texts_for_lesgaft_bot.invalid_text, reply_markup = main_keyboard)
             print(f'User: {message.from_user.id} send UNEXPECTED message: {message.text} at time: {message.date}')
 
-if __name__ == '__main__':
+def main_run():
     try:
         bot.polling(none_stop=False)
     except:
@@ -102,3 +105,7 @@ if __name__ == '__main__':
         print('ERROR')
         bot.send_message(206171081, 'Я умер')
         log.exception('Error!')
+        main_run()
+
+if __name__ == '__main__':
+    main_run()

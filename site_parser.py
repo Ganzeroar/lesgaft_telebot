@@ -144,4 +144,4 @@ def parse_and_searching_changes_full_time_undergraduate():
         excel_parser_full_time_undergraduate.pars_files_create_dbfiles()
 
 if __name__ == "__main__":
-    start_chosen_parser(2)
+    start_chosen_parser(1)
