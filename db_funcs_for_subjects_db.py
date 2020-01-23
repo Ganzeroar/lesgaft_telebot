@@ -5,14 +5,13 @@ def create_db(db_name):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS " + db_name)
-    cursor.execute("CREATE TABLE " + db_name + " (date text, time text)")
+    cursor.execute(f"CREATE TABLE {db_name} (date text, time text)")
 
 def save_groups(db_name, list_of_groups):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-
-    for group in list_of_groups:   
-        cursor.execute("ALTER TABLE " + db_name + " ADD COLUMN " + str(group) + " text")
+    for group in list_of_groups:
+        cursor.execute(f"ALTER TABLxE {db_name} ADD COLUMN {group} text")
 
 def save_dates_and_times(db_name, list_of_dates, list_of_times):
     conn = sqlite3.connect('subjects.db')
@@ -21,7 +20,7 @@ def save_dates_and_times(db_name, list_of_dates, list_of_times):
     for list_dates in list_of_dates:
         for date in list_dates:
             for time in list_of_times:
-                cursor.execute("INSERT INTO " + db_name + " (date, time) VALUES ('" + date + "', '" + time + "')")
+                cursor.execute(f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
     conn.commit()
 
 def save_subj(db_name, date, time, group, subj):
@@ -29,9 +28,11 @@ def save_subj(db_name, date, time, group, subj):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     
-    string_sql = "UPDATE " + db_name + " SET " + group + " = '" + str(subj) + "' WHERE date = '" + str(date) + "' AND time = '" + str(time) + "'"
-    
-    cursor.execute(string_sql)
+    #cursor.execute(f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
+    #conn.commit()
+
+    req = f"UPDATE {db_name} SET {group} = '{subj}' WHERE date = '{date}' AND time = '{time}'"
+    cursor.execute(req)
     conn.commit()
 
 def get_subject_now(num_of_group, date, time):
