@@ -148,7 +148,9 @@ def return_db_name(file_name):
     elif 'lovs_4_kurs' in file_name:
         return 'lovs_4_kurs'
 
-def create_dates_and_times_in_db(work_sheet):
+def create_dates_and_times_in_db(work_book, db_name):
+    work_sheet = work_book[work_book.sheetnames[0]]
+
     first_row = find_row_of_first_lesson(work_sheet)
     dates_column = const_dates_column
     column = const_time_column
@@ -158,26 +160,32 @@ def create_dates_and_times_in_db(work_sheet):
     counter_for_week_days = 0
 
     dates_and_times = {}
-
+    times = []
+    list_of_times = []
     for row in range(1, const_quantity_of_rows):
-        times = []
+        
 
         time_cell = work_sheet.cell(row = row, column = column).value
-        time_value = format_time(time_cell)
-        if time_value != None:
+        if time_cell != None:
+            time_value = format_time(time_cell)
             if time_value == '9:45':
                 if time_value in times:
+                    # взять даты, сделать из дат массив, перебирая его запихивать время
+
                     dates = work_sheet.cell(row = row, column = dates_column).value
                     if is_merged(work_sheet, row, dates_column):
                         dates = get_value_of_merged_call(work_sheet, row, dates_column)
                     dates = format_dates(dates)
-                    dates_and_times[week_days[counter_for_week_days]] = {dates:dates, times:times}
-                    counter_for_week_days += 1 
-            else:
-                times.append(time_value)
+                    list_of_times.append(times)
+                    for date in dates:
+                        for time in times:
+                            db_funcs_for_subjects_db.save_date_and_time(db_name, date, time)
+                    times = []
+                    times.append(time_value)
+                else:
+                    times.append(time_value)
             elif time_value in normal_times:
                 times.append(time_value)
-        
 
 def create_groups_in_db(work_book, db_name):
     work_sheet = work_book[work_book.sheetnames[0]]
@@ -190,6 +198,8 @@ def parse_work_file(work_file):
     
     work_book = load_workbook(work_file)
     create_groups_in_db(work_book, db_name)
+    create_dates_and_times_in_db(work_book, db_name)
+
     for ws in work_book.sheetnames:
         print(ws)
         work_sheet = work_book[ws]
@@ -198,7 +208,6 @@ def parse_work_file(work_file):
 def run_parser():
     work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
     for work_file in work_files:
-        print(work_file)
         parse_work_file(work_file)
         
 if __name__ == "__main__":

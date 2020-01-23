@@ -11,7 +11,14 @@ def save_groups(db_name, list_of_groups):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     for group in list_of_groups:
-        cursor.execute(f"ALTER TABLxE {db_name} ADD COLUMN {group} text")
+        cursor.execute(f"ALTER TABLE {db_name} ADD COLUMN {group} text")
+
+def save_date_and_time(db_name, date, time):
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    cursor.execute(f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
+    conn.commit()
+
 
 def save_dates_and_times(db_name, list_of_dates, list_of_times):
     conn = sqlite3.connect('subjects.db')
