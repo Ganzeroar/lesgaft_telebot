@@ -21,7 +21,7 @@ def return_lessons_at_date(user_id, date):
     if db_name == None:
         return 'Твоей группы не существует. Измени номер группы.'
 
-    if db_funcs_for_subjects_db.is_group_exist(name_of_group) == False:
+    if db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
         return 'Твоей группы не существует. Измени номер группы.'
     subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
     

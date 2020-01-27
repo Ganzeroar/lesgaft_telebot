@@ -53,7 +53,7 @@ def get_subject_week(num_of_group, date):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
 
-def is_group_exist(name_of_group):
+def is_group_exist(name_of_group, db_name):
 
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
