@@ -35,4 +35,5 @@ def return_lessons_at_date(user_id, date):
         print('User: ' + str(user_id) +  ' from ' + str(number_of_group) + ' ask about ' + str(number_of_date))
         return message_text
     except Exception as exception:
+        print(exception)
         return texts_for_lesgaft_bot.error
