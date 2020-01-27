@@ -66,22 +66,9 @@ def return_text_about_time_before_lesson_with_location(user_id, number_of_lesson
         return 'Такой группы не существует. Измени номер группы.'
     
     msc_timezone = pytz.timezone('Europe/Moscow')
-    date_and_time_now = datetime.datetime.now(tz=msc_timezone)
-    day = str(date_and_time_now.day)
-    if len(day) == 1:
-        day = '0' + day
-        #
-        #
-        #
-        # вынести этот код в отдельную функцию в этом методе и в методе обрабатывающем "какие сегодня пары" " какие завтра пары"
-        #
-        #
-        #
-    month = str(date_and_time_now.month)
-    if len(month) == 1:
-        month = '0' + month
-    today_date = day + '.' + month + '.'
-    today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, today_date)
+    date = datetime.datetime.now(tz=msc_timezone)
+
+    today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
     if number_of_lesson >= 5:
         return 'Сегодня у тебя больше нет пар.'
     if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
