@@ -81,7 +81,7 @@ def get_subjects_today(name_of_group, db_name, date):
         month = '0' + month
     current_date = day + '.' + month + '.'
 
-    req = f"SELECT {name_of_group} FROM {db_name} WHERE date = '{date}'"
+    req = f"SELECT {name_of_group} FROM {db_name} WHERE date = '{current_date}'"
     cursor.execute(req)
     return cursor.fetchall()
 
