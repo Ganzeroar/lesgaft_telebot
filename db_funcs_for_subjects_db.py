@@ -57,7 +57,7 @@ def is_group_exist(name_of_group):
 
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    columns_names_in_db = f"PRAGMA table_info({db_name}")"
+    columns_names_in_db = f"PRAGMA table_info({db_name})"
     cursor.execute(columns_names_in_db)
     
     columns_names = [column_name[1] for column_name in cursor.fetchall()]
