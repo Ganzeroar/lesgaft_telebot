@@ -89,6 +89,14 @@ def format_time(time):
         time = time.replace('.', ':')
     return time
 
+def is_time(time):
+    times = ['9:45', '09:45', '9.45', '09.45', '11:30', '11.30', '13:30', 
+    '13.30', '15:15', '15.15', '17:00', '17.00', '18:40', '18.40']
+    if time in times:
+        return True
+    else:
+        return False
+
 def save_subj_in_db(db_name, dates, time, group_name, subject):
     dates = format_dates(dates)
     time = format_time(time)
@@ -106,9 +114,8 @@ def parse_work_sheet(work_sheet, db_name):
     groups_row = find_number_of_groups_cell_row(work_sheet)
 
     times = ['9:45', '11:30', '13:30', '15:15', '17:00', '18:40']
-
+    print('ws start')
     for column in groups_column:
-        print(column)
         for row in range(first_row, const_quantity_of_rows):
             subject = work_sheet.cell(row = row, column = column).value
             if is_merged(work_sheet, row, column):
@@ -127,7 +134,7 @@ def parse_work_sheet(work_sheet, db_name):
                 save_subj_in_db(db_name, dates, time, group_name, subject)
             else:
                 print(subject)
-
+    print('ws finished')
 
 
 def return_db_name(file_name):
@@ -148,44 +155,59 @@ def return_db_name(file_name):
     elif 'lovs_4_kurs' in file_name:
         return 'lovs_4_kurs'
 
+def save_dates_and_times(db_name, dates, times):
+    for date in dates:
+        for time in times:
+            db_funcs_for_subjects_db.save_date_and_time(db_name, date, time)
+                            
+def get_dates(work_sheet, row, dates_column):
+    dates = work_sheet.cell(row = row, column = dates_column).value
+    if is_merged(work_sheet, row, dates_column):
+        dates = get_value_of_merged_call(work_sheet, row, dates_column)
+    dates = format_dates(dates)
+    return dates                
+
+
 def create_dates_and_times_in_db(work_book, db_name):
-    work_sheet = work_book[work_book.sheetnames[0]]
+    #work_sheet = work_book[work_book.sheetnames[0]]
 
-    first_row = find_row_of_first_lesson(work_sheet)
     dates_column = const_dates_column
-    column = const_time_column
-    normal_times = ['9:45', '11:30', '13:30', '15:15', '17:00', '18:40']
+    time_column = const_time_column
 
-    week_days = ['mon','thu']
-    counter_for_week_days = 0
+    for ws in work_book.sheetnames:
+        work_sheet = work_book[ws]
+        first_row = find_row_of_first_lesson(work_sheet)
 
-    dates_and_times = {}
-    times = []
-    list_of_times = []
-    for row in range(1, const_quantity_of_rows):
-        
-
-        time_cell = work_sheet.cell(row = row, column = column).value
-        if time_cell != None:
-            time_value = format_time(time_cell)
-            if time_value == '9:45':
-                if time_value in times:
-                    # взять даты, сделать из дат массив, перебирая его запихивать время
-
-                    dates = work_sheet.cell(row = row, column = dates_column).value
-                    if is_merged(work_sheet, row, dates_column):
-                        dates = get_value_of_merged_call(work_sheet, row, dates_column)
-                    dates = format_dates(dates)
-                    list_of_times.append(times)
-                    for date in dates:
-                        for time in times:
-                            db_funcs_for_subjects_db.save_date_and_time(db_name, date, time)
+        times = []
+        for row in range(1, const_quantity_of_rows):
+            time_cell = work_sheet.cell(row = row, column = time_column).value
+            if time_cell != None and is_time(time_cell):
+                time_value = format_time(time_cell)
+                if time_value == '9:45':
                     times = []
                     times.append(time_value)
-                else:
+                    dates = get_dates(work_sheet, row, dates_column)
+                elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
                     times.append(time_value)
-            elif time_value in normal_times:
-                times.append(time_value)
+                elif time_value == '17:00':
+                    times.append(time_value)
+                    next_cell = work_sheet.cell(row = row + 1, column = time_column).value
+                    next_cell = format_time(next_cell) if is_time(next_cell) else False
+                    
+                    after_next_cell = work_sheet.cell(row = row + 2, column = time_column).value
+                    after_next_cell = format_time(after_next_cell) if is_time(after_next_cell) else False
+                        
+                    if is_time(next_cell) or is_time(after_next_cell):
+                        if next_cell == '9:45' or after_next_cell == '9:45':
+                            save_dates_and_times(db_name, dates, times)
+                            continue                               
+                        elif next_cell == '18:40' or after_next_cell == '18:40':
+                            continue
+                    elif next_cell == False and after_next_cell == False:
+                        save_dates_and_times(db_name, dates, times)
+                elif time_value == '18:40':
+                    times.append(time_value)
+                    save_dates_and_times(db_name, dates, times)
 
 def create_groups_in_db(work_book, db_name):
     work_sheet = work_book[work_book.sheetnames[0]]
@@ -208,6 +230,7 @@ def parse_work_file(work_file):
 def run_parser():
     work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
     for work_file in work_files:
+        print(work_file)
         parse_work_file(work_file)
         
 if __name__ == "__main__":
