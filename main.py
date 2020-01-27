@@ -100,6 +100,7 @@ def main_run():
     try:
         bot.polling(none_stop=False)
     except:
+        time.sleep(60)
         logging.basicConfig(filename="sample.log", level=logging.INFO)
         log = logging.getLogger("ex")
         print('ERROR')
