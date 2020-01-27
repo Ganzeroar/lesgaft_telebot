@@ -53,21 +53,37 @@ def get_subject_week(num_of_group, date):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
 
+def is_group_exist(name_of_group):
+
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    columns_names_in_db = f"PRAGMA table_info({db_name}")"
+    cursor.execute(columns_names_in_db)
+    
+    columns_names = [column_name[1] for column_name in cursor.fetchall()]
+    if name_of_group in columns_names:
+        return True
+    else:
+        return False
 
 def get_subjects_today(name_of_group, db_name, date):
     
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    columns_names_in_db = "PRAGMA table_info(" + str(db_name) + ")"
-    cursor.execute(columns_names_in_db)
     
-    columns_names = [column_name[1] for column_name in cursor.fetchall()]
-    if name_of_group in columns_names:
-        req = "SELECT " + str(name_of_group) + " FROM " + str(db_name) + " WHERE date = '" + str(date) + "'"
-        cursor.execute(req)
-        return cursor.fetchall()
-    else:
-        return False
+    day = str(date.day)
+    if len(day) == 1:
+        # нужно для базы данных, в которой формат дат состоит из двух чисел
+        day = '0' + day
+    month = str(date.month)
+    if len(month) == 1:
+        # нужно для базы данных, в которой формат дат состоит из двух чисел
+        month = '0' + month
+    current_date = day + '.' + month + '.'
+
+    req = f"SELECT {name_of_group} FROM {db_name} WHERE date = '{date}'"
+    cursor.execute(req)
+    return cursor.fetchall()
 
 def get_db_name(number_of_group):
     number_of_group = 'Группа_' + str(number_of_group)
