@@ -6,9 +6,16 @@ def create_db():
     cursor = conn.cursor()
     
     cursor.execute("""CREATE TABLE users
-                      (chat_id integer, first_name text, last_name text,
-                      registration_date integer, number_of_group integer)
-                   """)
+                    (chat_id integer, first_name text, last_name text,
+                    registration_date integer, number_of_group integer)
+                    """)
+
+def drop_db():
+    
+    conn = sqlite3.connect('students.db')
+    cursor = conn.cursor()
+    cursor.executescript("DROP TABLE IF EXISTS users")
+    
 
 def starting_insert_data(chat_id, first_name, last_name, date_of_registation):
     conn = sqlite3.connect("students.db")
@@ -27,11 +34,11 @@ def get_all_users():
     return users
 
 
-def get_group_number(user_id):
+def get_group_number(chat_id):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    req = "SELECT number_of_group FROM users WHERE chat_id = '" + str(user_id) + "'"
+    req = f"SELECT number_of_group FROM users WHERE chat_id = {chat_id}"
     cursor.execute(req)
     data = cursor.fetchall()
     if data == []:
@@ -39,7 +46,7 @@ def get_group_number(user_id):
     else:
         return data[0][0]
 
-def user_already_in_db(user_id):
+def user_already_in_db(chat_id):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
@@ -47,24 +54,24 @@ def user_already_in_db(user_id):
     cursor.execute(req)
     users_list = [user_info[0] for user_info in cursor.fetchall()]
 
-    if user_id in users_list:
+    if chat_id in users_list:
         return True
     else:
         return False
 
-def update_group(user_id, group_number):
+def update_group(chat_id, group_number):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    string_sql = "UPDATE users SET number_of_group  = " + str(group_number) + " WHERE chat_id = " + str(user_id)
+    string_sql = f"UPDATE users SET number_of_group  = {str(group_number)} WHERE chat_id = {str(chat_id)}"
     cursor.execute(string_sql)
     conn.commit()
 
-def overwrite_group(message_text, user_id):
+def overwrite_group(message_text, chat_id):
     number_of_group = int(message_text)
-    update_group(user_id, number_of_group)
+    update_group(chat_id, number_of_group)
     text = f'Ваша группа {number_of_group} записана!' + texts_for_lesgaft_bot.group_saved
-    print('User: ' + str(user_id) +  ' changed his group to ' + str(number_of_group))
+    print('User: ' + str(chat_id) +  ' changed his group to ' + str(number_of_group))
     return text
 
 if __name__ == "__main__":
