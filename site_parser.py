@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 import db_funcs_for_site_parser as db 
 import excel_parser_full_time_undergraduate
+import excel_parser_FT_undergraduate
 
 def create_table(route, name_of_course, new_file_link):
     excel_file = open(f'time_tables/{route}/{name_of_course}.xlsx', 'wb')
@@ -145,7 +146,7 @@ def parse_and_searching_changes_full_time_undergraduate():
         log_text = f'Парсер файлов запущен в {date_and_time_now}'
         logging.info(log_text)
         for excel_file in will_be_parsed:
-            excel_parser_full_time_undergraduate.parse_work_file_using_name(excel_file)
+            excel_parser_FT_undergraduate.parse_work_file_using_name(excel_file)
 
 if __name__ == "__main__":
     start_chosen_parser(1)
