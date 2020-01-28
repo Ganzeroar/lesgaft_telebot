@@ -103,6 +103,8 @@ def parse_and_searching_changes_full_time_undergraduate():
     course_names = ['lovs_1_kurs','zovs_1_kurs','lovs_2_kurs','zovs_2_kurs',
         'lovs_3_kurs','zovs_3_kurs','lovs_4_kurs','zovs_4_kurs']
 
+    will_be_parsed = []
+
     for x in range(8):
         # необходимо что бы правильно определить HTML код нужного расписания
         # ввиду плохого нейминга элементов на сайте
@@ -130,6 +132,7 @@ def parse_and_searching_changes_full_time_undergraduate():
         elif current_file_link != new_file_link:
             print(f'различные ссылки новая ссылка: {new_file_link} у: {name_of_course} в {date_and_time_now}')
             activate_parser = True
+            will_be_parsed.append(name_of_course)
 
             log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
             logging.info(log_text)
@@ -141,7 +144,8 @@ def parse_and_searching_changes_full_time_undergraduate():
         print('парсер запущен')
         log_text = f'Парсер файлов запущен в {date_and_time_now}'
         logging.info(log_text)
-        excel_parser_full_time_undergraduate.pars_files_create_dbfiles()
+        for excel_file in will_be_parsed:
+            excel_parser_full_time_undergraduate.parse_work_file_using_name(excel_file)
 
 if __name__ == "__main__":
     start_chosen_parser(1)

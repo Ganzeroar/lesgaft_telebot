@@ -136,7 +136,6 @@ def parse_work_sheet(work_sheet, db_name):
                 print(subject)
     print('ws finished')
 
-
 def return_db_name(file_name):
     if 'zovs_1_kurs' in file_name:
         return 'zovs_1_kurs'
@@ -167,10 +166,7 @@ def get_dates(work_sheet, row, dates_column):
     dates = format_dates(dates)
     return dates                
 
-
 def create_dates_and_times_in_db(work_book, db_name):
-    #work_sheet = work_book[work_book.sheetnames[0]]
-
     dates_column = const_dates_column
     time_column = const_time_column
 
@@ -216,8 +212,9 @@ def create_groups_in_db(work_book, db_name):
 
 def parse_work_file(work_file):
     db_name = return_db_name(work_file)
+    db_funcs_for_subjects_db.drop_db(db_name)
     db_funcs_for_subjects_db.create_db(db_name)
-    
+
     work_book = load_workbook(work_file)
     create_groups_in_db(work_book, db_name)
     create_dates_and_times_in_db(work_book, db_name)
@@ -226,6 +223,19 @@ def parse_work_file(work_file):
         print(ws)
         work_sheet = work_book[ws]
         parse_work_sheet(work_sheet, db_name)
+
+def parse_work_file_using_name(name):
+    work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
+    for work_file in work_files:
+        if name in work_file:
+            work_book = load_workbook(work_file)
+            create_groups_in_db(work_book, db_name)
+            create_dates_and_times_in_db(work_book, db_name)
+        
+            for ws in work_book.sheetnames:
+                print(ws)
+                work_sheet = work_book[ws]
+                parse_work_sheet(work_sheet, db_name)
 
 def run_parser():
     work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
