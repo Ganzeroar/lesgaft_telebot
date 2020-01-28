@@ -27,7 +27,8 @@ def return_lessons_at_date(user_id, date):
     message_text += f'Расписание на {day_of_week} ({number_of_date})\n\n'
     try:
         for x in range(len(subjects)):
-            message_text += list_of_times[x] + subjects[x][0] + '\n\n'
+            if subjects[x][0] != 'нет предмета':
+                message_text += list_of_times[x] + subjects[x][0] + '\n\n'
         print('User: ' + str(user_id) +  ' from ' + str(number_of_group) + ' ask about ' + str(number_of_date))
         return message_text
     except Exception as exception:
