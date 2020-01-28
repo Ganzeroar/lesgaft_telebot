@@ -102,40 +102,64 @@ def find_message_value(text, user_id):
     if text in monday_lessons_requests:
         next_monday = next_weekday(0)
         message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        if text != 'понедельник':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "понедельник"'
+            message = message + additional_text
         return message
     elif text in tuesday_lessons_requests:
         next_monday = next_weekday(1)
         message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        if text != 'вторник':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "вторник"'
+            message = message + additional_text
         return message
     elif text in wednesday_lessons_requests:
         next_monday = next_weekday(2)
         message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        if text != 'среда':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "среда"'
+            message = message + additional_text
         return message
     elif text in thursday_lessons_requests:
         next_monday = next_weekday(3)
         message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        if text != 'четверг':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "четверг"'
+            message = message + additional_text
         return message
     elif text in friday_lessons_requests:
         next_monday = next_weekday(4)
         message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        if text != 'пятница':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "пятница"'
+            message = message + additional_text
         return message
     elif text in saturday_lessons_requests:
         next_monday = next_weekday(5)
         message = find_lessons_at_date.return_lessons_at_date(user_id, next_monday)
+        if text != 'суббота':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "суббота"'
+            message = message + additional_text
         return message
     elif text in today_lessons_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         message = find_lessons_at_date.return_lessons_at_date(user_id, time_now)
+        if text != 'сегодня':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "сегодня"'
         return message
     elif text in tomorrow_lessons_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         tomorrow = time_now + datetime.timedelta(days=1)
         message = find_lessons_at_date.return_lessons_at_date(user_id, tomorrow)
+        if text != 'завтра':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "завтра"'
         return message
     elif text in day_after_tomorrow_lessond_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
         after_tomorrow = time_now + datetime.timedelta(days=2)
         message = find_lessons_at_date.return_lessons_at_date(user_id, after_tomorrow)
+        if text != 'послезавтра':
+            additional_text = '\nВместо длинного запроса ты можешь писать просто "послезавтра"'
         return message
     else:
         return False
