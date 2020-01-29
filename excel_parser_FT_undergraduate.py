@@ -76,10 +76,16 @@ def format_group_name(group_name):
 
 def format_dates(dates):
     list_of_dates = [element.replace(' ', '') for element in dates.rstrip().split('\n')]
-    list_of_dates = [date + '.' for date in list_of_dates if date[-1] != '.']
-    if list_of_dates[0] == '':
-        list_of_dates.pop(0)
-    return list_of_dates
+    formatted_list_of_dates = []
+    for date in list_of_dates:
+        if date[-1] != '.':
+            date = date + '.'
+            formatted_list_of_dates.append(date)
+        elif date == '':
+            pass
+        else:
+            formatted_list_of_dates.append(date)
+    return formatted_list_of_dates
 
 def format_time(time):
     # в расписании чаще всего косячат тут
