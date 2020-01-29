@@ -77,7 +77,6 @@ def format_group_name(group_name):
 def format_dates(dates):
     list_of_dates = [element.replace(' ', '') for element in dates.rstrip().split('\n')]
     list_of_dates = [date + '.' for date in list_of_dates if date[-1] != '.']
-    print(list_of_dates)
     if list_of_dates[0] == '':
         list_of_dates.pop(0)
     return list_of_dates
