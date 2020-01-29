@@ -78,11 +78,11 @@ def format_dates(dates):
     list_of_dates = [element.replace(' ', '') for element in dates.rstrip().split('\n')]
     formatted_list_of_dates = []
     for date in list_of_dates:
-        if date[-1] != '.':
+        if date == '':
+            pass
+        elif date[-1] != '.':
             date = date + '.'
             formatted_list_of_dates.append(date)
-        elif date == '':
-            pass
         else:
             formatted_list_of_dates.append(date)
     return formatted_list_of_dates
