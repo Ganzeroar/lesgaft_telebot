@@ -89,12 +89,11 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
                 text = f'Сейчас у вас {current_subject}\n\n{class_location}'
                 return text
         if today_subjects[number_of_lesson][0] == 'Нет предмета':
-            return return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson + 1)
+            return return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson + 1, date)
         else:
             return []
     except Exception as exception:
         print('error ' + str(exception))
-
 
 def return_time_before_class_and_location(chat_id):
 
@@ -129,7 +128,9 @@ def return_time_before_class_and_location(chat_id):
         text = return_text_about_time_before_lesson_with_location(chat_id, 4, date, 'during')
     elif is_time_between(datetime.time(18,30), datetime.time(18,40)):
         text = return_text_about_time_before_lesson_with_location(chat_id, 5, date)
-    elif is_time_between(datetime.time(18,40), datetime.time(00,00)):
+    elif is_time_between(datetime.time(18,40), datetime.time(21,10)):
+        text = return_text_about_time_before_lesson_with_location(chat_id, 6, date, 'during')
+    elif is_time_between(datetime.time(21,10), datetime.time(00,00)):
         text = return_text_about_time_before_lesson_with_location(chat_id, 6, date, 'during')
     print('User: ' + str(chat_id) + ' ask about where the lesson')
 
