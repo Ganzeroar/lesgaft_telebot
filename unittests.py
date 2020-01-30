@@ -9,6 +9,7 @@ import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 
 import find_lessons_at_date
+import find_class_location
 
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
@@ -172,6 +173,14 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         result = find_lessons_at_date.return_lessons_at_date(111111111, date)
         expected_string = 'Расписание на понедельник (14.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n18:40-20:10\nпредмет6\n\n'
         self.assertEqual(result, expected_string)
+
+class Test_find_class_location_find_class_location(unittest.TestCase):
+
+    def test_take_correct_data_return_correct_data(self):
+        result = find_class_location.find_class_location('ауд.426 Лекция Дисциплина по выбору')
+        self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону')
+    
+
 
 if __name__ == '__main__':
     unittest.main()
