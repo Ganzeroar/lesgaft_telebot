@@ -55,9 +55,26 @@ def start_message(message):
 @bot.message_handler(content_types=["text"])
 def main_func(message):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    group_keyboard = elebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
+    group1 = telebot.types.KeyboardButton('Группа 112')
+    group2 = telebot.types.KeyboardButton('Группа 113')
+    group3 = telebot.types.KeyboardButton('Группа 114')
+    group4 = telebot.types.KeyboardButton('Группа 115')
+    group5 = telebot.types.KeyboardButton('Группа 116')
+    group6 = telebot.types.KeyboardButton('Группа 117')
+    group7 = telebot.types.KeyboardButton('Группа 118')
+    group8 = telebot.types.KeyboardButton('Группа 119')
+    group9 = telebot.types.KeyboardButton('Группа 120')
+    group10 = telebot.types.KeyboardButton('Группа 121')
+    group11 = telebot.types.KeyboardButton('Группа 122')
+    group12 = telebot.types.KeyboardButton('Группа 123')
+    group13 = telebot.types.KeyboardButton('Группа 124')
+    group14 = telebot.types.KeyboardButton('Группа 125')
+    group15 = telebot.types.KeyboardButton('Группа 126')
+    group_keyboard.add(group1, group2, group3, group4, group5, group6, group7, group8, group9, group10, group11, group12, group13, group14, group15)
     main_keyboard.add(item1, item2, item3)
 
     if len(message.text) == 3 and message.text.isdigit():
@@ -83,6 +100,8 @@ def main_func(message):
         message_text = message.text.lower()
         text = find_time_and_location.return_location_of_class(message.from_user.id, message_text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+    elif messate.text.lower() == 'дормаму':
+        bot.send_message(message.from_user.id, 'Здравствуй', reply_markup = group_keyboard)
     else:
         request = message.text.lower()
         text = handler.find_message_value(request, message.from_user.id)
