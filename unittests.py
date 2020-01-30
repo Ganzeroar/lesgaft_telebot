@@ -37,6 +37,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
     def test_take_correct_department_return_real_answer(self):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
+        
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
