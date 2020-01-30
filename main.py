@@ -55,7 +55,7 @@ def start_message(message):
 @bot.message_handler(content_types=["text"])
 def main_func(message):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-    group_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=2)
+    group_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=3)
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
