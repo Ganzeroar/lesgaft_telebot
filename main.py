@@ -100,7 +100,7 @@ def main_func(message):
         message_text = message.text.lower()
         text = find_time_and_location.return_location_of_class(message.from_user.id, message_text)
         bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
-    elif messate.text.lower() == 'дормаму':
+    elif message.text.lower() == 'дормаму':
         bot.send_message(message.from_user.id, 'Здравствуй', reply_markup = group_keyboard)
     else:
         request = message.text.lower()
