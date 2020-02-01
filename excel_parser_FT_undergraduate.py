@@ -235,6 +235,7 @@ def parse_work_file_using_name(name):
     work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
     for work_file in work_files:
         if name in work_file:
+            db_name = return_db_name(work_file)
             work_book = load_workbook(work_file)
             create_groups_in_db(work_book, db_name)
             create_dates_and_times_in_db(work_book, db_name)
