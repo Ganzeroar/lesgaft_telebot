@@ -7,15 +7,97 @@ def create_db():
     
     cursor.execute("""CREATE TABLE users
                     (chat_id integer, first_name text, last_name text,
-                    registration_date integer, number_of_group integer)
+                    registration_date integer, number_of_group integer,
+                    academic_degree text, education_form text, 
+                    number_of_course integer, timetables_name text,
+                    in_registration_process text)
                     """)
 
+def add_columns_for_update():
+    conn = sqlite3.connect('students.db')
+    cursor = conn.cursor()
+    cursor.execute(f"ALTER TABLE users ADD COLUMN academic_degree text")
+    cursor.execute(f"ALTER TABLE users ADD COLUMN education_form text")
+    cursor.execute(f"ALTER TABLE users ADD COLUMN number_of_course integer")
+    cursor.execute(f"ALTER TABLE users ADD COLUMN timetable_name text")
+    cursor.execute(f"ALTER TABLE users ADD COLUMN in_registration_process integer")
+
 def drop_db():
-    
     conn = sqlite3.connect('students.db')
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS users")
-    
+
+def set_in_registration_process(chat_id, bool_value):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    string_sql = f"UPDATE users SET in_registration_process = {bool_value} WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
+
+def get_state_of_registragion_process(chat_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"SELECT in_registration_process FROM users WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    bool_state = bool(cursor.fetchall()[0][0])
+    return bool_state
+
+def save_timetable_name(chat_id, timetable_name):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    string_sql = f"UPDATE users SET timetable_name = {timetable_name} WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
+
+def save_number_of_course(chat_id, name_of_course):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    number_of_course = name_of_course[0]
+
+    string_sql = f"UPDATE users SET number_of_course = {number_of_course} WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
+
+def get_number_of_course(chat_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"SELECT number_of_course FROM users WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    number_of_course = cursor.fetchall()[0][0]
+    return number_of_course
+
+
+def save_education_form(chat_id, education_form):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"UPDATE users SET education_form = '{education_form}' WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
+
+def get_education_form(chat_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"SELECT education_form FROM users WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    return cursor.fetchall()[0][0]
+
+def save_academic_degree(chat_id, academic_degree):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"UPDATE users SET academic_degree = '{academic_degree}' WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
+
+def get_academic_degree(chat_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"SELECT academic_degree FROM users WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    academic_degree = cursor.fetchall()[0][0]
+    return academic_degree
 
 def starting_insert_data(chat_id, first_name, last_name, date_of_registation):
     conn = sqlite3.connect("students.db")
@@ -32,7 +114,6 @@ def get_all_users():
     cursor.execute(req)
     users = cursor.fetchall()
     return users
-
 
 def get_group_number(chat_id):
     conn = sqlite3.connect("students.db")
@@ -63,7 +144,7 @@ def update_group(chat_id, group_number):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    string_sql = f"UPDATE users SET number_of_group  = {str(group_number)} WHERE chat_id = {str(chat_id)}"
+    string_sql = f"UPDATE users SET number_of_group  = {group_number} WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
 
@@ -71,7 +152,7 @@ def overwrite_group(message_text, chat_id):
     number_of_group = int(message_text)
     update_group(chat_id, number_of_group)
     text = f'Ваша группа {number_of_group} записана!' + texts_for_lesgaft_bot.group_saved
-    print('User: ' + str(chat_id) +  ' changed his group to ' + str(number_of_group))
+    print(f'User: {str(chat_id)} changed his group to {str(number_of_group)}')
     return text
 
 if __name__ == "__main__":

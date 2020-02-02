@@ -7,6 +7,6 @@ students.db
 config.py
 tasks.txt
 time_tables/
-time_tables/full_time_magistracy/
+time_tables/full_time_magistracy/*.xlsx
 time_tables/full_time_magistracy
 .vscode/
