@@ -232,7 +232,7 @@ def main_func(message):
             print(f'User: {message.from_user.id} send UNEXPECTED message: {message.text} at time: {message.date}')
     if keyboard == 'main_keyboard':
         keyboard = main_keyboard
-    bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
+    bot.send_message(message.from_user.id, text, reply_markup = keyboard)
             
 
 def main_run():
