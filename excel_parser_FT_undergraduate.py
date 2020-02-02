@@ -237,6 +237,7 @@ def parse_work_file_using_name(name):
         if name in work_file:
             db_name = return_db_name(work_file)
             work_book = load_workbook(work_file)
+            db_funcs_for_subjects_db.drop_db(db_name)
             create_groups_in_db(work_book, db_name)
             create_dates_and_times_in_db(work_book, db_name)
         
