@@ -220,6 +220,7 @@ def main_func(message):
     else:
         request = message.text.lower()
         text = handler.find_message_value(request, message.from_user.id)
+        keyboard = 'main_keyboard'
         if bool(text) == True:
             print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
             #bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
