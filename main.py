@@ -155,6 +155,11 @@ def start_message(message):
 @bot.message_handler(content_types=["text"])
 def main_func(message):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    
+    item1 = telebot.types.KeyboardButton('Где пара?')
+    item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
+    item3 = telebot.types.KeyboardButton('Какие завтра пары?')
+    
     main_keyboard.add(item1, item2, item3)
 
     message_text = message.text.lower()
