@@ -179,7 +179,7 @@ def main_func(message):
     elif message_text == 'какие завтра пары?':
         text, keyboard = return_tomorrow_lessons(message.from_user.id)
     elif str(message.text[:3]).lower() == 'где' and message_text != 'где пара?':
-        text, keyboard = return_where_is_the_clasroom(message.from_user.id, message_text)
+        text, keyboard = return_where_is_the_classroom(message.from_user.id, message_text)
     elif message_text == 'изменить группу3213':
         text, keyboard = change_group_step_1(message.from_user.id)    
     elif message_text == 'очное обучение' or message_text == 'заочное обучение':
