@@ -31,7 +31,7 @@ def set_in_registration_process(chat_id, bool_value):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    string_sql = f"UPDATE users SET in_registration_process = {bool_value} WHERE chat_id = {chat_id}"
+    string_sql = f"UPDATE users SET in_registration_process = '{bool_value}' WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
 
