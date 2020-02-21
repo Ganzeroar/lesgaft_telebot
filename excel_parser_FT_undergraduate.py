@@ -42,9 +42,9 @@ def return_all_groups_names(work_sheet):
 
 def find_row_of_first_lesson(work_sheet):
     time_column = const_time_column
-    times = ['9:45', '09:45', '9.45', '09.45']
+    times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
     for row in range(1, 10):
-        time_cell = work_sheet.cell(row = row, column = time_column).value
+        time_cell = str(work_sheet.cell(row = row, column = time_column).value)
         if time_cell in times:
             return row 
 
@@ -89,11 +89,16 @@ def format_dates(dates):
 
 def format_time(time):
     # в расписании чаще всего косячат тут
-    first_times = ['9:45', '09:45', '9.45', '09.45']
+    first_times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
     if time in first_times:
         time = '9:45'
-    elif '.' in time:
+    if '.' in time:
         time = time.replace('.', ':')
+    if len(time) >= 8 and time[-1] == '0' and time[-2] == '0' and time[-3] == ':':
+        if len(time) == 8:
+            time = time[:5]
+        elif len(time) == 7:
+            time = time[:4]
     return time
 
 def is_time(time):
@@ -132,7 +137,7 @@ def parse_work_sheet(work_sheet, db_name):
             time_cell = work_sheet.cell(row = row, column = time_column).value
             if time_cell == None:
                 continue
-            time = format_time(work_sheet.cell(row = row, column = time_column).value)
+            time = format_time(str(work_sheet.cell(row = row, column = time_column).value))
             if time in times:
                 dates = work_sheet.cell(row = row, column = dates_column).value
                 if is_merged(work_sheet, row, dates_column):
@@ -210,6 +215,7 @@ def create_dates_and_times_in_db(work_book, db_name):
                         save_dates_and_times(db_name, dates, times)
                 elif time_value == '18:40':
                     times.append(time_value)
+                    dates = get_dates(work_sheet, row, dates_column)
                     save_dates_and_times(db_name, dates, times)
 
 def create_groups_in_db(work_book, db_name):
@@ -232,6 +238,7 @@ def parse_work_file(work_file):
         parse_work_sheet(work_sheet, db_name)
 
 def parse_work_file_using_name(name):
+    print('Парсер запущен на ' + name)
     work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
     for work_file in work_files:
         if name in work_file:
