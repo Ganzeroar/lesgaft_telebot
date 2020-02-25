@@ -191,10 +191,11 @@ def create_dates_and_times_in_db(work_book, db_name):
             time_cell = work_sheet.cell(row = row, column = time_column).value
             if time_cell != None and is_time(time_cell):
                 time_value = format_time(time_cell)
+                dates = get_dates(work_sheet, row, dates_column)
+
                 if time_value == '9:45':
                     times = []
                     times.append(time_value)
-                    dates = get_dates(work_sheet, row, dates_column)
                 elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
                     times.append(time_value)
                 elif time_value == '17:00':
@@ -215,7 +216,6 @@ def create_dates_and_times_in_db(work_book, db_name):
                         save_dates_and_times(db_name, dates, times)
                 elif time_value == '18:40':
                     times.append(time_value)
-                    dates = get_dates(work_sheet, row, dates_column)
                     save_dates_and_times(db_name, dates, times)
 
 def create_groups_in_db(work_book, db_name):
