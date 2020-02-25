@@ -1339,7 +1339,7 @@ def run_excel_parser_undergraduate():
     parser.run_parser('full_time_undergraduate')
 if __name__ == "__main__":
     run_excel_parser_undergraduate()
-    #parser = Excel_parser_magistracy_fk()
+    #parser = Excel_parser_magistracyasd_fk()
     #parser.run_parser('full_time_magistracy_fk')
     #parser = Excel_parser_magistracy_imist()
     #parser.run_parser('full_time_magistracy_imst')
