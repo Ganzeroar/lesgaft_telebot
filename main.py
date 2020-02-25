@@ -188,6 +188,10 @@ def main_func(message):
         text, keyboard = change_group_step_3(message.from_user.id, message_text)
     elif message_text == '1 курс' or message_text == '2 курс' or message_text == '3 курс' or message_text == '4 курс':
         text, keyboard = change_group_step_4(message.from_user.id, message_text)
+    # Идея: сделать автоматическую рассылку расписание, сделать так что бы время можно
+    # было настроиить какой-то командй  
+
+
     #elif message_text in timtetables_names:
     #    if db_funcs_for_students_db.get_state_of_registragion_process(chat_id) == False:
     #        text = 'Эта команда доступна только в процессе смены группы'

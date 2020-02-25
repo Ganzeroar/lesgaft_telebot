@@ -3,17 +3,20 @@ import telebot
 from unittest.mock import patch
 from freezegun import freeze_time
 import datetime
+import glob
 
 import find_time_and_location
 import find_lessons_at_date
 import find_class_location
 import main
+import site_parser_class
 
-
+import texts_for_tests
 import texts_for_lesgaft_bot
 import db_funcs_for_students_db
 import db_funcs_for_subjects_db
-
+import db_funcs_for_site_parser
+@unittest.skip("passed")    
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
     def test_take_long_str_return_error_text(self):
@@ -40,6 +43,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
     def test_take_correct_department_return_real_answer(self):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
+@unittest.skip("passed")    
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -106,7 +110,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся предмет1 Зал№2\n\nМанеж, первый этаж')
-    
+@unittest.skip("passed")    
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -190,7 +194,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
     def test_take_correct_data_return_correct_data(self):
         result = find_class_location.find_class_location('ауд.426 Лекция Дисциплина по выбору')
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону')
-    
+@unittest.skip("passed")    
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -356,6 +360,80 @@ class Test_main(unittest.TestCase):
         self.assertEqual(result1, 'Как называется твоё расписание на сайте?')
         self.assertEqual(type(result2), type(fourth_step_keyboard))
         self.assertEqual(number_of_course, 1)
+
+
+class Test_site_parser_undergraduate_class(unittest.TestCase):
+
+    try:
+        db_funcs_for_site_parser.drop_db()
+    except:
+        None
+
+    @classmethod
+    def setUpClass(cls):
+        db_funcs_for_site_parser.create_db()
+        db_funcs_for_site_parser.insert_link_to_current_links('zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._20.01.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._25.02.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('zovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_1.02.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('lovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_lovs_19.02.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_zovs_19.02.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.03.xlsx')
+        
+    @classmethod
+    def tearDownClass(cls):
+        db_funcs_for_site_parser.drop_db()
+
+    def test_return_even_or_odd(self):
+        obj = site_parser_class.Site_parser_unergraduate()
+        self.assertEqual(obj.return_even_or_odd(1), 'odd')
+        self.assertEqual(obj.return_even_or_odd(2), 'even')
+        self.assertEqual(obj.return_even_or_odd(5), 'odd')
+        self.assertEqual(obj.return_even_or_odd(8), 'even')
+
+    def test_create_html_string(self):
+        obj = site_parser_class.Site_parser_unergraduate()
+        res_1 = obj.create_html_string(3)
+        res_2 = obj.create_html_string(4)
+        expect_1 = 'views-row views-row-3 views-row-odd'
+        expect_2 = 'views-row views-row-4 views-row-even'
+        self.assertEqual(res_1, expect_1)
+        self.assertEqual(res_2, expect_2)
+
+    def test_formate_name(self):
+        obj = site_parser_class.Site_parser_unergraduate()
+        res_1 = obj.formate_name('1_kurs_zovs')
+        expect_1 = 'zovs_1_kurs'
+        self.assertEqual(res_1, expect_1)
+
+    def test_is_Changed(self):
+        obj = site_parser_class.Site_parser_unergraduate()
+        res_1 = obj.is_Changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._20.01.xlsx')
+        res_2 = obj.is_Changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.01.xlsx')
+        self.assertEqual(res_1, False)
+        self.assertEqual(res_2, True)
+
+    def test_find_file_link(self):
+        obj = site_parser_class.Site_parser_unergraduate()
+        res_1 = obj.find_file_link(texts_for_tests.html_text, 2)
+        res_2 = obj.find_file_link(texts_for_tests.html_text, 3)
+        expect_1 = 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx'
+        expect_2 = 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx'
+        self.assertEqual(res_1, expect_1)
+        self.assertEqual(res_2, expect_2)
+
+    @patch('requests.get', return_value = texts_for_tests.html_text)
+    def test_find_changed_files(self, get):
+        obj = site_parser_class.Site_parser_unergraduate()
+        res_1 = obj.find_changed_files()
+        expect_1 = ['http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx', 
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx', 
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_19.02.xlsx', 
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx', 
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx']
+        self.assertEqual(res_1, expect_1)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -13,6 +13,7 @@ def create_db():
                     in_registration_process text)
                     """)
 
+# функция для апдейта базы, возможно уже не нужна, проверить и удалить
 def add_columns_for_update():
     conn = sqlite3.connect('students.db')
     cursor = conn.cursor()
