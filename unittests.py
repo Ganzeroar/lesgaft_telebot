@@ -10,6 +10,7 @@ import find_lessons_at_date
 import find_class_location
 import main
 import site_parser_class
+import excel_parser
 
 import texts_for_tests
 import texts_for_lesgaft_bot
@@ -361,7 +362,7 @@ class Test_main(unittest.TestCase):
         self.assertEqual(type(result2), type(fourth_step_keyboard))
         self.assertEqual(number_of_course, 1)
 
-
+@unittest.skip("passed")    
 class Test_site_parser_undergraduate_class(unittest.TestCase):
 
     try:
@@ -434,6 +435,17 @@ class Test_site_parser_undergraduate_class(unittest.TestCase):
             'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx']
         self.assertEqual(res_1, expect_1)
 
+class Test_excel_parser(unittest.TestCase):
+    
+    def test_format_group_name(self):
+        names_from_excel = texts_for_tests.group_names_from_excel
+        normal_group_names = texts_for_tests.normal_group_names
+        obj = excel_parser.Excel_parser()
+        for x in range(len(normal_group_names)):
+            normal_name = normal_group_names[x]
+            excel_name = names_from_excel[x]
+            formatted_name = obj.format_group_name(excel_name)
 
+            self.assertEqual(normal_name, formatted_name)
 if __name__ == '__main__':
     unittest.main()
