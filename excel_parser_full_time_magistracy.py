@@ -7,6 +7,11 @@ import db_funcs_for_subjects_db
 
 class Excel_parser():
 
+    const_dates_column = 1
+    const_time_column = 3
+    const_quantity_of_rows = 50
+    const_first_group_column = 4
+
     def is_merged(self, work_sheet, row, column):
         cell = work_sheet.cell(row, column)
         for mergedCell in work_sheet.merged_cells.ranges:
@@ -51,7 +56,6 @@ class Excel_parser():
                 continue
             elif date[-1] != '.':
                 date = date + '.'
-                formatted_list_of_dates.append(date)
             if len(date) >= 12:
                 first_date = date[:6]
                 second_date = date[6:]
@@ -61,176 +65,12 @@ class Excel_parser():
             formatted_list_of_dates.append(date)
         return formatted_list_of_dates
 
-class Excel_parser_magistracy_fk(Excel_parser):
-    # константное значение
-    # пока что во всех расписаниях колонка первых групп одинакова 
-    const_first_group_column = 4
-    const_time_column = 3
-    const_dates_column = 1
-    const_quantity_of_rows = 50
-
-
-    const_magistracy_fk_1_kurs_groups = ['гр_1', 'гр_2', 'гр_3', 'гр_4', 'гр_5', 
-    'гр_6', 'гр_7', 'гр_8', 'гр_9', 'гр_10', 'гр_11', 'гр_12', 'гр_13']
-
-    mag_2_kurs_group_1 = "гимнастика_плавание_футбол"
-    mag_2_kurs_group_2 = "лёгкая_атлетика_спортивные_игры"
-    mag_2_kurs_group_3 = "велоспорт_водномоторный_и_парусный_спорт_гребной_спорт_атлетизм_бокс_борьба_фехтование_нвс"
-    mag_2_kurs_group_4 = "хоккей_керлинг_биатлон_лыжный_спорт_конькобежный_спорт_и_фк"
-    mag_2_kurs_group_5 = "профессиональное_образование_в_сфере_физической_культуры_и_спорта"
-    mag_2_kurs_group_6 = "комплексное_научное_обеспечение_спортивной_подготовки"
-    mag_2_kurs_group_7 = "физкультурно_оздоровительная_работа"
-    mag_2_kurs_group_8 = "комплексная_реабилитация_в_физической_культуре_и_спорте"
-    mag_2_kurs_group_9 = "медико_биологическое_сопровождение_физической_культуры_и_спорта"
-    mag_2_kurs_group_10 = "руководитель_организации_в_области_физической_культуры_и_спорта"
-    mag_2_kurs_group_11 = "подготовка_спортивных_сборных_команд_по_избранному_виду_спорта"
-    mag_2_kurs_group_12 = "психология_спорта"
-
-    const_magistracy_fk_2_kurs_groups = [mag_2_kurs_group_1, mag_2_kurs_group_2, 
-        mag_2_kurs_group_3, mag_2_kurs_group_4, mag_2_kurs_group_5, mag_2_kurs_group_6,
-        mag_2_kurs_group_7, mag_2_kurs_group_8, mag_2_kurs_group_9, mag_2_kurs_group_10,
-        mag_2_kurs_group_11, mag_2_kurs_group_12]
-
-    def run_parser(self, route):
-        work_files = glob.glob(f'time_tables/{route}/*.xlsx')
-        print(work_files)
-        for work_file in work_files:
-            print(work_file)
-            self.parse_work_file(work_file)
-
-    def parse_work_file(self, work_file):
-        db_name = self.return_db_name(work_file)
-        db_funcs_for_subjects_db.drop_db(db_name)
-        db_funcs_for_subjects_db.create_db(db_name)
-
-        work_book = load_workbook(work_file)
-        print(work_book)
-        self.create_groups_in_db(work_book, db_name)
-
-        for ws in work_book.sheetnames:
-            work_sheet = work_book[ws]
-            ws_date = str(work_sheet)
-            month_to_skip = ['09', '10', '11', '12', '01']
-            if ws_date[17:19] in month_to_skip:
-                print('skipped' + ws_date)
-                continue
-            self.create_dates_and_times_in_db(work_sheet, db_name)
-            self.self.parse_work_sheet(work_sheet, db_name)
-
-    def parse_work_file_using_name(self, name, route):
-        print('Парсер запущен на ' + name)
-        work_files = glob.glob(f'time_tables/{route}/*.xlsx')
-        for work_file in work_files:
-            if name in work_file:
-                db_name = self.return_db_name(work_file)
-                work_book = load_workbook(work_file)
-                db_funcs_for_subjects_db.drop_db(db_name)
-                db_funcs_for_subjects_db.create_db(db_name)
-                self.create_groups_in_db(work_book, db_name)
-                self.create_dates_and_times_in_db(work_book, db_name)
-
-                for ws in work_book.sheetnames:
-                    work_sheet = work_book[ws]
-                    ws_date = str(work_sheet)
-                    month_to_skip = ['09', '10', '11', '12', '01']
-                    if ws_date[17:19] in month_to_skip:
-                        print('skipped' + ws_date)
-                        continue
-                    self.self.parse_work_sheet(work_sheet, db_name)
-
-    def return_db_name(self, file_name):
-        if 'magistracy_fk_full_time_1_kurs' in file_name:
-            return 'magistracy_fk_full_time_1_kurs'
-        elif 'magistracy_fk_full_time_2_kurs' in file_name:
-            return 'magistracy_fk_full_time_2_kurs'
-
-    def create_groups_in_db(self, work_book, db_name):
-        work_sheet = work_book[work_book.sheetnames[0]]
-        first_group_name = ''
-        if db_name == 'magistracy_fk_full_time_1_kurs':
-            first_group_name = 'гр_1'
-        elif db_name == 'magistracy_fk_full_time_2_kurs':
-            first_group_name = 'гимнастика_плавание_футбол'
-        list_of_groups = self.return_all_groups_names(work_sheet, first_group_name)
-        db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
-
-    def return_all_groups_names(self, work_sheet, first_group_name):
-        groups_names = []
-        row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)   #   ПОЛИМОРФНАЯ ФУНКЦИЯ
-        first_group_column = self.const_first_group_column
-        for column in range(first_group_column, 25):
-            group_cell = work_sheet.cell(row = row_number, column = column).value
-            if type(group_cell) == str :
-                group_cell = self.format_group_name_magistracy_fk_2_kurs(group_cell.lower().rstrip())
-                if group_cell in self.const_magistracy_fk_1_kurs_groups or group_cell in self.const_magistracy_fk_2_kurs_groups:
-                    groups_names.append(self.format_group_name_magistracy_fk(group_cell))
-        return groups_names
-
-    def format_group_name_magistracy_fk(self, group_name):  #    ПОЛИМОРФНАЯ?
-        if ' ' in group_name:
-            group_name = group_name.replace(' ', '_')
-        if 'группа' in group_name:
-            first = group_name[0]
-            second = group_name[2:]
-            group_name = second + '_' + first
-        if 'гр.' in group_name and len(group_name) == 5:
-            first = group_name[0]
-            second = group_name[2:]
-            group_name = second + '_' + first
-        if 'гр.' in group_name and len(group_name) == 6:
-            first = group_name[0:2]
-            second = group_name[3:]
-            group_name = second + '_' + first
-        if '.' in group_name:
-            group_name = group_name.replace('.', '')
-        return group_name
-
-    def format_group_name_magistracy_fk_2_kurs(self, group_name):
-        group_name = group_name.lower()
-        if '\n' in group_name:
-            group_name = group_name.replace('\n', '')
-        if '"' in group_name:
-            group_name = group_name.replace('"', '')
-        group_name = group_name.rstrip()
-        if ';' in group_name:
-            group_name = group_name.replace(';', '_')
-        if ' ' in group_name:
-            group_name = group_name.replace(' ', '_')
-        if '__' in group_name:
-            group_name = group_name.replace('__', '_')
-        if group_name[0] == '_':
-            group_name = group_name[1:]
-        if group_name[-1] == '_':
-            group_name = group_name[:-1]
-        if '-' in group_name:
-            group_name = group_name.replace('-', '_')
-        if 'гр.' in group_name and len(group_name) == 5:
-            first = group_name[0]
-            second = group_name[2:]
-            group_name = second + '_' + first
-        if 'гр.' in group_name and len(group_name) == 6:
-            first = group_name[0:2]
-            second = group_name[3:]
-            group_name = second + '_' + first
-        if '.' in group_name:
-            group_name = group_name.replace('.', '')
-        return group_name
-
-    def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
-        first_group_column = self.const_first_group_column
-        for row in range(1, 10):
-            viewed_cell = str(work_sheet.cell(row = row, column = first_group_column).value).rstrip()
-            if type(viewed_cell) == str:
-                viewed_cell = self.format_group_name_magistracy_fk_2_kurs(viewed_cell)
-                if first_group_name in viewed_cell:
-                    return row
-
     def get_dates(self, work_sheet, row, dates_column):
         dates = work_sheet.cell(row = row, column = dates_column).value
         if self.is_merged(work_sheet, row, dates_column):
             dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
         dates = self.format_dates(dates)
-        return dates    
+        return dates  
 
     def get_value_of_merged_call(self, work_sheet, row, column):
         cell = work_sheet.cell(row, column)
@@ -240,6 +80,19 @@ class Excel_parser_magistracy_fk(Excel_parser):
                 row_coor = list(mergedCell)[1][1]
                 result_value = work_sheet.cell(row = row_coor, column = column_coor).value
                 return result_value
+
+    def find_row_of_first_lesson(self, work_sheet):
+        time_column = self.const_time_column
+        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
+        for row in range(1, 10):
+            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
+            if time_cell in times:
+                return row 
+
+    def save_subj_in_db(self, db_name, dates, time, group_name, subject):
+        dates = self.format_dates(dates)
+        for date in dates:
+            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
 
     def create_dates_and_times_in_db(self, work_sheet, db_name):
         dates_column = self.const_dates_column
@@ -275,17 +128,150 @@ class Excel_parser_magistracy_fk(Excel_parser):
                         self.save_dates_and_times(db_name, dates, times)
                 elif time_value == '18:40':
                     times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
+                    #dates = self.get_dates(work_sheet, row, dates_column)
                     self.save_dates_and_times(db_name, dates, times)
 
 
-    def find_row_of_first_lesson(self, work_sheet):
-        time_column = self.const_time_column
-        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
+class Excel_parser_magistracy_fk(Excel_parser):
+
+    const_magistracy_fk_1_kurs_groups = ['гр_1', 'гр_2', 'гр_3', 'гр_4', 'гр_5', 
+    'гр_6', 'гр_7', 'гр_8', 'гр_9', 'гр_10', 'гр_11', 'гр_12', 'гр_13']
+
+    mag_2_kurs_group_1 = "гимнастика_плавание_футбол"
+    mag_2_kurs_group_2 = "лёгкая_атлетика_спортивные_игры"
+    mag_2_kurs_group_3 = "велоспорт_водномоторный_и_парусный_спорт_гребной_спорт_атлетизм_бокс_борьба_фехтование_нвс"
+    mag_2_kurs_group_4 = "хоккей_керлинг_биатлон_лыжный_спорт_конькобежный_спорт_и_фк"
+    mag_2_kurs_group_5 = "профессиональное_образование_в_сфере_физической_культуры_и_спорта"
+    mag_2_kurs_group_6 = "комплексное_научное_обеспечение_спортивной_подготовки"
+    mag_2_kurs_group_7 = "физкультурно_оздоровительная_работа"
+    mag_2_kurs_group_8 = "комплексная_реабилитация_в_физической_культуре_и_спорте"
+    mag_2_kurs_group_9 = "медико_биологическое_сопровождение_физической_культуры_и_спорта"
+    mag_2_kurs_group_10 = "руководитель_организации_в_области_физической_культуры_и_спорта"
+    mag_2_kurs_group_11 = "подготовка_спортивных_сборных_команд_по_избранному_виду_спорта"
+    mag_2_kurs_group_12 = "психология_спорта"
+
+    const_magistracy_fk_2_kurs_groups = [mag_2_kurs_group_1, mag_2_kurs_group_2, 
+        mag_2_kurs_group_3, mag_2_kurs_group_4, mag_2_kurs_group_5, mag_2_kurs_group_6,
+        mag_2_kurs_group_7, mag_2_kurs_group_8, mag_2_kurs_group_9, mag_2_kurs_group_10,
+        mag_2_kurs_group_11, mag_2_kurs_group_12]
+
+    def run_parser(self, route):
+        work_files = glob.glob(f'time_tables/{route}/*.xlsx')
+        print(work_files)
+        for work_file in work_files:
+            print(work_file)
+            self.parse_work_file(work_file)
+
+    def parse_work_file(self, work_file):
+        db_name = self.return_db_name(work_file)
+        db_funcs_for_subjects_db.drop_db(db_name)
+        db_funcs_for_subjects_db.create_db(db_name)
+
+        work_book = load_workbook(work_file)
+        self.create_groups_in_db(work_book, db_name)
+
+        for ws in work_book.sheetnames:
+            work_sheet = work_book[ws]
+            ws_date = str(work_sheet)
+            month_to_skip = ['09', '10', '11', '12', '01']
+            if ws_date[17:19] in month_to_skip:
+                print('skipped' + ws_date)
+                continue
+            self.create_dates_and_times_in_db(work_sheet, db_name)
+            self.parse_work_sheet(work_sheet, db_name)
+
+    def parse_work_file_using_name(self, name, route):
+        print('Парсер запущен на ' + name)
+        work_files = glob.glob(f'time_tables/{route}/*.xlsx')
+        for work_file in work_files:
+            if name in work_file:
+                db_name = self.return_db_name(work_file)
+                work_book = load_workbook(work_file)
+                db_funcs_for_subjects_db.drop_db(db_name)
+                db_funcs_for_subjects_db.create_db(db_name)
+                self.create_groups_in_db(work_book, db_name)
+                self.create_dates_and_times_in_db(work_book, db_name)
+
+                for ws in work_book.sheetnames:
+                    work_sheet = work_book[ws]
+                    ws_date = str(work_sheet)
+                    month_to_skip = ['09', '10', '11', '12', '01']
+                    if ws_date[17:19] in month_to_skip:
+                        print('skipped' + ws_date)
+                        continue
+                    self.parse_work_sheet(work_sheet, db_name)
+
+    def return_db_name(self, file_name):
+        if 'magistracy_fk_full_time_1_kurs' in file_name:
+            return 'magistracy_fk_full_time_1_kurs'
+        elif 'magistracy_fk_full_time_2_kurs' in file_name:
+            return 'magistracy_fk_full_time_2_kurs'
+
+    def create_groups_in_db(self, work_book, db_name):
+        work_sheet = work_book[work_book.sheetnames[0]]
+        first_group_name = ''
+        if db_name == 'magistracy_fk_full_time_1_kurs':
+            first_group_name = 'гр_1'
+        elif db_name == 'magistracy_fk_full_time_2_kurs':
+            first_group_name = 'гимнастика_плавание_футбол'
+        list_of_groups = self.return_all_groups_names(work_sheet, first_group_name)
+        db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
+
+    def return_all_groups_names(self, work_sheet, first_group_name):
+        groups_names = []
+        row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)   #   ПОЛИМОРФНАЯ ФУНКЦИЯ
+        first_group_column = self.const_first_group_column
+        for column in range(first_group_column, 25):
+            group_cell = work_sheet.cell(row = row_number, column = column).value
+            if type(group_cell) == str :
+                group_cell = self.format_group_name_magistracy_fk(group_cell)
+                if group_cell in self.const_magistracy_fk_1_kurs_groups or group_cell in self.const_magistracy_fk_2_kurs_groups:
+                    groups_names.append(self.format_group_name_magistracy_fk(group_cell))
+        return groups_names
+
+    def format_group_name_magistracy_fk(self, group_name):
+        group_name = group_name.lower()
+        group_name = group_name.rstrip()
+        if '\n' in group_name:
+            group_name = group_name.replace('\n', '')
+        if 'группа' in group_name:
+            first = group_name[0]
+            second = group_name[2:]
+            group_name = second + '_' + first
+        if '"' in group_name:
+            group_name = group_name.replace('"', '')
+        if ';' in group_name:
+            group_name = group_name.replace(';', '_')
+        if ' ' in group_name:
+            group_name  = group_name.replace(' ', '_')
+        if '__' in group_name:
+            group_name = group_name.replace('__', '_')
+        if group_name[0] == '_':
+            group_name = group_name[1:]
+        if group_name[-1] == '_':
+            group_name = group_name[:-1]
+        if '-' in group_name:
+            group_name = group_name.replace('-', '_')
+        if 'гр.' in group_name and len(group_name) == 5:
+            first = group_name[0]
+            second = group_name[2:]
+            group_name = second + '_' + first
+        if 'гр.' in group_name and len(group_name) == 6:
+            first = group_name[0:2]
+            second = group_name[3:]
+            group_name = second + '_' + first
+        if '.' in group_name:
+            group_name = group_name.replace('.', '')
+        return group_name
+
+    def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
+        first_group_column = self.const_first_group_column
         for row in range(1, 10):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-            if time_cell in times:
-                return row 
+            viewed_cell = str(work_sheet.cell(row = row, column = first_group_column).value)
+            if type(viewed_cell) == str:
+                viewed_cell = self.format_group_name_magistracy_fk(viewed_cell)
+                if first_group_name in viewed_cell:
+                    return row
 
     def parse_work_sheet(self, work_sheet, db_name):
         time_column = self.const_time_column
@@ -318,20 +304,12 @@ class Excel_parser_magistracy_fk(Excel_parser):
                     dates = work_sheet.cell(row = row, column = dates_column).value
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
-                    group_name = work_sheet.cell(row = groups_row, column = column).value.rstrip()
-                    group_name = self.format_group_name_magistracy_fk_2_kurs(group_name)
+                    group_name = work_sheet.cell(row = groups_row, column = column).value
+                    group_name = self.format_group_name_magistracy_fk(group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
                     print(subject)
         print('ws finished')
-
-    def save_subj_in_db(self, db_name, dates, time, group_name, subject):
-        dates = self.format_dates(dates)
-        time = self.format_time(time)
-        group_name = self.format_group_name_magistracy_fk(group_name.lower())
-        for date in dates:
-            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
-
 
     def return_columns_numbers_of_all_groups_cells(self, work_sheet, first_group_name):
         columns_numbers_of_all_groups_cells = []
@@ -340,19 +318,12 @@ class Excel_parser_magistracy_fk(Excel_parser):
         for column in range(first_group_column, 25):
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str:
-                group_cell = self.format_group_name_magistracy_fk_2_kurs(group_cell)
+                group_cell = self.format_group_name_magistracy_fk(group_cell)
                 if group_cell in self.const_magistracy_fk_1_kurs_groups or group_cell in self.const_magistracy_fk_2_kurs_groups:
                     columns_numbers_of_all_groups_cells.append(column)
         return columns_numbers_of_all_groups_cells
 
-
 class Excel_parser_magistracy_imist(Excel_parser):
-    # константное значение
-    # пока что во всех расписаниях колонка первых групп одинакова 
-    const_first_group_column = 4
-    const_time_column = 3
-    const_dates_column = 1
-    const_quantity_of_rows = 50
 
     group_1_kurs_1 = "менеджмент_направленность_профиль_менеджмент_в_спорте"
     group_2_kurs_1 = "туризм_направленность_профиль_туристская_деятельность_с_сфере_физической_культуры_и_спорта"
@@ -376,7 +347,6 @@ class Excel_parser_magistracy_imist(Excel_parser):
             elif '2_kurs' in str(work_file):
                 number_of_kurs = 2
             self.parse_work_file(work_file, number_of_kurs)
-
 
     def parse_work_file(self, work_file, number_of_kurs):
         db_name = self.return_db_name(work_file)
@@ -439,19 +409,17 @@ class Excel_parser_magistracy_imist(Excel_parser):
         for column in range(first_group_column, 25):
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str :
-                group_cell = group_cell.lower().rstrip()
-                if type(group_cell) == str:
-                    group_cell = self.format_group_name_magistracy_imst(group_cell)
+                group_cell = self.format_group_name_magistracy_imst(group_cell)
                 if group_cell in self.const_magistracy_imst_groups:
                     groups_names.append(group_cell)
         return groups_names
 
     def format_group_name_magistracy_imst(self, group_name):
+        group_name = group_name.rstrip()
+        group_name = group_name.lower()
         group_name = group_name[9:]
         if '\n' in group_name:
             group_name = group_name.replace('\n', ' ')
-        group_name = group_name.rstrip()
-        group_name = group_name.lower()
         if '                                                                                                                                                 ' in group_name:
             group_name = group_name.replace('                                                                                                                                                  ', ' ')
         if '      ' in group_name:
@@ -489,69 +457,6 @@ class Excel_parser_magistracy_imist(Excel_parser):
             if type(viewed_cell) == str and first_group_name in viewed_cell:
                 return row
 
-    def get_dates(self, work_sheet, row, dates_column):
-        dates = work_sheet.cell(row = row, column = dates_column).value
-        if self.is_merged(work_sheet, row, dates_column):
-            dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
-        dates = self.format_dates(dates)
-        return dates    
-
-    def get_value_of_merged_call(self, work_sheet, row, column):
-        cell = work_sheet.cell(row, column)
-        for mergedCell in work_sheet.merged_cells.ranges:
-            if (cell.coordinate in mergedCell):
-                column_coor = list(mergedCell)[0][1]
-                row_coor = list(mergedCell)[1][1]
-                result_value = work_sheet.cell(row = row_coor, column = column_coor).value
-                return result_value
-
-    def create_dates_and_times_in_db(self, work_sheet, db_name):
-        dates_column = self.const_dates_column
-        time_column = self.const_time_column
-
-        first_row = self.find_row_of_first_lesson(work_sheet)
-        times = []
-        for row in range(1, self.const_quantity_of_rows):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-            if time_cell != None and self.is_time(time_cell):
-                time_value = self.format_time(time_cell)
-                if time_value == '9:45':
-                    times = []
-                    times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
-                elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
-                    times.append(time_value)
-                elif time_value == '17:00':
-                    times.append(time_value)
-                    next_cell = str(work_sheet.cell(row = row + 1, column = time_column).value)
-                    next_cell = self.format_time(next_cell) if self.is_time(next_cell) else False
-
-                    after_next_cell = str(work_sheet.cell(row = row + 2, column = time_column).value)
-                    after_next_cell = self.format_time(after_next_cell) if self.is_time(after_next_cell) else False
-
-                    if self.is_time(next_cell) or self.is_time(after_next_cell):
-                        if next_cell == '9:45' or after_next_cell == '9:45' and next_cell != '18:40':
-                            self.save_dates_and_times(db_name, dates, times)
-                            continue                               
-                        elif next_cell == '18:40' or after_next_cell == '18:40':
-                            continue
-                    elif next_cell == False and after_next_cell == False:
-                        self.save_dates_and_times(db_name, dates, times)
-                elif time_value == '18:40':
-                    times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
-                    self.save_dates_and_times(db_name, dates, times)
-
-
-
-    def find_row_of_first_lesson(self, work_sheet):
-        time_column = self.const_time_column
-        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
-        for row in range(1, 10):
-            time_cell = work_sheet.cell(row = row, column = time_column).value
-            if time_cell in times:
-                return row 
-
     def parse_work_sheet(self, work_sheet, db_name, number_of_kurs):
         time_column = self.const_time_column
         dates_column = self.const_dates_column
@@ -586,17 +491,11 @@ class Excel_parser_magistracy_imist(Excel_parser):
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value.rstrip()
+                    group_name = self.format_group_name_magistracy_imst(group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
                     print(subject)
         print('ws finished')
-
-    def save_subj_in_db(self, db_name, dates, time, group_name, subject):
-        dates = self.format_dates(dates)
-        time = self.format_time(time)
-        group_name = self.format_group_name_magistracy_imst(group_name.lower())
-        for date in dates:
-            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
 
     def return_columns_numbers_of_all_groups_cells(self, work_sheet, first_group_name):
         columns_numbers_of_all_groups_cells = []
@@ -605,7 +504,7 @@ class Excel_parser_magistracy_imist(Excel_parser):
         for column in range(first_group_column, 25):
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str:
-                group_cell = self.format_group_name_magistracy_imst(group_cell.lower().rstrip())
+                group_cell = self.format_group_name_magistracy_imst(group_cell)
                 if '\n' in group_cell:
                     group_cell = group_cell.replace('\n', '')
                 if group_cell[-1] == ' ':
@@ -615,12 +514,6 @@ class Excel_parser_magistracy_imist(Excel_parser):
         return columns_numbers_of_all_groups_cells
 
 class Excel_parser_magistracy_afk(Excel_parser):
-    # константное значение
-    # пока что во всех расписаниях колонка первых групп одинакова 
-    const_first_group_column = 4
-    const_time_column = 3
-    const_dates_column = 1
-    const_quantity_of_rows = 50
 
     group_1_kurs_1 = "адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз"
     group_2_kurs_1 = "спортивная_подготовка_лиц_с_овз_включая_инвалидов"
@@ -650,10 +543,8 @@ class Excel_parser_magistracy_afk(Excel_parser):
                 number_of_kurs = 2
             self.parse_work_file(work_file, number_of_kurs)
 
-
     def parse_work_file(self, work_file, number_of_kurs):
         db_name = self.return_db_name(work_file)
-        print(work_file)
         db_funcs_for_subjects_db.drop_db(db_name)
         db_funcs_for_subjects_db.create_db(db_name)
 
@@ -713,18 +604,16 @@ class Excel_parser_magistracy_afk(Excel_parser):
         for column in range(first_group_column, 25):
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str :
-                group_cell = group_cell.lower().rstrip()
-                if type(group_cell) == str:
-                    group_cell = self.format_group_name_magistracy_afk(group_cell)
+                group_cell = self.format_group_name_magistracy_afk(group_cell)
                 if group_cell in self.const_magistracy_imst_groups:
                     groups_names.append(group_cell)
         return groups_names
 
     def format_group_name_magistracy_afk(self, group_name):
         group_name = group_name.lower()
+        group_name = group_name.rstrip()
         if '\n' in group_name:
             group_name = group_name.replace('\n', '')
-        group_name = group_name.rstrip()
         if ' ' in group_name:
             group_name = group_name.replace(' ', '_')
         if ',' in group_name:
@@ -738,7 +627,7 @@ class Excel_parser_magistracy_afk(Excel_parser):
     def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
         first_group_column = self.const_first_group_column
         for row in range(1, 10):
-            viewed_cell = str(work_sheet.cell(row = row, column = first_group_column).value).rstrip()
+            viewed_cell = str(work_sheet.cell(row = row, column = first_group_column).value)
             if type(viewed_cell) == str:
                 try:
                     viewed_cell = self.format_group_name_magistracy_afk(viewed_cell)
@@ -746,69 +635,6 @@ class Excel_parser_magistracy_afk(Excel_parser):
                     pass
             if type(viewed_cell) == str and first_group_name in viewed_cell:
                 return row
-
-    def get_dates(self, work_sheet, row, dates_column):
-        dates = work_sheet.cell(row = row, column = dates_column).value
-        if self.is_merged(work_sheet, row, dates_column):
-            dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
-        dates = self.format_dates(dates)
-        return dates    
-
-    def get_value_of_merged_call(self, work_sheet, row, column):
-        cell = work_sheet.cell(row, column)
-        for mergedCell in work_sheet.merged_cells.ranges:
-            if (cell.coordinate in mergedCell):
-                column_coor = list(mergedCell)[0][1]
-                row_coor = list(mergedCell)[1][1]
-                result_value = work_sheet.cell(row = row_coor, column = column_coor).value
-                return result_value
-
-    def create_dates_and_times_in_db(self, work_sheet, db_name):
-        dates_column = self.const_dates_column
-        time_column = self.const_time_column
-
-        first_row = self.find_row_of_first_lesson(work_sheet)
-        times = []
-        for row in range(1, self.const_quantity_of_rows):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-            if time_cell != None and self.is_time(time_cell):
-                time_value = self.format_time(time_cell)
-                if time_value == '9:45':
-                    times = []
-                    times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
-                elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
-                    times.append(time_value)
-                elif time_value == '17:00':
-                    times.append(time_value)
-                    next_cell = str(work_sheet.cell(row = row + 1, column = time_column).value)
-                    next_cell = self.format_time(next_cell) if self.is_time(next_cell) else False
-
-                    after_next_cell = str(work_sheet.cell(row = row + 2, column = time_column).value)
-                    after_next_cell = self.format_time(after_next_cell) if self.is_time(after_next_cell) else False
-
-                    if self.is_time(next_cell) or self.is_time(after_next_cell):
-                        if next_cell == '9:45' or after_next_cell == '9:45' and next_cell != '18:40':
-                            self.save_dates_and_times(db_name, dates, times)
-                            continue                               
-                        elif next_cell == '18:40' or after_next_cell == '18:40':
-                            continue
-                    elif next_cell == False and after_next_cell == False:
-                        self.save_dates_and_times(db_name, dates, times)
-                elif time_value == '18:40':
-                    times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
-                    self.save_dates_and_times(db_name, dates, times)
-
-
-
-    def find_row_of_first_lesson(self, work_sheet):
-        time_column = self.const_time_column
-        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
-        for row in range(1, 10):
-            time_cell = work_sheet.cell(row = row, column = time_column).value
-            if time_cell in times:
-                return row 
 
     def parse_work_sheet(self, work_sheet, db_name, number_of_kurs):
         time_column = self.const_time_column
@@ -844,17 +670,11 @@ class Excel_parser_magistracy_afk(Excel_parser):
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value.rstrip()
+                    group_name = self.format_group_name_magistracy_afk(group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
                     print(subject)
         print('ws finished')
-
-    def save_subj_in_db(self, db_name, dates, time, group_name, subject):
-        dates = self.format_dates(dates)
-        time = self.format_time(time)
-        group_name = self.format_group_name_magistracy_afk(group_name.lower())
-        for date in dates:
-            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
 
     def return_columns_numbers_of_all_groups_cells(self, work_sheet, first_group_name):
         columns_numbers_of_all_groups_cells = []
@@ -863,7 +683,7 @@ class Excel_parser_magistracy_afk(Excel_parser):
         for column in range(first_group_column, 25):
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str:
-                group_cell = self.format_group_name_magistracy_afk(group_cell.lower().rstrip())
+                group_cell = self.format_group_name_magistracy_afk(group_cell)
                 if '\n' in group_cell:
                     group_cell = group_cell.replace('\n', '')
                 if group_cell[-1] == ' ':
@@ -873,12 +693,9 @@ class Excel_parser_magistracy_afk(Excel_parser):
         return columns_numbers_of_all_groups_cells
 
 class Excel_parser_undergraduate_imst(Excel_parser):
-    # константное значение
-    # пока что во всех расписаниях колонка первых групп одинакова 
     const_first_group_column = 7
     const_time_column = 6
     const_dates_column = 4
-    const_quantity_of_rows = 50
 
     const_imist_groups = ['менеджмент', 'международные отношения', 'журналистика', 
         'туризм', 'сервис', 'реклама и связи с общественностью']
@@ -930,25 +747,6 @@ class Excel_parser_undergraduate_imst(Excel_parser):
                         groups_names.append(self.format_group_name(group))
         return groups_names
 
-
-    def find_row_of_first_lesson(self, work_sheet):
-        time_column = self.const_time_column
-        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
-
-        for row in range(1, 10):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-            if time_cell in times:
-                return row 
-
-    def get_value_of_merged_call(self, work_sheet, row, column):
-        cell = work_sheet.cell(row, column)
-        for mergedCell in work_sheet.merged_cells.ranges:
-            if (cell.coordinate in mergedCell):
-                column_coor = list(mergedCell)[0][1]
-                row_coor = list(mergedCell)[1][1]
-                result_value = work_sheet.cell(row = row_coor, column = column_coor).value
-                return result_value
-
     def format_group_name(self, group_name):
         if 'менеджмент' in group_name:
             return 'менеджмент'
@@ -962,16 +760,6 @@ class Excel_parser_undergraduate_imst(Excel_parser):
             return 'сервис'
         elif 'реклама и связи с общественностью' in group_name:
             return 'реклама_и_связи_с_общественностью'
-
-
-
-    def save_subj_in_db(self, db_name, dates, time, group_name, subject):
-        dates = self.format_dates(dates)
-        time = self.format_time(time)
-        group_name = self.format_group_name(group_name.lower())
-
-        for date in dates:
-            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
 
     def parse_work_sheet(self, work_sheet, db_name):
         time_column = self.const_time_column
@@ -1003,14 +791,13 @@ class Excel_parser_undergraduate_imst(Excel_parser):
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value
+                    group_name = self.format_group_name(group_name.lower())
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
                     print(subject)
         print('ws finished')
 
     def return_db_name(self, file_name):
-        print(213)
-        print(file_name)
         if 'zovs_1_kurs' in file_name:
             return 'zovs_1_kurs'
         elif 'zovs_2_kurs' in file_name:
@@ -1036,63 +823,17 @@ class Excel_parser_undergraduate_imst(Excel_parser):
         elif 'imst_4_kurs' in file_name:
             return 'imst_4_kurs'
 
-
-    def get_dates(self, work_sheet, row, dates_column):
-        dates = work_sheet.cell(row = row, column = dates_column).value
-        if self.is_merged(work_sheet, row, dates_column):
-            dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
-        dates = self.format_dates(dates)
-        return dates                
-
-    def create_dates_and_times_in_db(self, work_sheet, db_name):
-        dates_column = self.const_dates_column
-        time_column = self.const_time_column
-
-        first_row = self.find_row_of_first_lesson(work_sheet)
-        times = []
-        for row in range(1, self.const_quantity_of_rows):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-            if time_cell != None and self.is_time(time_cell):
-                time_value = self.format_time(time_cell)
-                if time_value == '9:45':
-                    times = []
-                    times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
-                elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
-                    times.append(time_value)
-                elif time_value == '17:00':
-                    times.append(time_value)
-                    next_cell = str(work_sheet.cell(row = row + 1, column = time_column).value)
-                    next_cell = self.format_time(next_cell) if self.is_time(next_cell) else False
-
-                    after_next_cell = str(work_sheet.cell(row = row + 2, column = time_column).value)
-                    after_next_cell = self.format_time(after_next_cell) if self.is_time(after_next_cell) else False
-
-                    if self.is_time(next_cell) or self.is_time(after_next_cell):
-                        if next_cell == '9:45' or after_next_cell == '9:45' and next_cell != '18:40':
-                            self.save_dates_and_times(db_name, dates, times)
-                            continue                               
-                        elif next_cell == '18:40' or after_next_cell == '18:40':
-                            continue
-                    elif next_cell == False and after_next_cell == False:
-                        self.save_dates_and_times(db_name, dates, times)
-                elif time_value == '18:40':
-                    times.append(time_value)
-                    self.save_dates_and_times(db_name, dates, times)
-
     def create_groups_in_db(self, work_book, db_name):
         work_sheet = work_book[work_book.sheetnames[0]]
         list_of_groups = self.return_all_groups_names(work_sheet)
         db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
 
     def parse_work_file(self, work_file):
-        print(work_file)
         db_name = self.return_db_name(work_file)
         db_funcs_for_subjects_db.drop_db(db_name)
         db_funcs_for_subjects_db.create_db(db_name)
 
         work_book = load_workbook(work_file)
-        print(work_book)
         self.create_groups_in_db(work_book, db_name)
 
         for ws in work_book.sheetnames:
@@ -1122,12 +863,6 @@ class Excel_parser_undergraduate_imst(Excel_parser):
                     self.parse_work_sheet(work_sheet, db_name)
 
 class Excel_parser_undergraduate(Excel_parser):
-    # константное значение
-    # пока что во всех расписаниях колонка первых групп одинакова 
-    const_first_group_column = 4
-    const_time_column = 3
-    const_dates_column = 1
-    const_quantity_of_rows = 50
 
     def find_number_of_groups_cell_row(self, work_sheet):
         first_group_column = self.const_first_group_column
@@ -1157,24 +892,6 @@ class Excel_parser_undergraduate(Excel_parser):
                 groups_names.append(group_name)
         return groups_names
 
-
-    def find_row_of_first_lesson(self, work_sheet):
-        time_column = self.const_time_column
-        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
-        for row in range(1, 10):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-            if time_cell in times:
-                return row 
-
-    def get_value_of_merged_call(self, work_sheet, row, column):
-        cell = work_sheet.cell(row, column)
-        for mergedCell in work_sheet.merged_cells.ranges:
-            if (cell.coordinate in mergedCell):
-                column_coor = list(mergedCell)[0][1]
-                row_coor = list(mergedCell)[1][1]
-                result_value = work_sheet.cell(row = row_coor, column = column_coor).value
-                return result_value
-
     def format_group_name(self, group_name):
         if '  ' in group_name:
             group_name = group_name.replace('  ', ' ')
@@ -1184,17 +901,6 @@ class Excel_parser_undergraduate(Excel_parser):
             group_name = group_name.replace('\n', '')
         group_name = group_name.rstrip()
         return group_name
-
-
-
-
-    def save_subj_in_db(self, db_name, dates, time, group_name, subject):
-        dates = self.format_dates(dates)
-        time = self.format_time(time)
-        group_name = self.format_group_name(group_name)
-
-        for date in dates:
-            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
 
     def parse_work_sheet(self, work_sheet, db_name):
         time_column = self.const_time_column
@@ -1222,6 +928,7 @@ class Excel_parser_undergraduate(Excel_parser):
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value
+                    group_name = self.format_group_name(group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
                     print(subject)
@@ -1245,52 +952,6 @@ class Excel_parser_undergraduate(Excel_parser):
         elif 'lovs_4_kurs' in file_name:
             return 'lovs_4_kurs'
 
-
-    def get_dates(self, work_sheet, row, dates_column):
-        dates = work_sheet.cell(row = row, column = dates_column).value
-        if self.is_merged(work_sheet, row, dates_column):
-            dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
-        dates = self.format_dates(dates)
-        return dates                
-
-    def create_dates_and_times_in_db(self, work_book, db_name):
-        dates_column = self.const_dates_column
-        time_column = self.const_time_column
-
-        for ws in work_book.sheetnames:
-            work_sheet = work_book[ws]
-            first_row = self.find_row_of_first_lesson(work_sheet)
-
-            times = []
-            for row in range(1, self.const_quantity_of_rows):
-                time_cell = str(work_sheet.cell(row = row, column = time_column).value)
-                if time_cell != None and self.is_time(time_cell):
-                    time_value = self.format_time(time_cell)
-                    dates = self.get_dates(work_sheet, row, dates_column)
-                    if time_value == '9:45':
-                        times = []
-                        times.append(time_value)
-                    elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
-                        times.append(time_value)
-                    elif time_value == '17:00':
-                        times.append(time_value)
-                        next_cell = str(work_sheet.cell(row = row + 1, column = time_column).value)
-                        next_cell = self.format_time(next_cell) if self.is_time(next_cell) else False
-
-                        after_next_cell = str(work_sheet.cell(row = row + 2, column = time_column).value)
-                        after_next_cell = self.format_time(after_next_cell) if self.is_time(after_next_cell) else False
-                        if self.is_time(next_cell) or self.is_time(after_next_cell):
-                            if next_cell == '9:45' or after_next_cell == '9:45':
-                                self.save_dates_and_times(db_name, dates, times)
-                                continue                               
-                            elif next_cell == '18:40' or after_next_cell == '18:40':
-                                continue
-                        elif next_cell == False and after_next_cell == False:
-                            self.save_dates_and_times(db_name, dates, times)
-                    elif time_value == '18:40':
-                        times.append(time_value)
-                        self.save_dates_and_times(db_name, dates, times)
-
     def create_groups_in_db(self, work_book, db_name):
         work_sheet = work_book[work_book.sheetnames[0]]
         list_of_groups = self.return_all_groups_names(work_sheet)
@@ -1303,16 +964,20 @@ class Excel_parser_undergraduate(Excel_parser):
 
         work_book = load_workbook(work_file)
         self.create_groups_in_db(work_book, db_name)
-        self.create_dates_and_times_in_db(work_book, db_name)
 
         for ws in work_book.sheetnames:
-            print(ws)
             work_sheet = work_book[ws]
+            ws_date = str(work_sheet)
+            month_to_skip = ['09', '10', '11', '12', '01']
+            if ws_date[17:19] in month_to_skip:
+                print('skipped' + ws_date)
+                continue
+            self.create_dates_and_times_in_db(work_sheet, db_name)
             self.parse_work_sheet(work_sheet, db_name)
 
-    def parse_work_file_using_name(self, name):
+    def parse_work_file_using_name(self, name, route):
         print('Парсер запущен на ' + name)
-        work_files = glob.glob('time_tables/full_time_undergraduate/*.xlsx')
+        work_files = glob.glob('time_tables/{route}/*.xlsx')
         for work_file in work_files:
             if name in work_file:
                 db_name = self.return_db_name(work_file)
@@ -1323,8 +988,12 @@ class Excel_parser_undergraduate(Excel_parser):
                 self.create_dates_and_times_in_db(work_book, db_name)
 
                 for ws in work_book.sheetnames:
-                    print(ws)
                     work_sheet = work_book[ws]
+                    ws_date = str(work_sheet)
+                    month_to_skip = ['09', '10', '11', '12', '01']
+                    if ws_date[17:19] in month_to_skip:
+                        print('skipped' + ws_date)
+                        continue
                     self.parse_work_sheet(work_sheet, db_name)
 
     def run_parser(self, route):
@@ -1337,8 +1006,22 @@ class Excel_parser_undergraduate(Excel_parser):
 def run_excel_parser_undergraduate():
     parser = Excel_parser_undergraduate()
     parser.run_parser('full_time_undergraduate')
+
+def run_all_parsers():
+    parser = Excel_parser_magistracy_fk()
+    parser.run_parser('full_time_magistracy_fk')
+    parser = Excel_parser_magistracy_imist()
+    parser.run_parser('full_time_magistracy_imst')
+    parser = Excel_parser_magistracy_afk()
+    parser.run_parser('full_time_magistracy_afk') 
+    parser = Excel_parser_undergraduate_imst()
+    parser.run_parser('full_time_undergraduate/imst')
+    parser = Excel_parser_undergraduate()
+    parser.run_parser('full_time_undergraduate')
+
 if __name__ == "__main__":
-    run_excel_parser_undergraduate()
+    run_all_parsers()
+    #run_excel_parser_undergraduate()
     #parser = Excel_parser_magistracyasd_fk()
     #parser.run_parser('full_time_magistracy_fk')
     #parser = Excel_parser_magistracy_imist()
@@ -1351,5 +1034,4 @@ if __name__ == "__main__":
     #parser.run_parser('full_time_undergraduate')
 
     
-
 #1540 строк кода
