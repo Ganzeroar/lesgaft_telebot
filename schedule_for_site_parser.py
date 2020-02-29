@@ -3,7 +3,7 @@ import time
 import site_parser
 
 def job():
-    site_parser.parse_and_searching_changes_full_time_undergraduate()
+    site_parser.run_all_parsers()
 
 # -2 от Мск из-за неизменяемой таймзоны schedule 
 schedule.every().day.at("08:00").do(job)

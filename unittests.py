@@ -4,6 +4,8 @@ from unittest.mock import patch
 from freezegun import freeze_time
 import datetime
 import glob
+import pytz
+import sqlite3
 
 import find_time_and_location
 import find_lessons_at_date
@@ -437,6 +439,9 @@ class Test_site_parser_undergraduate_class(unittest.TestCase):
 
 class Test_excel_parser(unittest.TestCase):
     
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+
     def test_format_group_name(self):
         names_from_excel = texts_for_tests.group_names_from_excel
         normal_group_names = texts_for_tests.normal_group_names
@@ -445,7 +450,112 @@ class Test_excel_parser(unittest.TestCase):
             normal_name = normal_group_names[x]
             excel_name = names_from_excel[x]
             formatted_name = obj.format_group_name(excel_name)
-
             self.assertEqual(normal_name, formatted_name)
+
+    def test_run_parser(self):
+        # тестируется только бакалавриат очка, потому что метод parse_work_file_using_name
+        # использует те же функци и методы и протестирован снизу
+        parser = excel_parser.Excel_parser()
+        parser.run_parser('test_time_tables/full_time_undergraduate')
+        groups_and_expected_number_of_records = {
+            'zovs_1_kurs' : 30,
+            'zovs_2_kurs' : 32,
+            'zovs_3_kurs' : 30,
+            'zovs_4_kurs' : 30,
+            'lovs_1_kurs' : 30,
+            'lovs_2_kurs' : 32,
+            'lovs_3_kurs' : 30,
+            'lovs_4_kurs' : 30,
+        }
+        for couple in groups_and_expected_number_of_records:
+            req = f"SELECT COUNT(*) FROM {couple}"
+            self.cursor.execute(req)
+            expected_number_of_record = self.cursor.fetchall()[0][0]
+            actual_number_of_record = groups_and_expected_number_of_records[couple]
+            self.assertEqual(expected_number_of_record, actual_number_of_record)
+
+    def test_undergraduate_parser(self):
+        parser = excel_parser.Excel_parser()
+        groups_and_expected_number_of_records = {
+            'zovs_1_kurs' : 30,
+            'zovs_2_kurs' : 32,
+            'zovs_3_kurs' : 30,
+            'zovs_4_kurs' : 30,
+            'lovs_1_kurs' : 30,
+            'lovs_2_kurs' : 32,
+            'lovs_3_kurs' : 30,
+            'lovs_4_kurs' : 30,
+        }
+        for couple in groups_and_expected_number_of_records:
+            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_undergraduate')
+            req = f"SELECT COUNT(*) FROM {couple}"
+            self.cursor.execute(req)
+            expected_number_of_record = self.cursor.fetchall()[0][0]
+            actual_number_of_record = groups_and_expected_number_of_records[couple]
+            self.assertEqual(expected_number_of_record, actual_number_of_record)
+
+
+    def test_imst_parser(self):
+        parser = excel_parser.Excel_parser_undergraduate_imst()
+        groups_and_expected_number_of_records = {
+            'imst_1_kurs' : 36,
+            'imst_2_kurs' : 36,
+            'imst_3_kurs' : 36,
+            'imst_4_kurs' : 36,
+        }
+        for couple in groups_and_expected_number_of_records:
+            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_undergraduate/imst')
+            req = f"SELECT COUNT(*) FROM {couple}"
+            self.cursor.execute(req)
+            expected_number_of_record = self.cursor.fetchall()[0][0]
+            actual_number_of_record = groups_and_expected_number_of_records[couple]
+            self.assertEqual(expected_number_of_record, actual_number_of_record)
+
+
+    def test_mag_fk(self):
+        parser = excel_parser.Excel_parser()
+        groups_and_expected_number_of_records = {
+            'magistracy_fk_full_time_1_kurs' : 36,
+            'magistracy_fk_full_time_2_kurs' : 36,
+        }
+        for couple in groups_and_expected_number_of_records:
+            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_fk')
+            req = f"SELECT COUNT(*) FROM {couple}"
+            self.cursor.execute(req)
+            expected_number_of_record = self.cursor.fetchall()[0][0]
+            actual_number_of_record = groups_and_expected_number_of_records[couple]
+            self.assertEqual(expected_number_of_record, actual_number_of_record)
+
+
+    def test_mag_afk(self):
+        parser = excel_parser.Excel_parser()
+        groups_and_expected_number_of_records = {
+            'magistracy_afk_full_time_1_kurs' : 36,
+            'magistracy_afk_full_time_2_kurs' : 36,
+        }
+        for couple in groups_and_expected_number_of_records:
+            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_afk')
+            req = f"SELECT COUNT(*) FROM {couple}"
+            self.cursor.execute(req)
+            expected_number_of_record = self.cursor.fetchall()[0][0]
+            actual_number_of_record = groups_and_expected_number_of_records[couple]
+            self.assertEqual(expected_number_of_record, actual_number_of_record)
+
+    def test_mag_imst(self):
+        parser = excel_parser.Excel_parser()
+        groups_and_expected_number_of_records = {
+            'magistracy_imst_full_time_1_kurs' : 36,
+            'magistracy_imst_full_time_2_kurs' : 36,
+        }
+        for couple in groups_and_expected_number_of_records:
+            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_imst')
+            req = f"SELECT COUNT(*) FROM {couple}"
+            self.cursor.execute(req)
+            expected_number_of_record = self.cursor.fetchall()[0][0]
+            actual_number_of_record = groups_and_expected_number_of_records[couple]
+            self.assertEqual(expected_number_of_record, actual_number_of_record)
+
+
+
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main()     

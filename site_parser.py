@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 
 import requests
 import datetime
@@ -8,277 +6,319 @@ import logging
 from bs4 import BeautifulSoup
 
 import db_funcs_for_site_parser as db 
-import excel_parser_full_time_undergraduate
-import excel_parser_FT_undergraduate
-import excel_parser_imist_undergraduate
-import excel_parser_full_time_magistracy
+import excel_parser
 
-def create_table(route, name_of_course, new_file_link):
-    excel_file = open(f'time_tables/{route}/{name_of_course}.xlsx', 'wb')
-    resp = requests.get(new_file_link)
-    excel_file.write(resp.content)
-    excel_file.close()
+class Site_parser():
 
-def return_file_link_from_site(number_of_row, even_or_odd):
-    url = 'http://www.lesgaft.spb.ru/ru/schedule'
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, "lxml")
-    element = soup.find_all('div', class_ = f'views-row views-row-{number_of_row} views-row-{even_or_odd}')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-    return new_file_link
+    def is_Changed(self, new_file_link):
+        name_of_course = self.get_name_of_course(new_file_link)
+        current_file_link = db.get_current_link(name_of_course)
+        if current_file_link != new_file_link:
+            return True
+        else:
+            return False
 
-def return_file_link_from_site_imist(number_of_row, even_or_odd):
-    url = 'http://www.lesgaft.spb.ru/ru/schedule'
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, "lxml")
-    element = soup.find_all('div', class_ = f'views-row views-row-{number_of_row} views-row-{even_or_odd}')
-    element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-    imist_1 = element_2[0].find_all('a', href=True)[0]['href']
-    imist_2 = element_2[0].find_all('a', href=True)[1]['href']
-    imist_3 = element_2[0].find_all('a', href=True)[2]['href']
-    imist_4 = element_2[0].find_all('a', href=True)[3]['href']
+    def get_date_and_time_now(self):
+        msc_timezone = pytz.timezone('Europe/Moscow')
+        date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
+        return date_and_time_now
 
-    return imist_1, imist_2, imist_3, imist_4
-
-def return_even_or_odd(number_of_row):
-    if number_of_row % 2 == 0:
-        return 'even'
-    else:
-        return 'odd'
-
-def start_chosen_parser(num_of_parser_type):
-    if num_of_parser_type == 1:
-        parse_and_searching_changes_full_time_undergraduate()
-    elif num_of_parser_type == 2:
-        parse_and_searching_changes_full_time_imist()
-    elif num_of_parser_type == 3:
-        parse_and_searching_changes_full_time_magistracy_fk()
-    elif num_of_parser_type == 4:
-        parse_and_searching_changes_full_time_magistracy_afk()
+    def create_new_excel_files(self, route, changed_files):
+        for new_file_link in changed_files:
+            date_and_time_now = self.get_date_and_time_now()
+            name_of_course = self.get_name_of_course(new_file_link)
+            self.create_table(route, name_of_course, new_file_link)
+            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
+            db.insert_link_to_current_links(name_of_course, str(new_file_link))
     
+    def create_table(self, route, name_of_course, new_file_link):
+        excel_file = open(f'time_tables/{route}/{name_of_course}.xlsx', 'wb')
+        resp = requests.get(new_file_link)
+        excel_file.write(resp.content)
+        excel_file.close()
 
-def return_file_link_full_time_magistracy_fk(number_of_course):
-    url = 'http://www.lesgaft.spb.ru/ru/schedule'
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, "lxml")
-    element = soup.find_all('div', class_ = f'views-row views-row-11 views-row-odd')
-    if number_of_course == 0:
-        element_2 = element[0].find_all('div', class_ = 'field-item even')
-        new_file_link = element_2[2].find_all('a', href=True)[0]['href']
-    elif number_of_course == 1:
-        element_2 = element[0].find_all('div', class_ = 'field-item odd')
+    def get_soup_obj(self):
+        url = 'http://www.lesgaft.spb.ru/ru/schedule'
+        resp = requests.get(url)
+        soup_obj = BeautifulSoup(resp.text, "lxml")
+        return soup_obj
+
+
+class Site_parser_undergraduate(Site_parser):
+
+    def run_full_time_undergraduate_parser(self):
+        changed_files = self.find_changed_files()
+        if len(changed_files) > 0:
+            print('Изменения в ' + str(changed_files))
+            self.create_new_excel_files('full_time_undergraduate', changed_files)
+            self.run_excel_parser(changed_files)
+
+    def find_changed_files(self):
+        changed_files = []
+
+        for number in range(8):
+            # необходимо что бы правильно определить HTML код нужного расписания
+            # ввиду плохого нейминга элементов на сайте
+            number_of_row = number + 2
+            
+            new_file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row)
+            if self.is_Changed(new_file_link):
+                changed_files.append(new_file_link)
+        return changed_files
+
+    def get_file_link_from_site_full_time_undergraduate(self, number_of_row):
+        new_file_link = self.find_file_link(number_of_row)
+        return new_file_link
+
+    def find_file_link(self, number_of_row):
+        soup_obj = self.get_soup_obj()
+        html_string = self.create_html_string(number_of_row)
+        element = soup_obj.find_all('div', class_ = html_string)
+        element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
         new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-    return new_file_link
+        return new_file_link
 
-def return_file_link_full_time_magistracy_afk(number_of_course):
-    url = 'http://www.lesgaft.spb.ru/ru/schedule'
-    resp = requests.get(url)
-    soup = BeautifulSoup(resp.text, "lxml")
-    element = soup.find_all('div', class_ = f'views-row views-row-12 views-row-even')
-    if number_of_course == 0:
-        element_2 = element[0].find_all('div', class_ = 'field-item even')
-        new_file_link = element_2[2].find_all('a', href=True)[0]['href']
-    elif number_of_course == 1:
-        element_2 = element[0].find_all('div', class_ = 'field-item odd')
-        new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-    return new_file_link
+    def create_html_string(self, number_of_row):
+        even_or_odd = self.return_even_or_odd(number_of_row)
+        html_string = f'views-row views-row-{number_of_row} views-row-{even_or_odd}'
+        return html_string
 
+    def return_even_or_odd(self, number_of_row):
+        if number_of_row % 2 == 0:
+            return 'even'
+        else:
+            return 'odd'
 
-def parse_and_searching_changes_full_time_magistracy_fk():
-    msc_timezone = pytz.timezone('Europe/Moscow')
-    date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
-    activate_parser = False
+    def get_name_of_course(self, file_link):
+        course_names = ['1_kurs_lovs','1_kurs_zovs','2_kurs_lovs','2_kurs_zovs',
+            '3_kurs_lovs','3_kurs_zovs','4_kurs_lovs','4_kurs_zovs']
+        for name in course_names:
+            if name in file_link:
+                name_of_course = self.formate_name(name)
+                return name_of_course
 
-    course_names = ['magistracy_fk_full_time_1_kurs','magistracy_fk_full_time_2_kurs']
+    def formate_name(self, name):
+        first_part = name[:6]
+        second_part = name[-4:]
+        name_of_course = second_part + '_' + first_part
+        return name_of_course
 
-    #new_file_link = return_file_link_full_time_magistracy_fk()
-    for x in range(0,2):
-        new_file_link = return_file_link_full_time_magistracy_fk(x)
-        name_of_course = course_names[x]
-        current_file_link = db.get_current_link(name_of_course)
+    def run_excel_parser(self, changed_files):
+        for new_file_link in changed_files:
+            name_of_course = self.get_name_of_course(new_file_link)
+            parser = excel_parser.Excel_parser()
+            parser.parse_work_file_using_name(name_of_course, 'full_time_undergraduate')
 
-        if current_file_link == False:
-            print('первый запуск')
-            # Для первого запуска
-            activate_parser = True
+class Site_parser_undergraduate_imist(Site_parser):
+    
+    def run_full_time_undergraduate_imist_parser(self):
+        changed_files = self.find_changed_files()
+        if len(changed_files) > 0:
+            self.create_new_excel_files('full_time_undergraduate/imist', changed_files)
+            self.run_excel_parser(changed_files)
 
-            create_table('full_time_magistracy_fk', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.insert_link_to_current_links(name_of_course, str(new_file_link))
-            log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link == new_file_link:
-            print(f'одинаковые ссылки в {date_and_time_now}')
-            log_text = f'Текущая и полученная ссылки одинаковы у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link != new_file_link:
-            print(f'различные ссылки новая ссылка: {new_file_link} у: {name_of_course} в {date_and_time_now}')
-            activate_parser = True
+    def return_file_links_from_site_imist(self):
+        soup_obj = self.get_soup_obj()
+        element = soup_obj.find_all('div', class_ = f'views-row views-row-10 views-row-even')
+        element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
+        imist_1 = element_2[0].find_all('a', href=True)[0]['href']
+        imist_2 = element_2[0].find_all('a', href=True)[1]['href']
+        imist_3 = element_2[0].find_all('a', href=True)[2]['href']
+        imist_4 = element_2[0].find_all('a', href=True)[3]['href']
 
-            log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
+        return imist_1, imist_2, imist_3, imist_4
 
-            create_table('full_time_magistracy_fk', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(name_of_course, str(new_file_link))
-    if activate_parser:
-        print('парсер запущен')
-        log_text = f'Парсер файлов запущен в {date_and_time_now}'
-        logging.info(log_text)
-        #excel_parser_full_time_undergraduate.pars_files_create_dbfiles()
+    def find_changed_files(self):
+        changed_files = []
+        links_from_site = self.return_file_links_from_site_imist()
 
-def parse_and_searching_changes_full_time_magistracy_afk():
-    msc_timezone = pytz.timezone('Europe/Moscow')
-    date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
-    activate_parser = False
+        for number in range(4):
+            new_file_link = links_from_site[number]
+            if self.is_Changed(new_file_link):
+                changed_files.append(new_file_link)
+        return changed_files
 
-    course_names = ['magistracy_afk_full_time_1_kurs','magistracy_afk_full_time_2_kurs']
+    def get_name_of_course(self, file_link):
+        course_names = ['1_kurs_imst', '2_kurs_imst', '3_kurs_imst', '4_kurs_imst']
+        for name in course_names:
+            if name in file_link:
+                name_of_course = self.formate_name(name)
+                return name_of_course
 
-    #    new_file_link = return_file_link_full_time_magistracy_fk()
-    for x in range(0,2):
-        new_file_link = return_file_link_full_time_magistracy_afk(x)
-        name_of_course = course_names[x]
-        current_file_link = False #db.get_current_link(name_of_course)
+    def formate_name(self, name):
+        first_part = name[:6]
+        second_part = name[-4:]
+        name_of_course = second_part + '_' + first_part
+        return name_of_course
 
-        if current_file_link == False:
-            print('первый запуск')
-            # Для первого запуска
-            activate_parser = True
-
-            create_table('full_time_magistracy_afk', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.insert_link_to_current_links(name_of_course, str(new_file_link))
-            log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link == new_file_link:
-            print(f'одинаковые ссылки в {date_and_time_now}')
-            log_text = f'Текущая и полученная ссылки одинаковы у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link != new_file_link:
-            print(f'различные ссылки новая ссылка: {new_file_link} у: {name_of_course} в {date_and_time_now}')
-            activate_parser = True
-
-            log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-
-            create_table('full_time_magistracy_afk', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(name_of_course, str(new_file_link))
-    if activate_parser:
-        print('парсер запущен')
-        log_text = f'Парсер файлов запущен в {date_and_time_now}'
-        logging.info(log_text)
-        #excel_parser_full_time_undergraduate.pars_files_create_dbfiles()
-
-
-def parse_and_searching_changes_full_time_imist():
-    msc_timezone = pytz.timezone('Europe/Moscow')
-    date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
-    activate_parser = True
-
-    course_names = ['imist_1_kurs', 'imist_2_kurs', 'imist_3_kurs', 'imist_4_kurs']
-
-    new_file_links = return_file_link_from_site_imist(10, 'even')
-    will_be_parsed = []
-    for x in range(4):
-        name_of_course = course_names[x]
-        # 
-        current_file_link = db.get_current_link(name_of_course)
-        #
-        new_file_link = new_file_links[x]
-
-        if current_file_link == False:
-            print('первый запуск')
-            # Для первого запуска
-            activate_parser = True
-            will_be_parsed.append(name_of_course)
-
-            create_table('full_time_undergraduate/imist', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, new_file_link, date_and_time_now)
-            db.insert_link_to_current_links(name_of_course, new_file_link)
-            log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link == new_file_link:
-            print(f'одинаковые ссылки в {date_and_time_now}')
-            log_text = f'Текущая и полученная ссылки одинаковы у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link != new_file_link:
-            print(f'различные ссылки новая ссылка: {new_file_link} у: {name_of_course} в {date_and_time_now}')
-            activate_parser = True
-            will_be_parsed.append(name_of_course)
-
-            log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-
-            create_table('full_time_undergraduate', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(name_of_course, str(new_file_link))
-    if activate_parser:
-        print('парсер запущен')
-        log_text = f'Парсер файлов запущен в {date_and_time_now}'
-        logging.info(log_text)
-        for excel_file in will_be_parsed:
-            excel_parser_imist_undergraduate.parse_work_file_using_name(excel_file, 'full_time_undergraduate/imist')
+    def run_excel_parser(self, changed_files):
+        for new_file_link in changed_files:
+            name_of_course = self.get_name_of_course(new_file_link)
+            parser = excel_parser.Excel_parser()
+            parser.parse_work_file_using_name(name_of_course, 'full_time_undergraduate/imst')
 
 
 
+class Site_parser_magistracy_fk(Site_parser):
+
+    def run_full_time_magistracy_fk(self):
+
+        changed_files = self.find_changed_files()
+        if len(changed_files) > 0:
+            self.create_new_excel_files('full_time_magistracy_fk', changed_files)
+            self.run_excel_parser(changed_files)
+
+    def return_file_link_full_time_magistracy_fk(self, number_of_course):
+        soup_obj = self.get_soup_obj()
+        element = soup_obj.find_all('div', class_ = f'views-row views-row-11 views-row-odd')
+        if number_of_course == 0:
+            element_2 = element[0].find_all('div', class_ = 'field-item even')
+            new_file_link = element_2[2].find_all('a', href=True)[0]['href']
+        elif number_of_course == 1:
+            element_2 = element[0].find_all('div', class_ = 'field-item odd')
+            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+        return new_file_link
+    def find_changed_files(self):
+        changed_files = []
+
+        for number in range(2):
+            new_file_link = self.return_file_link_full_time_magistracy_fk(number)
+            print(new_file_link)
+            if self.is_Changed(new_file_link):
+                changed_files.append(new_file_link)
+        return changed_files
+
+    def get_name_of_course(self, file_link):
+        course_names = ['mag_1_kurs_fk_sport_ppo', 'mag_2_kurs_fk_sport_ppo']
+        for name in course_names:
+            if name in file_link:
+                name_of_course = self.formate_name(name)
+                return name_of_course
+
+    def formate_name(self, name):
+        if 'mag_1_kurs_fk_sport_ppo' in name:
+            return 'magistracy_fk_full_time_1_kurs'
+        elif 'mag_2_kurs_fk_sport_ppo' in name:
+            return 'magistracy_fk_full_time_2_kurs'
+
+    def run_excel_parser(self, changed_files):
+        for new_file_link in changed_files:
+            name_of_course = self.get_name_of_course(new_file_link)
+            parser = excel_parser.Excel_parser()
+            parser.parse_work_file_using_name(name_of_course, 'full_time_magistracy_fk')
+
+class Site_parser_magistracy_afk(Site_parser):
+
+    def run_full_time_magistracy_afk(self):
+
+        changed_files = self.find_changed_files()
+        if len(changed_files) > 0:
+            self.create_new_excel_files('full_time_magistracy_afk', changed_files)
+            self.run_excel_parser(changed_files)
+
+    def return_file_link_full_time_magistracy_afk(self, number_of_course):
+        soup_obj = self.get_soup_obj()
+        element = soup_obj.find_all('div', class_ = f'views-row views-row-12 views-row-even')
+        if number_of_course == 0:
+            element_2 = element[0].find_all('div', class_ = 'field-item even')
+            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
+        elif number_of_course == 1:
+            element_2 = element[0].find_all('div', class_ = 'field-item odd')
+            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+        return new_file_link
+
+    def find_changed_files(self):
+        changed_files = []
+
+        for number in range(2):
+            new_file_link = self.return_file_link_full_time_magistracy_afk(number)
+            print(new_file_link)
+            if self.is_Changed(new_file_link):
+                changed_files.append(new_file_link)
+        return changed_files
+
+    def get_name_of_course(self, file_link):
+        course_names = ['mag_1_kurs_afk', 'mag_2_kurs_afk']
+        for name in course_names:
+            if name in file_link:
+                name_of_course = self.formate_name(name)
+                return name_of_course
+
+    def formate_name(self, name):
+        if 'mag_1_kurs_afk' in name:
+            return 'magistracy_afk_full_time_1_kurs'
+        elif 'mag_2_kurs_afk' in name:
+            return 'magistracy_afk_full_time_2_kurs'
+
+    def run_excel_parser(self, changed_files):
+        for new_file_link in changed_files:
+            name_of_course = self.get_name_of_course(new_file_link)
+            parser = excel_parser.Excel_parser()
+            parser.parse_work_file_using_name(name_of_course, 'full_time_magistracy_afk')
 
 
+class Site_parser_magistracy_imst(Site_parser):
+    
+    def run_full_time_magistracy_imst(self):
+        changed_files = self.find_changed_files()
+        if len(changed_files) > 0:
+            self.create_new_excel_files('full_time_magistracy_imst', changed_files)
+            print(123)
+            self.run_excel_parser(changed_files)
+
+    def return_file_link_full_time_magistracy_imst(self, number_of_course):
+        soup_obj = self.get_soup_obj()
+        element = soup_obj.find_all('div', class_ = f'views-row views-row-13 views-row-odd')
+        if number_of_course == 0:
+            element_2 = element[0].find_all('div', class_ = 'field-item even')
+            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
+        elif number_of_course == 1:
+            element_2 = element[0].find_all('div', class_ = 'field-item odd')
+            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+        return new_file_link
+
+    def find_changed_files(self):
+        changed_files = []
+
+        for number in range(2):
+            new_file_link = self.return_file_link_full_time_magistracy_imst(number)
+            print(new_file_link)
+            if self.is_Changed(new_file_link):
+                changed_files.append(new_file_link)
+        return changed_files
+
+    def get_name_of_course(self, file_link):
+        course_names = ['mag_1_kurs_imst', 'mag_2_kurs_imst']
+        for name in course_names:
+            if name in file_link:
+                name_of_course = self.formate_name(name)
+                return name_of_course
+
+    def formate_name(self, name):
+        if 'mag_1_kurs_imst' in name:
+            return 'magistracy_imst_full_time_1_kurs'
+        elif 'mag_2_kurs_imst' in name:
+            return 'magistracy_imst_full_time_2_kurs'
+
+    def run_excel_parser(self, changed_files):
+        for new_file_link in changed_files:
+            name_of_course = self.get_name_of_course(new_file_link)
+            parser = excel_parser.Excel_parser()
+            parser.parse_work_file_using_name(name_of_course, 'full_time_magistracy_fk')
 
 
-def parse_and_searching_changes_full_time_undergraduate():
+def run_all_parsers():
+    parser_1 = Site_parser_undergraduate()
+    parser_1.run_full_time_undergraduate_parser()
+    parser_2 = Site_parser_undergraduate_imist()
+    parser_2.run_full_time_undergraduate_imist_parser()
+    parser_3 = Site_parser_magistracy_fk()
+    parser_3.run_full_time_magistracy_fk()
+    parser_4 = Site_parser_magistracy_afk()
+    parser_4.run_full_time_magistracy_afk()
+    parser_5 = Site_parser_magistracy_imst()
+    parser_5.run_full_time_magistracy_imst()
 
-    msc_timezone = pytz.timezone('Europe/Moscow')
-    date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
-    activate_parser = False
-
-    course_names = ['lovs_1_kurs','zovs_1_kurs','lovs_2_kurs','zovs_2_kurs',
-        'lovs_3_kurs','zovs_3_kurs','lovs_4_kurs','zovs_4_kurs']
-
-    will_be_parsed = []
-
-    for x in range(8):
-        # необходимо что бы правильно определить HTML код нужного расписания
-        # ввиду плохого нейминга элементов на сайте
-        number_of_row = x + 2
-        even_or_odd = return_even_or_odd(number_of_row)
-
-        name_of_course = course_names[x]
-        current_file_link = db.get_current_link(name_of_course)
-
-        new_file_link = return_file_link_from_site(number_of_row, even_or_odd)
-        if current_file_link == False:
-            print('первый запуск')
-            # Для первого запуска
-            activate_parser = True
-
-            create_table('full_time_undergraduate', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.insert_link_to_current_links(name_of_course, str(new_file_link))
-            log_text = f'Отсутствие текущей ссылки у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link == new_file_link:
-            print(f'одинаковые ссылки в {date_and_time_now}')
-            log_text = f'Текущая и полученная ссылки одинаковы у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-        elif current_file_link != new_file_link:
-            print(f'различные ссылки новая ссылка: {new_file_link} у: {name_of_course} в {date_and_time_now}')
-            activate_parser = True
-            will_be_parsed.append(name_of_course)
-
-            log_text = f'Полученная ссылка {new_file_link} отлична от текущей {current_file_link} у {name_of_course} в {date_and_time_now}'
-            logging.info(log_text)
-
-            create_table('full_time_undergraduate', name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(name_of_course, str(new_file_link))
-    if activate_parser:
-        print('парсер запущен')
-        log_text = f'Парсер файлов запущен в {date_and_time_now}'
-        logging.info(log_text)
-        for excel_file in will_be_parsed:
-            excel_parser_full_time_magistracy.run_excel_parser_undergraduate()
 
 if __name__ == "__main__":
-    start_chosen_parser(4)
+    run_all_parsers()
