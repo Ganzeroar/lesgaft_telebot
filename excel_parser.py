@@ -421,15 +421,16 @@ class Excel_parser_undergraduate_imst(Excel_parser):
     const_dates_column = 4
 
 def run_all_parsers():
-    parser = Excel_parser()
-    parser.run_parser('full_time_magistracy_fk')
-    parser = Excel_parser()
-    parser.run_parser('full_time_magistracy_imst')
-    parser = Excel_parser()
-    parser.run_parser('full_time_magistracy_afk') 
-    parser = Excel_parser()
-    parser.run_parser('full_time_undergraduate')
+    #parser = Excel_parser()
+    #parser.run_parser('full_time_magistracy_fk')
+    #parser = Excel_parser()
+    #parser.run_parser('full_time_magistracy_imst')
+    #parser = Excel_parser()
+    #parser.run_parser('full_time_magistracy_afk') 
+    #parser = Excel_parser()
+    #parser.run_parser('full_time_undergraduate')
     parser = Excel_parser_undergraduate_imst()
+    #parser.parse_work_file_using_name('imst_1_kurs', 'test_time_tables/full_time_undergraduate/imst')
     parser.run_parser('full_time_undergraduate/imst')
 
 if __name__ == "__main__":

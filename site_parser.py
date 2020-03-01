@@ -27,6 +27,7 @@ class Site_parser():
         for new_file_link in changed_files:
             date_and_time_now = self.get_date_and_time_now()
             name_of_course = self.get_name_of_course(new_file_link)
+            print('created new excel ' + str(name_of_course))
             self.create_table(route, name_of_course, new_file_link)
             db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
             db.insert_link_to_current_links(name_of_course, str(new_file_link))
@@ -111,7 +112,7 @@ class Site_parser_undergraduate(Site_parser):
 
 class Site_parser_undergraduate_imist(Site_parser):
     
-    def run_full_time_undergraduate_imist_parser(self):
+    def run_full_time_undergraduate_imst_parser(self):
         changed_files = self.find_changed_files()
         if len(changed_files) > 0:
             self.create_new_excel_files('full_time_undergraduate/imst', changed_files)
@@ -311,7 +312,7 @@ def run_all_parsers():
     parser_1 = Site_parser_undergraduate()
     parser_1.run_full_time_undergraduate_parser()
     parser_2 = Site_parser_undergraduate_imist()
-    parser_2.run_full_time_undergraduate_imist_parser()
+    parser_2.run_full_time_undergraduate_imst_parser()
     parser_3 = Site_parser_magistracy_fk()
     parser_3.run_full_time_magistracy_fk()
     parser_4 = Site_parser_magistracy_afk()
