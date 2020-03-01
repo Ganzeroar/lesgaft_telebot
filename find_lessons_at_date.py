@@ -15,7 +15,7 @@ def return_lessons_at_date(user_id, date):
     number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
-    name_of_group = 'Группа_' + str(number_of_group)
+    name_of_group = 'группа_' + str(number_of_group)
     db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
     if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
         return 'Твоей группы не существует. Измени номер группы.'
