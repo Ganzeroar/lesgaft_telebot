@@ -52,7 +52,7 @@ class Excel_parser():
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
             ws_date = str(work_sheet)
-            month_to_skip = ['09', '10', '11', '12', '01', '03', '04', '05']
+            month_to_skip = ['09', '10', '11', '12', '01']
             if ws_date[17:19] in month_to_skip:
                 print('skipped' + ws_date)
                 continue
@@ -439,7 +439,6 @@ def run_magistracy_afk_parser():
 def run_magistracy_imst_parser():
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_imst')
-    
 
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_fk')
