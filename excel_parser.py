@@ -420,17 +420,48 @@ class Excel_parser_undergraduate_imst(Excel_parser):
     const_time_column = 6
     const_dates_column = 4
 
-def run_all_parsers():
-    #parser = Excel_parser()
-    #parser.run_parser('full_time_magistracy_fk')
-    #parser = Excel_parser()
-    #parser.run_parser('full_time_magistracy_imst')
-    #parser = Excel_parser()
-    #parser.run_parser('full_time_magistracy_afk') 
-    #parser = Excel_parser()
-    #parser.run_parser('full_time_undergraduate')
+def run_undergraduate_parser():
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_fk')
+
+def run_undergraduate_imst_parser():
+    parser = Excel_parser()
+    parser.run_parser('full_time_undergraduate/imst')
+    
+def run_magistracy_fk_parser():
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_afk')
+    
+def run_magistracy_afk_parser():
+    parser = Excel_parser()
+    parser.run_parser('full_time_undergraduate')
+    
+def run_magistracy_imst_parser():
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_imst')
+    
+
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_fk')
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_imst')
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_afk')
+    parser = Excel_parser()
+    parser.run_parser('full_time_undergraduate')
     parser = Excel_parser_undergraduate_imst()
-    #parser.parse_work_file_using_name('imst_1_kurs', 'test_time_tables/full_time_undergraduate/imst')
+    parser.run_parser('full_time_undergraduate/imst')
+
+def run_all_parsers():
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_fk')
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_imst')
+    parser = Excel_parser()
+    parser.run_parser('full_time_magistracy_afk') 
+    parser = Excel_parser()
+    parser.run_parser('full_time_undergraduate')
+    parser = Excel_parser_undergraduate_imst()
     parser.run_parser('full_time_undergraduate/imst')
 
 if __name__ == "__main__":

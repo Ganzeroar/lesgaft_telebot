@@ -307,6 +307,26 @@ class Site_parser_magistracy_imst(Site_parser):
             parser = excel_parser.Excel_parser()
             parser.parse_work_file_using_name(name_of_course, 'full_time_magistracy_fk')
 
+def run_undergraduate_parser():
+    parser = Site_parser_undergraduate()
+    parser.run_full_time_undergraduate_parser()
+
+def run_undergraduate_imst_parser():
+    parser = Site_parser_undergraduate_imist()
+    parser.run_full_time_undergraduate_imst_parser()
+    
+def run_magistracy_fk_parser():
+    parser = Site_parser_magistracy_fk()
+    parser.run_full_time_magistracy_fk()
+    
+def run_magistracy_afk_parser():
+    parser = Site_parser_magistracy_afk()
+    parser.run_full_time_magistracy_afk()
+    
+def run_magistracy_imst_parser():
+    parser = Site_parser_magistracy_imst()
+    parser.run_full_time_magistracy_imst()
+    
 
 def run_all_parsers():
     parser_1 = Site_parser_undergraduate()
@@ -319,7 +339,6 @@ def run_all_parsers():
     parser_4.run_full_time_magistracy_afk()
     parser_5 = Site_parser_magistracy_imst()
     parser_5.run_full_time_magistracy_imst()
-
 
 if __name__ == "__main__":
     run_all_parsers()
