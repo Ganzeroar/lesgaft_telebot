@@ -174,7 +174,7 @@ class Site_parser_magistracy_fk(Site_parser):
         element = soup_obj.find_all('div', class_ = f'views-row views-row-11 views-row-odd')
         if number_of_course == 0:
             element_2 = element[0].find_all('div', class_ = 'field-item even')
-            new_file_link = element_2[2].find_all('a', href=True)[0]['href']
+            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
         elif number_of_course == 1:
             element_2 = element[0].find_all('div', class_ = 'field-item odd')
             new_file_link = element_2[0].find_all('a', href=True)[0]['href']
@@ -341,4 +341,5 @@ def run_all_parsers():
     parser_5.run_full_time_magistracy_imst()
 
 if __name__ == "__main__":
-    run_all_parsers()
+    run_magistracy_fk_parser()
+    #run_all_parsers()
