@@ -155,7 +155,7 @@ class Site_parser_undergraduate_imist(Site_parser):
     def run_excel_parser(self, changed_files):
         for new_file_link in changed_files:
             name_of_course = self.get_name_of_course(new_file_link)
-            parser = excel_parser.Excel_parser()
+            parser = excel_parser.Excel_parser_undergraduate_imst()
             parser.parse_work_file_using_name(name_of_course, 'full_time_undergraduate/imst')
 
 
@@ -354,5 +354,7 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    tested_run_all_parsers_with_all_new_links()
+    parser_2 = Site_parser_undergraduate_imist()
+    parser_2.run_full_time_undergraduate_imst_parser()
+    #tested_run_all_parsers_with_all_new_links()
     #run_all_parsers()
