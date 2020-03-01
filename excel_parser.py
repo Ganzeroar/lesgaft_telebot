@@ -34,7 +34,7 @@ class Excel_parser():
                 for ws in work_book.sheetnames:
                     work_sheet = work_book[ws]
                     ws_date = str(work_sheet)
-                    month_to_skip = ['09', '10', '11', '12', '01']
+                    month_to_skip = ['09', '10', '11', '12', '01', '03', '04', '05']
                     if ws_date[17:19] in month_to_skip:
                         print('skipped' + ws_date)
                         continue
@@ -52,7 +52,7 @@ class Excel_parser():
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
             ws_date = str(work_sheet)
-            month_to_skip = ['09', '10', '11', '12', '01']
+            month_to_skip = ['09', '10', '11', '12', '01', '03', '04', '05']
             if ws_date[17:19] in month_to_skip:
                 print('skipped' + ws_date)
                 continue
@@ -422,7 +422,7 @@ class Excel_parser_undergraduate_imst(Excel_parser):
 
 def run_undergraduate_parser():
     parser = Excel_parser()
-    parser.run_parser('full_time_magistracy_fk')
+    parser.run_parser('full_time_undergraduate')
 
 def run_undergraduate_imst_parser():
     parser = Excel_parser()
@@ -430,11 +430,11 @@ def run_undergraduate_imst_parser():
     
 def run_magistracy_fk_parser():
     parser = Excel_parser()
-    parser.run_parser('full_time_magistracy_afk')
+    parser.run_parser('full_time_magistracy_fk')
     
 def run_magistracy_afk_parser():
     parser = Excel_parser()
-    parser.run_parser('full_time_undergraduate')
+    parser.run_parser('full_time_magistracy_afk')
     
 def run_magistracy_imst_parser():
     parser = Excel_parser()
@@ -465,4 +465,5 @@ def run_all_parsers():
     parser.run_parser('full_time_undergraduate/imst')
 
 if __name__ == "__main__":
-    run_all_parsers()
+    run_undergraduate_parser()
+    #run_all_parsers()

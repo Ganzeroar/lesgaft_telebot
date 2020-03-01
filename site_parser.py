@@ -30,7 +30,7 @@ class Site_parser():
             print('created new excel ' + str(name_of_course))
             self.create_table(route, name_of_course, new_file_link)
             db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.insert_link_to_current_links(name_of_course, str(new_file_link))
+            db.change_link_in_current_links(name_of_course, str(new_file_link))
     
     def create_table(self, route, name_of_course, new_file_link):
         excel_file = open(f'time_tables/{route}/{name_of_course}.xlsx', 'wb')
@@ -327,7 +327,6 @@ def run_magistracy_imst_parser():
     parser = Site_parser_magistracy_imst()
     parser.run_full_time_magistracy_imst()
     
-
 def run_all_parsers():
     parser_1 = Site_parser_undergraduate()
     parser_1.run_full_time_undergraduate_parser()
@@ -340,6 +339,20 @@ def run_all_parsers():
     parser_5 = Site_parser_magistracy_imst()
     parser_5.run_full_time_magistracy_imst()
 
+def tested_run_all_parsers_with_all_new_links():
+    db.drop_and_create_current_links_db()
+    parser_1 = Site_parser_undergraduate()
+    parser_1.run_full_time_undergraduate_parser()
+    parser_2 = Site_parser_undergraduate_imist()
+    parser_2.run_full_time_undergraduate_imst_parser()
+    parser_3 = Site_parser_magistracy_fk()
+    parser_3.run_full_time_magistracy_fk()
+    parser_4 = Site_parser_magistracy_afk()
+    parser_4.run_full_time_magistracy_afk()
+    parser_5 = Site_parser_magistracy_imst()
+    parser_5.run_full_time_magistracy_imst()
+
+
 if __name__ == "__main__":
-    run_magistracy_fk_parser()
+    tested_run_all_parsers_with_all_new_links()
     #run_all_parsers()
