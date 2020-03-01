@@ -114,7 +114,7 @@ class Site_parser_undergraduate_imist(Site_parser):
     def run_full_time_undergraduate_imist_parser(self):
         changed_files = self.find_changed_files()
         if len(changed_files) > 0:
-            self.create_new_excel_files('full_time_undergraduate/imist', changed_files)
+            self.create_new_excel_files('full_time_undergraduate/imst', changed_files)
             self.run_excel_parser(changed_files)
 
     def return_file_links_from_site_imist(self):
