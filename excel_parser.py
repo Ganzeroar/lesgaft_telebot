@@ -17,7 +17,7 @@ class Excel_parser():
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         print(work_files)
         for work_file in work_files:
-            print(work_file)
+            print('file = ' + work_file)
             self.parse_work_file(work_file)
 
     def parse_work_file_using_name(self, name, route):
@@ -56,6 +56,7 @@ class Excel_parser():
             if ws_date[17:19] in month_to_skip:
                 print('skipped' + ws_date)
                 continue
+            print('sheet = ' + str(work_sheet))
             self.create_dates_and_times_in_db(work_sheet, db_name)
             self.parse_work_sheet(work_sheet, db_name)
 
@@ -425,7 +426,7 @@ def run_undergraduate_parser():
     parser.run_parser('full_time_undergraduate')
 
 def run_undergraduate_imst_parser():
-    parser = Excel_parser()
+    parser = Excel_parser_undergraduate_imst()
     parser.run_parser('full_time_undergraduate/imst')
     
 def run_magistracy_fk_parser():
@@ -464,5 +465,4 @@ def run_all_parsers():
     parser.run_parser('full_time_undergraduate/imst')
 
 if __name__ == "__main__":
-    run_undergraduate_parser()
-    #run_all_parsers()
+    run_all_parsers()
