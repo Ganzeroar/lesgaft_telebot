@@ -34,7 +34,7 @@ class Excel_parser():
                 for ws in work_book.sheetnames:
                     work_sheet = work_book[ws]
                     ws_date = str(work_sheet)
-                    month_to_skip = ['09', '10', '11', '12', '01', '03', '04', '05']
+                    month_to_skip = ['09', '10', '11', '12', '01', '02']
                     if ws_date[17:19] in month_to_skip:
                         print('skipped' + ws_date)
                         continue
@@ -52,7 +52,7 @@ class Excel_parser():
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
             ws_date = str(work_sheet)
-            month_to_skip = ['09', '10', '11', '12', '01']
+            month_to_skip = ['09', '10', '11', '12', '01', '02']
             if ws_date[17:19] in month_to_skip:
                 print('skipped' + ws_date)
                 continue
@@ -64,7 +64,7 @@ class Excel_parser():
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
             ws_date = str(work_sheet)
-            month_to_skip = ['09', '10', '11', '12', '01']
+            month_to_skip = ['09', '10', '11', '12', '01', '02']
             if ws_date[17:19] in month_to_skip:
                 print('skipped' + ws_date)
                 continue
