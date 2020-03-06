@@ -171,18 +171,17 @@ class Site_parser_magistracy_fk(Site_parser):
 
     def return_file_link_full_time_magistracy_fk(self, number_of_course):
         soup_obj = self.get_soup_obj()
-        try:
-            element = soup_obj.find_all('div', class_ = f'views-row views-row-11 views-row-odd')
-            if number_of_course == 0:
-                element_2 = element[0].find_all('div', class_ = 'field-item even')
+        element = soup_obj.find_all('div', class_ = f'views-row views-row-11 views-row-odd')
+        if number_of_course == 0:
+            element_2 = element[0].find_all('div', class_ = 'field-item even')
+            try:
                 new_file_link = element_2[1].find_all('a', href=True)[0]['href']
-            elif number_of_course == 1:
-                element_2 = element[0].find_all('div', class_ = 'field-item odd')
-                new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-            return new_file_link
-        except Exception as exception:
-            logging.basicConfig(filename="site_parser_error.log", level=logging.INFO)
-            logging.error('error with site parser mag fk, html-code : ' + str(soup_obj))
+            except IndexError:
+                new_file_link = element_2[2].find_all('a', href=True)[0]['href']
+        elif number_of_course == 1:
+            element_2 = element[0].find_all('div', class_ = 'field-item odd')
+            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
+        return new_file_link
     def find_changed_files(self):
         changed_files = []
 
@@ -358,7 +357,4 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    parser_2 = Site_parser_undergraduate_imist()
-    parser_2.run_full_time_undergraduate_imst_parser()
-    #tested_run_all_parsers_with_all_new_links()
-    #run_all_parsers()
+    run_all_parsers()
