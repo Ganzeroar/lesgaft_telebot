@@ -110,7 +110,7 @@ class Site_parser_undergraduate(Site_parser):
             parser = excel_parser.Excel_parser()
             parser.parse_work_file_using_name(name_of_course, 'full_time_undergraduate')
 
-class Site_parser_undergraduate_imist(Site_parser):
+class Site_parser_undergraduate_imst(Site_parser):
     
     def run_full_time_undergraduate_imst_parser(self):
         changed_files = self.find_changed_files()
@@ -118,20 +118,20 @@ class Site_parser_undergraduate_imist(Site_parser):
             self.create_new_excel_files('full_time_undergraduate/imst', changed_files)
             self.run_excel_parser(changed_files)
 
-    def return_file_links_from_site_imist(self):
+    def return_file_links_from_site_imst(self):
         soup_obj = self.get_soup_obj()
         element = soup_obj.find_all('div', class_ = f'views-row views-row-10 views-row-even')
         element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
-        imist_1 = element_2[0].find_all('a', href=True)[0]['href']
-        imist_2 = element_2[0].find_all('a', href=True)[1]['href']
-        imist_3 = element_2[0].find_all('a', href=True)[2]['href']
-        imist_4 = element_2[0].find_all('a', href=True)[3]['href']
+        imst_1 = element_2[0].find_all('a', href=True)[0]['href']
+        imst_2 = element_2[0].find_all('a', href=True)[1]['href']
+        imst_3 = element_2[0].find_all('a', href=True)[2]['href']
+        imst_4 = element_2[0].find_all('a', href=True)[3]['href']
 
-        return imist_1, imist_2, imist_3, imist_4
+        return imst_1, imst_2, imst_3, imst_4
 
     def find_changed_files(self):
         changed_files = []
-        links_from_site = self.return_file_links_from_site_imist()
+        links_from_site = self.return_file_links_from_site_imst()
 
         for number in range(4):
             new_file_link = links_from_site[number]
@@ -140,13 +140,15 @@ class Site_parser_undergraduate_imist(Site_parser):
         return changed_files
 
     def get_name_of_course(self, file_link):
-        course_names = ['1_kurs_imst', '2_kurs_imst', '3_kurs_imst', '4_kurs_imst']
+        course_names = ['1_kurs_imst', '2_kurs_imst', '3_kurs_imst', '4_kurs_imst', '1_kurs_imist', '2_kurs_imist', '3_kurs_imist', '4_kurs_imist']
         for name in course_names:
             if name in file_link:
                 name_of_course = self.formate_name(name)
                 return name_of_course
 
     def formate_name(self, name):
+        if len(name) == 12:
+            name = name.replace('imist', 'imst')
         first_part = name[:6]
         second_part = name[-4:]
         name_of_course = second_part + '_' + first_part
@@ -315,7 +317,7 @@ def run_undergraduate_parser():
     parser.run_full_time_undergraduate_parser()
 
 def run_undergraduate_imst_parser():
-    parser = Site_parser_undergraduate_imist()
+    parser = Site_parser_undergraduate_imst()
     parser.run_full_time_undergraduate_imst_parser()
     
 def run_magistracy_fk_parser():
@@ -333,7 +335,7 @@ def run_magistracy_imst_parser():
 def run_all_parsers():
     parser_1 = Site_parser_undergraduate()
     parser_1.run_full_time_undergraduate_parser()
-    parser_2 = Site_parser_undergraduate_imist()
+    parser_2 = Site_parser_undergraduate_imst()
     parser_2.run_full_time_undergraduate_imst_parser()
     parser_3 = Site_parser_magistracy_fk()
     parser_3.run_full_time_magistracy_fk()
@@ -346,7 +348,7 @@ def tested_run_all_parsers_with_all_new_links():
     db.drop_and_create_current_links_db()
     parser_1 = Site_parser_undergraduate()
     parser_1.run_full_time_undergraduate_parser()
-    parser_2 = Site_parser_undergraduate_imist()
+    parser_2 = Site_parser_undergraduate_imst()
     parser_2.run_full_time_undergraduate_imst_parser()
     parser_3 = Site_parser_magistracy_fk()
     parser_3.run_full_time_magistracy_fk()

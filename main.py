@@ -126,7 +126,7 @@ def change_group_step_4(chat_id, message_text):
         elif message_text == '4 курс':
             first_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_lovs_4)
             second_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_zovs_4)
-        third_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_imist)
+        third_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_imst)
     elif academic_degree == 'магистратура':
         first_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag)
         second_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag_afk)

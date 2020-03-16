@@ -12,12 +12,15 @@ import find_lessons_at_date
 import find_class_location
 import main
 import excel_parser
+import configurations
 
 import texts_for_tests
 import texts_for_lesgaft_bot
 import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import db_funcs_for_site_parser
+
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
     def test_take_long_str_return_error_text(self):
@@ -44,6 +47,8 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
     def test_take_correct_department_return_real_answer(self):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
+
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -110,6 +115,8 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся предмет1 Зал№2\n\nМанеж, первый этаж')
+
+#@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -193,6 +200,8 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
     def test_take_correct_data_return_correct_data(self):
         result = find_class_location.find_class_location('ауд.426 Лекция Дисциплина по выбору')
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону')
+
+#@unittest.skip("passed")
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -358,7 +367,7 @@ class Test_main(unittest.TestCase):
         self.assertEqual(result1, 'Как называется твоё расписание на сайте?')
         self.assertEqual(type(result2), type(fourth_step_keyboard))
         self.assertEqual(number_of_course, 1)
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_site_parser_undergraduate_class(unittest.TestCase):
 
     try:
@@ -430,9 +439,16 @@ class Test_site_parser_undergraduate_class(unittest.TestCase):
             'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx', 
             'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx']
         self.assertEqual(res_1, expect_1)
-@unittest.skip("passed")
 class Test_excel_parser(unittest.TestCase):
-    
+
+    @classmethod
+    def setUpClass(cls):
+        configurations.month_to_skip = ['09', '10', '11', '12', '01']
+
+    @classmethod
+    def tearDownClass(cls):
+        configurations.month_to_skip = ['09', '10', '11', '12', '01', '02']
+
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
 
@@ -466,6 +482,7 @@ class Test_excel_parser(unittest.TestCase):
             self.cursor.execute(req)
             expected_number_of_record = self.cursor.fetchall()[0][0]
             actual_number_of_record = groups_and_expected_number_of_records[couple]
+            print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
     def test_undergraduate_parser(self):
@@ -486,6 +503,7 @@ class Test_excel_parser(unittest.TestCase):
             self.cursor.execute(req)
             expected_number_of_record = self.cursor.fetchall()[0][0]
             actual_number_of_record = groups_and_expected_number_of_records[couple]
+            print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 
@@ -503,6 +521,7 @@ class Test_excel_parser(unittest.TestCase):
             self.cursor.execute(req)
             expected_number_of_record = self.cursor.fetchall()[0][0]
             actual_number_of_record = groups_and_expected_number_of_records[couple]
+            print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 
@@ -518,6 +537,7 @@ class Test_excel_parser(unittest.TestCase):
             self.cursor.execute(req)
             expected_number_of_record = self.cursor.fetchall()[0][0]
             actual_number_of_record = groups_and_expected_number_of_records[couple]
+            print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 
@@ -533,6 +553,7 @@ class Test_excel_parser(unittest.TestCase):
             self.cursor.execute(req)
             expected_number_of_record = self.cursor.fetchall()[0][0]
             actual_number_of_record = groups_and_expected_number_of_records[couple]
+            print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
     def test_mag_imst(self):
@@ -547,9 +568,10 @@ class Test_excel_parser(unittest.TestCase):
             self.cursor.execute(req)
             expected_number_of_record = self.cursor.fetchall()[0][0]
             actual_number_of_record = groups_and_expected_number_of_records[couple]
+            print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 
 
 if __name__ == '__main__':
-    unittest.main()     
+    unittest.main()
