@@ -30,9 +30,9 @@ def send_message_to_all_users(text):
         try:
             bot.send_message(user_id[0], text)
             print(f'message was sended to {user_id}')
-            time.sleep(1)
+            time.sleep(0.1)
         except Exception as exception:
-            time.sleep(1)
+            time.sleep(0.1)
             print(exception)
             print(user_id)
 
