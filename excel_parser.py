@@ -33,10 +33,12 @@ class Excel_parser():
             
                 for ws in work_book.sheetnames:
                     work_sheet = work_book[ws]
-                    ws_date = str(work_sheet)
+                    ws_name = str(work_sheet)
+                    if 'шапка'in ws_name:
+                        continue
                     month_to_skip = configurations.month_to_skip
-                    if ws_date[17:19] in month_to_skip:
-                        print('skipped' + ws_date)
+                    if ws_name[17:19] in month_to_skip:
+                        print('skipped' + ws_name)
                         continue
                     self.create_dates_and_times_in_db(work_sheet, db_name)
                     self.parse_work_sheet(work_sheet, db_name)
@@ -51,10 +53,12 @@ class Excel_parser():
 
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
-            ws_date = str(work_sheet)
+            ws_name = str(work_sheet)
+            if 'шапка'in ws_name:
+                continue
             month_to_skip = configurations.month_to_skip
-            if ws_date[17:19] in month_to_skip:
-                print('skipped' + ws_date)
+            if ws_name[17:19] in month_to_skip:
+                print('skipped' + ws_name)
                 continue
             print('sheet = ' + str(work_sheet))
             self.create_dates_and_times_in_db(work_sheet, db_name)
@@ -63,12 +67,16 @@ class Excel_parser():
     def create_groups_in_db(self, work_book, db_name):
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
-            ws_date = str(work_sheet)
+            ws_name = str(work_sheet)
+            if 'шапка'in ws_name:
+                continue
             month_to_skip = configurations.month_to_skip
-            if ws_date[17:19] in month_to_skip:
-                print('skipped' + ws_date)
+            if ws_name[17:19] in month_to_skip:
+                print('skipped' + ws_name)
                 continue
             first_group_name = self.return_first_group_name(db_name)
+            print('first')
+            print(first_group_name)
             list_of_groups = self.return_all_groups_names(work_sheet, first_group_name)
             db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
             return
@@ -134,8 +142,11 @@ class Excel_parser():
                 time = self.format_time(str(time_cell))
                 if time in times:
                     dates = work_sheet.cell(row = row, column = dates_column).value
+                    print(dates, row, dates_column)
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
+                    if self.is_merged(work_sheet, row, dates_column) == False and self.is_merged(work_sheet, row-1, dates_column):
+                        dates = self.get_value_of_merged_call(work_sheet, row-1, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value
                     group_name = self.format_group_name(group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
@@ -143,16 +154,16 @@ class Excel_parser():
                     print(subject)
         print('ws finished')
 
-    def return_all_groups_names(self, work_sheet, first_group_name):
-        groups_names = []
-        row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
-        first_group_column = self.const_first_group_column
-        for column in range(first_group_column, 25):
-            group_cell = work_sheet.cell(row = row_number, column = column).value
-            if type(group_cell) == str :
-                group_cell = self.format_group_name(group_cell)
-                groups_names.append(group_cell)
-        return groups_names
+    #def return_all_groups_names(self, work_sheet, first_group_name):
+    #    groups_names = []
+    #    row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
+    #    first_group_column = self.const_first_group_column
+    #    for column in range(first_group_column, 25):
+    #        group_cell = work_sheet.cell(row = row_number, column = column).value
+    #        if type(group_cell) == str :
+    #            group_cell = self.format_group_name(group_cell)
+    #            groups_names.append(group_cell)
+    #    return groups_names
 
     def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
         first_group_column = self.const_first_group_column
@@ -168,6 +179,7 @@ class Excel_parser():
         row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
+            print(row_number, column)
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str :
                 group_cell = self.format_group_name(group_cell)
@@ -391,11 +403,11 @@ class Excel_parser():
         elif db_name == 'magistracy_afk_full_time_2_kurs':
             first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_ограниченными_возможностями_здоровья'
         elif db_name == 'zovs_1_kurs':
-            first_group_name = 'группа_112'
+            first_group_name = 'группа_113'
         elif db_name == 'zovs_2_kurs':
             first_group_name = 'группа_212'
         elif db_name == 'zovs_3_kurs':
-            first_group_name = 'группа_311'
+            first_group_name = 'группа_312'
         elif db_name == 'zovs_4_kurs':
             first_group_name = 'группа_411'
         elif db_name == 'lovs_1_kurs':
@@ -465,4 +477,5 @@ def run_all_parsers():
     parser.run_parser('full_time_undergraduate/imst')
 
 if __name__ == "__main__":
-    run_all_parsers()
+    run_undergraduate_parser()
+    #run_all_parsers()
