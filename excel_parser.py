@@ -75,8 +75,6 @@ class Excel_parser():
                 print('skipped' + ws_name)
                 continue
             first_group_name = self.return_first_group_name(db_name)
-            print('first')
-            print(first_group_name)
             list_of_groups = self.return_all_groups_names(work_sheet, first_group_name)
             db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
             return
@@ -179,7 +177,6 @@ class Excel_parser():
         row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
-            print(row_number, column)
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str :
                 group_cell = self.format_group_name(group_cell)
