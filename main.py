@@ -236,8 +236,10 @@ def main_func(message):
             print(f'User: {message.from_user.id} send UNEXPECTED message: {message.text} at time: {message.date}')
     if keyboard == 'main_keyboard':
         keyboard = main_keyboard
-    bot.send_message(message.from_user.id, text, reply_markup = keyboard)
-            
+    try:
+        bot.send_message(message.from_user.id, text, reply_markup = keyboard)
+    except:
+        print('bot was blocked by user - ' + str(message.from_user.id))
 
 def main_run():
     try:
