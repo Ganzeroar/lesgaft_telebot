@@ -68,7 +68,7 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
     if number_of_lesson == 6:
         return 'Сегодня у тебя больше нет пар.'
-    if bool(today_subjects) == False or today_subjects[number_of_lesson][0] == None:
+    if bool(today_subjects) == False or today_subjects == None:
         return texts_for_lesgaft_bot.error
     list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
     try:
