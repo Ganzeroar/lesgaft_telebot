@@ -152,12 +152,24 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '17:00')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '18:40')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.12.', '9:45')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.12.', '11:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '11.12.', '13:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '12.12.', '15:15')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '13.12.', '17:00')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.12.', '18:40')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '11:30', 'группа_417', 'предмет2')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '13:30', 'группа_417', 'предмет3')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '15:15', 'группа_417', 'предмет4')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '18:40', 'группа_417', 'предмет6')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.12.', '9:45', 'группа_417', 'нет предмета')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.12.', '11:30', 'группа_417', 'нет предмета')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '11.12.', '13:30', 'группа_417', 'нет предмета')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '12.12.', '15:15', 'группа_417', 'нет предмета')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '13.12.', '17:00', 'группа_417', 'нет предмета')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.12.', '18:40', 'группа_417', 'нет предмета')
         
     @classmethod
     def tearDownClass(cls):
@@ -195,6 +207,50 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         result = find_lessons_at_date.return_lessons_at_date(111111111, date)
         expected_string = 'Расписание на понедельник (14.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n18:40-20:10\nпредмет6\n\n'
         self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-09 03:00:00')
+    def test_today_not_subjects_return_correct_message_in_monday(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'В понедельник (09.12.2019.) у тебя нет пар'
+        self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-10 03:00:00')
+    def test_today_not_subjects_return_correct_message_in_tuesday(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'Во вторник (10.12.2019.) у тебя нет пар'
+        self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-11 03:00:00')
+    def test_today_not_subjects_return_correct_message_in_wednesday(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'В среду (11.12.2019.) у тебя нет пар'
+        self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-12 03:00:00')
+    def test_today_not_subjects_return_correct_message_in_thursday(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'В четверг (12.12.2019.) у тебя нет пар'
+        self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-13 03:00:00')
+    def test_today_not_subjects_return_correct_message_in_friday(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'В пятницу (13.12.2019.) у тебя нет пар'
+        self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-14 03:00:00')
+    def test_today_not_subjects_return_correct_message_in_saturday(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'В субботу (14.12.2019.) у тебя нет пар'
+        self.assertEqual(result, expected_string)
+
+
 class Test_find_class_location_find_class_location(unittest.TestCase):
 
     def test_take_correct_data_return_correct_data(self):
@@ -367,6 +423,9 @@ class Test_main(unittest.TestCase):
         self.assertEqual(result1, 'Как называется твоё расписание на сайте?')
         self.assertEqual(type(result2), type(fourth_step_keyboard))
         self.assertEqual(number_of_course, 1)
+
+        
+
 @unittest.skip("broken")
 class Test_site_parser_undergraduate_class(unittest.TestCase):
 

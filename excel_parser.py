@@ -151,17 +151,6 @@ class Excel_parser():
                     print(subject)
         print('ws finished')
 
-    #def return_all_groups_names(self, work_sheet, first_group_name):
-    #    groups_names = []
-    #    row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
-    #    first_group_column = self.const_first_group_column
-    #    for column in range(first_group_column, 25):
-    #        group_cell = work_sheet.cell(row = row_number, column = column).value
-    #        if type(group_cell) == str :
-    #            group_cell = self.format_group_name(group_cell)
-    #            groups_names.append(group_cell)
-    #    return groups_names
-
     def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
         first_group_column = self.const_first_group_column
         for row in range(1, 10):

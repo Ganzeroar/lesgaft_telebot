@@ -19,10 +19,10 @@ def send_custom_message_to_user(user_id, text):
     try:
         user_id = int(user_id)
         text = str(text)
+        bot.send_message(user_id, text)
     except:
         print('Error with sending')
         return 
-    bot.send_message(user_id, text)
 
 def send_message_to_all_users(text):
     users = db_funcs_for_students_db.get_all_users()
@@ -138,19 +138,17 @@ def change_group_step_4(chat_id, message_text):
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-
+    text = ''
     if db_funcs_for_students_db.user_already_in_db(message.from_user.id):
-        bot.send_message(message.from_user.id, 'С возвращением!')
+        text = 'С возвращением!'
     else:
         db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(message.from_user.first_name), str(message.from_user.last_name), int(message.date))
         text = texts_for_lesgaft_bot.greeting_text
-        if text == None or text == False or bool(text) == False or text == [] or text == [[]] or text == {} or text == '':
-            text_for_error = f'ERRORERRORERROR User: {message.from_user.id} send message: {message.text} and get the text for answer: {text} in greeting' 
-            print(text_for_error)
-        try:
-            bot.send_message(message.from_user.id, text)
-        except Exception as exception:
-            print(exception)
+    try:
+        bot.send_message(message.from_user.id, text)
+    except Exception as exception:
+        print('\n151\n')
+        print(exception)
 
 @bot.message_handler(content_types=["text"])
 def main_func(message):
@@ -227,7 +225,6 @@ def main_func(message):
         keyboard = 'main_keyboard'
         if bool(text) == True:
             print(f'User: {message.from_user.id} send message: {message.text} at time: {message.date}')
-            #bot.send_message(message.from_user.id, text, reply_markup = main_keyboard)
         elif text == False:
             logging.basicConfig(filename="users_messages.log", level=logging.INFO)
             log_text = f'User: {message.from_user.id} send UNEXPECTED message: {message.text} at time: {message.date}'
@@ -239,6 +236,7 @@ def main_func(message):
     try:
         bot.send_message(message.from_user.id, text, reply_markup = keyboard)
     except:
+        print('\n240\n')
         print('bot was blocked by user - ' + str(message.from_user.id))
 
 def main_run():
@@ -248,6 +246,7 @@ def main_run():
         time.sleep(60)
         logging.basicConfig(filename="sample.log", level=logging.INFO)
         log = logging.getLogger("ex")
+        print('\n250\n')
         print('ERROR')
         bot.send_message(206171081, 'Я умер')
         log.exception('Error!')

@@ -21,9 +21,11 @@ def return_lessons_at_date(user_id, date):
         return 'Твоей группы не существует. Измени номер группы.'
 
     subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
+    number_of_date = date.strftime("%d.%m.%Y.")
+    if set(subjects) == {('нет предмета',)}:
+        return 'В ' + day_of_week + f' ({number_of_date}) у тебя нет пар' if day_of_week != 'вторник' else 'Во ' + day_of_week + f' ({number_of_date}) у тебя нет пар' 
     message_text = ''
     list_of_times = ['9:45-11:15\n', '11:30-13:00\n', '13:30-15:00\n', '15:15-16:45\n', '17:00-18:30\n', '18:40-20:10\n']
-    number_of_date = date.strftime("%d.%m.%Y.")
     message_text += f'Расписание на {day_of_week} ({number_of_date})\n\n'
     try:
         for x in range(len(subjects)):
