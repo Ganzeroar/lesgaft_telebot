@@ -140,7 +140,6 @@ class Excel_parser():
                 time = self.format_time(str(time_cell))
                 if time in times:
                     dates = work_sheet.cell(row = row, column = dates_column).value
-                    print(dates, row, dates_column)
                     if self.is_merged(work_sheet, row, dates_column):
                         dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
                     if self.is_merged(work_sheet, row, dates_column) == False and self.is_merged(work_sheet, row-1, dates_column):

@@ -269,7 +269,6 @@ class Site_parser_magistracy_imst(Site_parser):
         changed_files = self.find_changed_files()
         if len(changed_files) > 0:
             self.create_new_excel_files('full_time_magistracy_imst', changed_files)
-            print(123)
             self.run_excel_parser(changed_files)
 
     def return_file_link_full_time_magistracy_imst(self, number_of_course):
