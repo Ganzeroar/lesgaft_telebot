@@ -108,13 +108,13 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
     def test_when_before_lessons_return_correct_data(self, find_class_location):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
-        self.assertEqual(result, 'Через 3:45 начнётся предмет1\n\nпуть')
+        self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1\n\nпуть')
     
     @freeze_time('2019-01-10 06:00:00')
     def test_real_when_before_lessons_return_correct_data(self):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
-        self.assertEqual(result, 'Через 3:45 начнётся предмет1 Зал№2\n\nМанеж, первый этаж')
+        self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
 
 #@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
@@ -314,7 +314,7 @@ class Test_main(unittest.TestCase):
     def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
         result = main.return_where_is_the_lesson(111111111)
         date = datetime.datetime.now()
-        self.assertEqual(result, ('Через 3:45 начнётся предмет1 Зал№2\n\nМанеж, первый этаж', 'main_keyboard'))
+        self.assertEqual(result, ('Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж', 'main_keyboard'))
 
     @freeze_time('2019-01-09 03:00:00')
     def test_return_today_lessons_take_correct_data_return_correct(self):

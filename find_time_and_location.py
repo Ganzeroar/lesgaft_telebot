@@ -81,7 +81,7 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
                 next_start_time = datetime.datetime.strptime(list_of_times[number_of_lesson], formate_of_time)
                 time_to_lesson = str(next_start_time - today_date)[0:4]
                 class_location = find_class_location.find_class_location(next_subject)
-                text = f'Через {time_to_lesson} начнётся {next_subject}\n\n{class_location}' 
+                text = f'Через {time_to_lesson} начнётся\n{next_subject}\n\n{class_location}' 
                 return text
             elif before_or_during == 'during':
                 current_subject = today_subjects[number_of_lesson][0]
