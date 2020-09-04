@@ -257,6 +257,11 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location('ауд.426 Лекция Дисциплина по выбору')
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону')
 
+    def test_take_real_correct_data_return_correct_data(self):
+        real_data = '''ауд.421\nЛекция\nДисциплина по выбору'''
+        result = find_class_location.find_class_location(real_data)
+        self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
+
 #@unittest.skip("passed")
 class Test_main(unittest.TestCase):
     

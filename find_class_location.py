@@ -193,8 +193,12 @@ def find_faculty_location(name_of_faculty):
 
 def find_class_location(subject):  
     if 'ауд.' in subject:
-        splitted = subject.split(' ')
-        for element in splitted:
+        splitted_by_space = subject.split(' ')
+        for element in splitted_by_space:
+            if 'ауд.' in element and element[4:].isdigit():
+                return find_class_location_used_number(element[4:])
+        splitted_by_new_line = subject.split('\n')
+        for element in splitted_by_new_line:
             if 'ауд.' in element:
                 return find_class_location_used_number(element[4:])
     elif 'Зал' in subject:
