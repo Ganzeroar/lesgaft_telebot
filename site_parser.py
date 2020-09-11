@@ -54,6 +54,10 @@ class Site_parser_undergraduate(Site_parser):
             self.create_new_excel_files('full_time_undergraduate', changed_files)
             self.run_excel_parser(changed_files)
 
+    def run_full_time_undergraduate_parser_without_checking_changed_files(self):
+        self.create_new_excel_files('full_time_undergraduate', changed_files)
+        self.run_excel_parser(changed_files)
+
     def find_changed_files(self):
         changed_files = []
 
@@ -314,6 +318,10 @@ class Site_parser_magistracy_imst(Site_parser):
 def run_undergraduate_parser():
     parser = Site_parser_undergraduate()
     parser.run_full_time_undergraduate_parser()
+
+def run_undergraduate_parser_without_checking_changed_files()
+    parser = Site_parser_undergraduate()
+    parser.run_full_time_undergraduate_parser_without_checking_changed_files()
 
 def run_undergraduate_imst_parser():
     parser = Site_parser_undergraduate_imst()

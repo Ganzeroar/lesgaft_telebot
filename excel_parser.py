@@ -36,6 +36,8 @@ class Excel_parser():
                     ws_name = str(work_sheet)
                     if 'шапка'in ws_name:
                         continue
+                    if 'Ссылки' in ws_name:
+                        continue
                     month_to_skip = configurations.month_to_skip
                     if ws_name[17:19] in month_to_skip:
                         print('skipped' + ws_name)
@@ -54,7 +56,10 @@ class Excel_parser():
         for ws in work_book.sheetnames:
             work_sheet = work_book[ws]
             ws_name = str(work_sheet)
-            if 'шапка'in ws_name:
+            #sheetnames_for_skip = []
+            if 'шапка' in ws_name:
+                continue
+            if 'Ссылки' in ws_name:
                 continue
             month_to_skip = configurations.month_to_skip
             if ws_name[17:19] in month_to_skip:
@@ -146,6 +151,9 @@ class Excel_parser():
                         dates = self.get_value_of_merged_call(work_sheet, row-1, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value
                     group_name = self.format_group_name(group_name)
+                    #if not self.is_group_name_in_db(group_name):
+                    if not db_funcs_for_subjects_db.is_group_exist(group_name, db_name):
+                        db_funcs_for_subjects_db.save_group(db_name, group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
                     print(subject)
