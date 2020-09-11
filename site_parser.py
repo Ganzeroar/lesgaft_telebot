@@ -319,7 +319,7 @@ def run_undergraduate_parser():
     parser = Site_parser_undergraduate()
     parser.run_full_time_undergraduate_parser()
 
-def run_undergraduate_parser_without_checking_changed_files()
+def run_undergraduate_parser_without_checking_changed_files():
     parser = Site_parser_undergraduate()
     parser.run_full_time_undergraduate_parser_without_checking_changed_files()
 
