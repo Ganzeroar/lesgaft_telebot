@@ -1,9 +1,16 @@
 import schedule
 import time
+
 import site_parser
+import main
 
 def job():
-    site_parser.run_undergraduate_parser()
+    try:
+        site_parser.run_undergraduate_parser()
+    except Exception as exception:
+        main.send_custom_message_to_user(206171081, 'ЭКСЕЛЬ ПАРСЕР УМЕР')
+        print(exception)
+
     #site_parser.run_all_parsers()
 
 # -2 от Мск из-за неизменяемой таймзоны schedule 

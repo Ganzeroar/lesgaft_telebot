@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 import db_funcs_for_site_parser as db 
 import excel_parser
+import main
 
 class Site_parser():
 
@@ -50,6 +51,10 @@ class Site_parser_undergraduate(Site_parser):
     def run_full_time_undergraduate_parser(self):
         changed_files = self.find_changed_files()
         if len(changed_files) > 0:
+            main.send_custom_message_to_user(206171081, f'Новые расписания: {changed_files}')
+        
+            date_and_time_now = self.get_date_and_time_now()
+            print(f'Дата = {date_and_time_now}')
             print('Изменения в ' + str(changed_files))
             self.create_new_excel_files('full_time_undergraduate', changed_files)
             self.run_excel_parser(changed_files)
