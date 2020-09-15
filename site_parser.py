@@ -58,6 +58,9 @@ class Site_parser_undergraduate(Site_parser):
             print('Изменения в ' + str(changed_files))
             self.create_new_excel_files('full_time_undergraduate', changed_files)
             self.run_excel_parser(changed_files)
+        else:
+            main.send_custom_message_to_user(206171081, 'Изменений расписаний не обнаружено')
+
 
     def run_full_time_undergraduate_parser_without_checking_changed_files(self):
         self.create_new_excel_files('full_time_undergraduate', changed_files)

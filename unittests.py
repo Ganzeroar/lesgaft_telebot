@@ -12,6 +12,7 @@ import find_lessons_at_date
 import find_class_location
 import main
 import excel_parser
+import request_handler
 import configurations
 
 import texts_for_tests
@@ -262,7 +263,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
 
-#@unittest.skip("passed")
+@unittest.skip("not_need")
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -332,102 +333,102 @@ class Test_main(unittest.TestCase):
         result = main.return_where_is_the_classroom(111111111, 'где 10')
         self.assertEqual(result, ('ИЭиСТ, первый этаж', 'main_keyboard'))
 
-    def test_change_group_step_1_take_correct_data_return_correct(self):
-        first_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-        full_time = telebot.types.KeyboardButton('Очное обучение321')
-        part_time = telebot.types.KeyboardButton('Заочное обучение321')
-        first_step_keyboard.add(full_time, part_time)
-
-        result1 = main.change_group_step_1(111111111)[0]
-        result2 = main.change_group_step_1(111111111)[1]
-
-        registragion_process = db_funcs_for_students_db.get_state_of_registragion_process(111111111)
-        
-        self.assertEqual(result1, 'Какая у тебя форма обучения?')
-        self.assertEqual(type(result2), type(first_step_keyboard))
-        self.assertEqual(registragion_process, True)
-
-    def test_change_group_step_2_not_in_registragion_process_return_error_message(self):
-        result = main.change_group_step_2(222222222, 'Очное обучение')
-        self.assertEqual(result, ('Эта команда доступна только в процессе смены группы', 'main_keyboard'))
-
-    def test_change_group_step_2_take_correct_data_return_correct(self):
-        second_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-        undergraduate = telebot.types.KeyboardButton('Бакалавриат')
-        magistracy = telebot.types.KeyboardButton('Магистратура')
-        second_step_keyboard.add(undergraduate, magistracy)
-
-        main.change_group_step_1(111111111)
-        registragion_process = db_funcs_for_students_db.get_state_of_registragion_process(111111111)
-        result1 = main.change_group_step_2(111111111, 'Очное обучение')[0]
-        result2 = main.change_group_step_2(111111111, 'Очное обучение')[1]
-        
-        education_form = db_funcs_for_students_db.get_education_form(111111111)
-
-        self.assertEqual(result1, 'На каком направлении ты учишься?')
-        self.assertEqual(type(result2), type(second_step_keyboard))
-        self.assertEqual(education_form, 'Очное обучение')
-        
-    def test_change_group_step_3_not_in_registragion_process_return_error_message(self):
-        result = main.change_group_step_3(222222222, 'Очное обучение')
-        self.assertEqual(result, ('Эта команда доступна только в процессе смены группы', 'main_keyboard'))
-
-    def test_change_group_step_3_take_undergraduate_return_correct(self):
-        main.change_group_step_1(111111111)
-        
-        third_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-        course_1 = telebot.types.KeyboardButton('1 курс')
-        course_2 = telebot.types.KeyboardButton('2 курс')
-        course_3 = telebot.types.KeyboardButton('3 курс')
-        course_4 = telebot.types.KeyboardButton('4 курс')
-        third_step_keyboard.add(course_1, course_2, course_3, course_4)
-
-        result1 = main.change_group_step_3(111111111, 'бакалавриат')[0]
-        result2 = main.change_group_step_3(111111111, 'бакалавриат')[1]
-
-        academic_degree = db_funcs_for_students_db.get_academic_degree(111111111)
-
-        self.assertEqual(result1, 'На каком курсе ты учишься?')
-        self.assertEqual(type(result2), type(third_step_keyboard))
-        self.assertEqual(academic_degree, 'бакалавриат')
-        
-    def test_change_group_step_3_take_magistracy_return_correct(self):
-        main.change_group_step_1(111111111)
-
-        third_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-        course_1 = telebot.types.KeyboardButton('1 курс')
-        course_2 = telebot.types.KeyboardButton('2 курс')
-        third_step_keyboard.add(course_1, course_2)
-
-        result1 = main.change_group_step_3(111111111, 'магистратура')[0]
-        result2 = main.change_group_step_3(111111111, 'магистратура')[1]
-
-        academic_degree = db_funcs_for_students_db.get_academic_degree(111111111)
-
-        self.assertEqual(result1, 'На каком курсе ты учишься?')
-        self.assertEqual(type(result2), type(third_step_keyboard))
-        self.assertEqual(academic_degree, 'магистратура')
-        
-    def test_change_group_step_4_not_in_registragion_process_return_error_message(self):
-        result = main.change_group_step_3(222222222, '1 курс')
-        self.assertEqual(result, ('Эта команда доступна только в процессе смены группы', 'main_keyboard'))
-
-    def test_change_group_step_4_take_undergraduate_return_correct(self):
-        main.change_group_step_1(111111111)
-
-        fourth_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
-        first_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag)
-        second_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag_afk)
-        third_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag_tour)
-
-        result1 = main.change_group_step_4(111111111, '1 курс')[0]
-        result2 = main.change_group_step_4(111111111, '1 курс')[1]
-
-        number_of_course = db_funcs_for_students_db.get_number_of_course(111111111)
-
-        self.assertEqual(result1, 'Как называется твоё расписание на сайте?')
-        self.assertEqual(type(result2), type(fourth_step_keyboard))
-        self.assertEqual(number_of_course, 1)
+    #def test_change_group_step_1_take_correct_data_return_correct(self):
+    #    first_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    #    full_time = telebot.types.KeyboardButton('Очное обучение321')
+    #    part_time = telebot.types.KeyboardButton('Заочное обучение321')
+    #    first_step_keyboard.add(full_time, part_time)
+#
+    #    result1 = main.change_group_step_1(111111111)[0]
+    #    result2 = main.change_group_step_1(111111111)[1]
+#
+    #    registration_process = db_funcs_for_students_db.get_state_of_registration_process(111111111)
+    #    
+    #    self.assertEqual(result1, 'Какая у тебя форма обучения?')
+    #    self.assertEqual(type(result2), type(first_step_keyboard))
+    #    self.assertEqual(registration_process, True)
+#
+    #def test_change_group_step_2_not_in_registration_process_return_error_message(self):
+    #    result = main.change_group_step_2(222222222, 'Очное обучение')
+    #    self.assertEqual(result, ('Эта команда доступна только в процессе смены группы', 'main_keyboard'))
+#
+    #def test_change_group_step_2_take_correct_data_return_correct(self):
+    #    second_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    #    undergraduate = telebot.types.KeyboardButton('Бакалавриат')
+    #    magistracy = telebot.types.KeyboardButton('Магистратура')
+    #    second_step_keyboard.add(undergraduate, magistracy)
+#
+    #    main.change_group_step_1(111111111)
+    #    registration_process = db_funcs_for_students_db.get_state_of_registration_process(111111111)
+    #    result1 = main.change_group_step_2(111111111, 'Очное обучение')[0]
+    #    result2 = main.change_group_step_2(111111111, 'Очное обучение')[1]
+    #    
+    #    education_form = db_funcs_for_students_db.get_education_form(111111111)
+#
+    #    self.assertEqual(result1, 'На каком направлении ты учишься?')
+    #    self.assertEqual(type(result2), type(second_step_keyboard))
+    #    self.assertEqual(education_form, 'Очное обучение')
+    #    
+    #def test_change_group_step_3_not_in_registration_process_return_error_message(self):
+    #    result = main.change_group_step_3(222222222, 'Очное обучение')
+    #    self.assertEqual(result, ('Эта команда доступна только в процессе смены группы', 'main_keyboard'))
+#
+    #def test_change_group_step_3_take_undergraduate_return_correct(self):
+    #    main.change_group_step_1(111111111)
+    #    
+    #    third_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    #    course_1 = telebot.types.KeyboardButton('1 курс')
+    #    course_2 = telebot.types.KeyboardButton('2 курс')
+    #    course_3 = telebot.types.KeyboardButton('3 курс')
+    #    course_4 = telebot.types.KeyboardButton('4 курс')
+    #    third_step_keyboard.add(course_1, course_2, course_3, course_4)
+#
+    #    result1 = main.change_group_step_3(111111111, 'бакалавриат')[0]
+    #    result2 = main.change_group_step_3(111111111, 'бакалавриат')[1]
+#
+    #    academic_degree = db_funcs_for_students_db.get_academic_degree(111111111)
+#
+    #    self.assertEqual(result1, 'На каком курсе ты учишься?')
+    #    self.assertEqual(type(result2), type(third_step_keyboard))
+    #    self.assertEqual(academic_degree, 'бакалавриат')
+    #    
+    #def test_change_group_step_3_take_magistracy_return_correct(self):
+    #    main.change_group_step_1(111111111)
+#
+    #    third_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    #    course_1 = telebot.types.KeyboardButton('1 курс')
+    #    course_2 = telebot.types.KeyboardButton('2 курс')
+    #    third_step_keyboard.add(course_1, course_2)
+#
+    #    result1 = main.change_group_step_3(111111111, 'магистратура')[0]
+    #    result2 = main.change_group_step_3(111111111, 'магистратура')[1]
+#
+    #    academic_degree = db_funcs_for_students_db.get_academic_degree(111111111)
+#
+    #    self.assertEqual(result1, 'На каком курсе ты учишься?')
+    #    self.assertEqual(type(result2), type(third_step_keyboard))
+    #    self.assertEqual(academic_degree, 'магистратура')
+    #    
+    #def test_change_group_step_4_not_in_registration_process_return_error_message(self):
+    #    result = main.change_group_step_3(222222222, '1 курс')
+    #    self.assertEqual(result, ('Эта команда доступна только в процессе смены группы', 'main_keyboard'))
+#
+    #def test_change_group_step_4_take_undergraduate_return_correct(self):
+    #    main.change_group_step_1(111111111)
+#
+    #    fourth_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    #    first_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag)
+    #    second_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag_afk)
+    #    third_timetable = telebot.types.KeyboardButton(texts_for_lesgaft_bot.timetable_mag_tour)
+#
+    #    result1 = main.change_group_step_4(111111111, '1 курс')[0]
+    #    result2 = main.change_group_step_4(111111111, '1 курс')[1]
+#
+    #    number_of_course = db_funcs_for_students_db.get_number_of_course(111111111)
+#
+    #    self.assertEqual(result1, 'Как называется твоё расписание на сайте?')
+    #    self.assertEqual(type(result2), type(fourth_step_keyboard))
+    #    self.assertEqual(number_of_course, 1)
 
         
 
@@ -636,7 +637,102 @@ class Test_excel_parser(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
+class Test_request_handler(unittest.TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        try:
+            db_funcs_for_students_db.drop_db()
+            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+        except:
+            pass
+        db_funcs_for_students_db.create_db()
+        db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
+        db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
+        db_funcs_for_students_db.update_group(111111111, 417)
 
+        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '9:45')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '11:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '13:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '15:15')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '17:00')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '11:30', 'группа_417', 'предмет2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '13:30', 'группа_417', 'предмет3')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '15:15', 'группа_417', 'предмет4')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+        
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '9:45')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '11:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '13:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '15:15')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '17:00')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '18:40')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '9:45', 'группа_417', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '11:30', 'группа_417', 'предмет2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '13:30', 'группа_417', 'предмет3')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '15:15', 'группа_417', 'предмет4')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '17:00', 'группа_417', 'предмет5')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '18:40', 'группа_417', 'предмет6')
+        
+    @classmethod
+    def tearDownClass(cls):
+        db_funcs_for_students_db.drop_db()
+        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+
+    @freeze_time('2019-01-10 03:00:00')
+    def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
+        result = request_handler.return_where_is_the_lesson(111111111)
+        self.assertEqual(result[0], 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+
+    @freeze_time('2019-01-10 03:00:00')
+    def test_main_request_handler_take_where_is_the_lesson_request_return_correct(self):
+        result = request_handler.main_request_handler('Где пара?', 111111111)
+        self.assertEqual(result[0], 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+
+    @freeze_time('2019-01-09 03:00:00')
+    def test_return_today_lessons_take_correct_data_return_correct(self):
+        result = request_handler.return_today_lessons(111111111)
+        expected_text = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
+        self.assertEqual(result[0], expected_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+
+    @freeze_time('2019-01-09 03:00:00')
+    def test_main_request_handler_take_today_lessons_request_return_correct(self):
+        result = request_handler.main_request_handler('Какие сегодня пары?', 111111111)
+        expected_text = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
+        self.assertEqual(result[0], expected_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+
+    @freeze_time('2019-01-10 03:00:00')
+    def test_return_tomorrow_lessons_take_correct_data_return_correct(self):
+        result = request_handler.return_today_lessons(111111111)
+        expected_text = 'Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n'
+        self.assertEqual(result[0], expected_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+    
+    @freeze_time('2019-01-09 03:00:00')
+    def test_main_request_handler_take_tomorrow_lessons_request_return_correct(self):
+        result = request_handler.main_request_handler('Какие завтра пары?', 111111111)
+        expected_text = 'Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n'
+        self.assertEqual(result[0], expected_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+
+    def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
+        result = request_handler.return_where_is_the_classroom(111111111, 'где 10')
+        self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+
+    def test_main_request_handler_take_where_is_the_classroom_request_return_correct(self):
+        result = request_handler.main_request_handler('где 10', 111111111)
+        self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
 
 if __name__ == '__main__':
     unittest.main()
