@@ -12,6 +12,7 @@ import texts_for_lesgaft_bot
 import find_time_and_location
 import find_lessons_at_date
 import handler_of_unusual_requests as handler
+import request_handler
 
 bot = telebot.TeleBot(config.token)
 
@@ -52,7 +53,7 @@ def start_message(message):
 
 @bot.message_handler(content_types=["text"])
 def main_func(message):
-    text, keyboard = main_request_handler(message.text, message.from_user.id)
+    text, keyboard = request_handler.main_request_handler(message.text, message.from_user.id)
     try:
         bot.send_message(message.from_user.id, text, reply_markup = keyboard)
     except Exception as exception:
