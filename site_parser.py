@@ -61,10 +61,23 @@ class Site_parser_undergraduate(Site_parser):
         else:
             main.send_custom_message_to_user(206171081, 'Изменений расписаний не обнаружено')
 
-
     def run_full_time_undergraduate_parser_without_checking_changed_files(self):
-        self.create_new_excel_files('full_time_undergraduate', changed_files)
-        self.run_excel_parser(changed_files)
+        all_files = self.get_all_files()
+        print(all_files)
+        self.create_new_excel_files('full_time_undergraduate', all_files)
+        self.run_excel_parser(all_files)
+
+    def get_all_files(self):
+        all_files = []
+
+        for number in range(8):
+            # необходимо что бы правильно определить HTML код нужного расписания
+            # ввиду плохого нейминга элементов на сайте
+            number_of_row = number + 2
+            
+            file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row)
+            all_files.append(file_link)
+        return all_files
 
     def find_changed_files(self):
         changed_files = []

@@ -156,7 +156,7 @@ class Excel_parser():
                         db_funcs_for_subjects_db.save_group(db_name, group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
-                    print(f'Какая-то ошибка в эксель парсере в колонке {column}, ряде {row}, расписании {db_name}, холсте {work_sheet}, предмете {subject}')
+                    print(f'Какая-то ошибка в эксель парсере в колонке {column}, ряде {row}, расписании {db_name}, холсте {work_sheet}, предмете {subject}, времени {time}')
         print('ws finished')
 
     def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
@@ -215,6 +215,8 @@ class Excel_parser():
             time = '9:45'
         if '.' in time:
             time = time.replace('.', ':')
+        if ';' in time:
+            time = time.replace(';', ':')
         if len(time) >= 8 and time[-1] == '0' and time[-2] == '0' and time[-3] == ':':
             if len(time) == 8:
                 time = time[:5]
