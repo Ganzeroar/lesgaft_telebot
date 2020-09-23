@@ -105,6 +105,9 @@ class Site_parser_undergraduate(Site_parser):
     def get_name_of_course(self, file_link):
         course_names = ['1_kurs_lovs','1_kurs_zovs','2_kurs_lovs','2_kurs_zovs',
             '3_kurs_lovs','3_kurs_dlya','4_kurs_lovs','4_kurs_zovs']
+        #костыль из-за измеения 3 курса зовс
+        if '3_kurs_dlya' in file_link:
+            return 'zovs_3_kurs'
         for name in course_names:
             if name in file_link:
                 name_of_course = self.formate_name(name)

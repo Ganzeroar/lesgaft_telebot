@@ -156,7 +156,7 @@ class Excel_parser():
                         db_funcs_for_subjects_db.save_group(db_name, group_name)
                     self.save_subj_in_db(db_name, dates, time, group_name, subject)
                 else:
-                    print(subject)
+                    print(f'Какая-то ошибка в эксель парсере в колонке {column}, ряде {row}, расписании {db_name}, холсте {work_sheet}, предмете {subject}')
         print('ws finished')
 
     def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
