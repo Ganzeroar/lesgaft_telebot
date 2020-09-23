@@ -104,7 +104,7 @@ class Site_parser_undergraduate(Site_parser):
 
     def get_name_of_course(self, file_link):
         course_names = ['1_kurs_lovs','1_kurs_zovs','2_kurs_lovs','2_kurs_zovs',
-            '3_kurs_lovs','3_kurs_zovs','4_kurs_lovs','4_kurs_zovs']
+            '3_kurs_lovs','3_kurs_dlya','4_kurs_lovs','4_kurs_zovs']
         for name in course_names:
             if name in file_link:
                 name_of_course = self.formate_name(name)
