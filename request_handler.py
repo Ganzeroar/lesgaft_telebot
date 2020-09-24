@@ -120,14 +120,14 @@ def go_to_settings_stage(user_id):
     
     if status == False:
         item1 = telebot.types.KeyboardButton('Подписаться на рассылку новостей')
-        item2 = telebot.types.KeyboardButton('Информация о подписках')
-        item3 = telebot.types.KeyboardButton('Вернуться в меню')
     elif status == True:
         item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
-        item2 = telebot.types.KeyboardButton('Информация о подписках')
-        item3 = telebot.types.KeyboardButton('Вернуться в меню')
-
-    main_keyboard.add(item1, item2, item3)
+    
+    item2 = telebot.types.KeyboardButton('Информация о подписках')
+    item3 = telebot.types.KeyboardButton('Связь с разработчиком')
+    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    
+    main_keyboard.add(item1, item2, item3, item4)
 
     text = texts_for_lesgaft_bot.go_to_settings_stage_text
     return text, main_keyboard
@@ -136,23 +136,23 @@ def subscribe_user_to_newsletter(user_id):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
     
     status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(user_id)
-    
+        
     if status == False:
         print(f'User {user_id} subscribe to newsletter')
         db_funcs_for_students_db.set_is_subscribe_to_newsletter(user_id, True)
         item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
-        item2 = telebot.types.KeyboardButton('Информация о подписках')
-        item3 = telebot.types.KeyboardButton('Вернуться в меню')
         text = 'Подписка активирована'
     elif status == True:
         print(f'User {user_id} unsubscribe to newsletter')
         db_funcs_for_students_db.set_is_subscribe_to_newsletter(user_id, False)
         item1 = telebot.types.KeyboardButton('Подписаться на рассылку новостей')
-        item2 = telebot.types.KeyboardButton('Информация о подписках')
-        item3 = telebot.types.KeyboardButton('Вернуться в меню')
         text = 'Подписка отключена'
-
-    main_keyboard.add(item1, item2, item3)
+    
+    item2 = telebot.types.KeyboardButton('Информация о подписках')
+    item3 = telebot.types.KeyboardButton('Связь с разработчиком')
+    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    
+    main_keyboard.add(item1, item2, item3, item4)
 
     return text, main_keyboard
 
@@ -163,16 +163,33 @@ def info_about_subscriptions(user_id):
     
     if status == False:
         item1 = telebot.types.KeyboardButton('Подписаться на рассылку новостей')
-        item2 = telebot.types.KeyboardButton('Информация о подписках')
-        item3 = telebot.types.KeyboardButton('Вернуться в меню')
     elif status == True:
         item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
-        item2 = telebot.types.KeyboardButton('Информация о подписках')
-        item3 = telebot.types.KeyboardButton('Вернуться в меню')
+    item2 = telebot.types.KeyboardButton('Информация о подписках')
+    item3 = telebot.types.KeyboardButton('Связь с разработчиком')
+    item4 = telebot.types.KeyboardButton('Вернуться в меню')
 
-    main_keyboard.add(item1, item2, item3)
+    main_keyboard.add(item1, item2, item3, item4)
 
     text = texts_for_lesgaft_bot.info_about_subscriptions_text
+    return text, main_keyboard
+
+def communication_with_developer(user_id):
+    main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    
+    status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(user_id)
+    
+    if status == False:
+        item1 = telebot.types.KeyboardButton('Подписаться на рассылку новостей')
+    elif status == True:
+        item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
+    item2 = telebot.types.KeyboardButton('Информация о подписках')
+    item3 = telebot.types.KeyboardButton('Связь с разработчиком')
+    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+
+    main_keyboard.add(item1, item2, item3, item4)
+
+    text = texts_for_lesgaft_bot.communication_with_developer_text
     return text, main_keyboard
 
 
@@ -201,6 +218,9 @@ def main_request_handler(message_text, user_id):
     elif message_text == 'информация о подписках':
         print(f'User {user_id} ask info about subsctibe')
         text, keyboard = info_about_subscriptions(user_id)
+    elif message_text == 'связь с разработчиком':
+        print(f'User {user_id} ask about communication with developer')
+        text, keyboard = communication_with_developer(user_id)
     elif message_text == 'подписаться на рассылку новостей' or message_text == 'отписаться от рассылки новостей':
         text, keyboard = subscribe_user_to_newsletter(user_id)
     elif message_text == 'расписание':
