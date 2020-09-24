@@ -232,6 +232,9 @@ def main_request_handler(message_text, user_id):
     elif message_text == 'настройки':
         print(f'User {user_id} go to settings')
         text, keyboard = go_to_settings_stage()
+    elif message_text == 'вернуться в настройки':
+        print(f'User {user_id} go to settings')
+        text, keyboard = go_to_settings_stage()
     elif message_text == 'подписки и рассылки':
         print(f'User {user_id} go to subscriptions and newsletters stage')
         text, keyboard = go_to_subscriptions_and_newsletters_stage(user_id)

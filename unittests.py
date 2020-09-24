@@ -774,6 +774,12 @@ class Test_request_handler(unittest.TestCase):
         self.assertEqual(result[0], texts_for_lesgaft_bot.communication_with_developer_text)
         self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
 
+    def test_main_request_handler_take_return_to_settings_return_text(self):
+        result = request_handler.main_request_handler('Вернуться в настройки', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+
+
     
 
 
