@@ -3,15 +3,10 @@
 import telebot
 import time
 import logging
-import datetime
-import pytz
 
 import config
 import db_funcs_for_students_db
 import texts_for_lesgaft_bot
-import find_time_and_location
-import find_lessons_at_date
-import handler_of_unusual_requests as handler
 import request_handler
 
 bot = telebot.TeleBot(config.token)
@@ -37,6 +32,23 @@ def send_message_to_all_users(text):
             print(exception)
             print(user_id)
 
+def send_newsletter_to_subscribers(text):
+    users_id = return_subscribed_to_news_users()
+    for user_id in users_id:
+        try:
+            bot.send_message(user_id[0], text)
+            print(f'message was sended to {user_id[0]}')
+            time.sleep(0.1)
+        except Exception as exception:
+            time.sleep(0.1)
+            print(exception)
+            print(user_id)
+
+def return_subscribed_to_news_users():
+    subscribed_users = db_funcs_for_students_db.get_subscribed_to_newsletter_users()
+    print(subscribed_users)
+    return subscribed_users
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     text = ''
@@ -48,11 +60,11 @@ def start_message(message):
     try:
         bot.send_message(message.from_user.id, text)
     except Exception as exception:
-        print('\n50\n')
+        print('\n50\nОшибка в стартовой функции\n')
         print(exception)
 
 @bot.message_handler(content_types=["text"])
-def main_func(message):
+def handle_request_and_send_answer(message):
     text, keyboard = request_handler.main_request_handler(message.text, message.from_user.id)
     try:
         bot.send_message(message.from_user.id, text, reply_markup = keyboard)

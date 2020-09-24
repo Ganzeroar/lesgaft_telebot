@@ -263,76 +263,55 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
 
-@unittest.skip("not_need")
+#@unittest.skip("not_need")
 class Test_main(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
         try:
             db_funcs_for_students_db.drop_db()
-            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
         except:
             pass
         db_funcs_for_students_db.create_db()
         db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
         db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
         db_funcs_for_students_db.update_group(111111111, 417)
+        db_funcs_for_students_db.set_is_subscribe_to_newsletter(111111111, True)
+        db_funcs_for_students_db.set_is_subscribe_to_newsletter(222222222, True)
 
-        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '9:45')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '11:30')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '13:30')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '15:15')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '17:00')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '11:30', 'группа_417', 'предмет2')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '13:30', 'группа_417', 'предмет3')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '15:15', 'группа_417', 'предмет4')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
-        
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '9:45')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '11:30')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '13:30')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '15:15')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '17:00')
-        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '18:40')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '9:45', 'группа_417', 'предмет1')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '11:30', 'группа_417', 'предмет2')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '13:30', 'группа_417', 'предмет3')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '15:15', 'группа_417', 'предмет4')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '17:00', 'группа_417', 'предмет5')
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '14.01.', '18:40', 'группа_417', 'предмет6')
-        
+
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
-        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
 
-    @freeze_time('2019-01-10 03:00:00')
-    def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
-        result = main.return_where_is_the_lesson(111111111)
-        date = datetime.datetime.now()
-        self.assertEqual(result, ('Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж', 'main_keyboard'))
+    def test_return_subscribed_to_news_users_return_2(self):
+        result = main.return_subscribed_to_news_users()
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result, [(111111111,), (222222222,)])
 
-    @freeze_time('2019-01-09 03:00:00')
-    def test_return_today_lessons_take_correct_data_return_correct(self):
-        result = main.return_today_lessons(111111111)
-        expected = ('Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n', 'main_keyboard')
-        self.assertEqual(result, expected)
 
-    @freeze_time('2019-01-10 03:00:00')
-    def test_return_tomorrow_lessons_take_correct_data_return_correct(self):
-        result = main.return_today_lessons(111111111)
-        expected = ('Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n', 'main_keyboard')
-        self.assertEqual(result, expected)
-    
-    def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
-        result = main.return_where_is_the_classroom(111111111, 'где 10')
-        self.assertEqual(result, ('ИЭиСТ, первый этаж', 'main_keyboard'))
-
+    #@freeze_time('2019-01-10 03:00:00')
+    #def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
+    #    result = main.return_where_is_the_lesson(111111111)
+    #    date = datetime.datetime.now()
+    #    self.assertEqual(result, ('Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж', 'main_keyboard'))
+#
+    #@freeze_time('2019-01-09 03:00:00')
+    #def test_return_today_lessons_take_correct_data_return_correct(self):
+    #    result = main.return_today_lessons(111111111)
+    #    expected = ('Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n', 'main_keyboard')
+    #    self.assertEqual(result, expected)
+#
+    #@freeze_time('2019-01-10 03:00:00')
+    #def test_return_tomorrow_lessons_take_correct_data_return_correct(self):
+    #    result = main.return_today_lessons(111111111)
+    #    expected = ('Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n', 'main_keyboard')
+    #    self.assertEqual(result, expected)
+    #
+    #def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
+    #    result = main.return_where_is_the_classroom(111111111, 'где 10')
+    #    self.assertEqual(result, ('ИЭиСТ, первый этаж', 'main_keyboard'))
+#
     #def test_change_group_step_1_take_correct_data_return_correct(self):
     #    first_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
     #    full_time = telebot.types.KeyboardButton('Очное обучение321')
@@ -650,6 +629,7 @@ class Test_request_handler(unittest.TestCase):
         db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
         db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
         db_funcs_for_students_db.update_group(111111111, 417)
+        db_funcs_for_students_db.set_is_subscribe_to_newsletter(222222222, True)
 
         db_funcs_for_subjects_db.create_db('zovs_4_kurs')
         db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
@@ -688,51 +668,97 @@ class Test_request_handler(unittest.TestCase):
     def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
         result = request_handler.return_where_is_the_lesson(111111111)
         self.assertEqual(result[0], 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-10 03:00:00')
     def test_main_request_handler_take_where_is_the_lesson_request_return_correct(self):
         result = request_handler.main_request_handler('Где пара?', 111111111)
         self.assertEqual(result[0], 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-09 03:00:00')
     def test_return_today_lessons_take_correct_data_return_correct(self):
         result = request_handler.return_today_lessons(111111111)
         expected_text = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-09 03:00:00')
     def test_main_request_handler_take_today_lessons_request_return_correct(self):
         result = request_handler.main_request_handler('Какие сегодня пары?', 111111111)
         expected_text = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-10 03:00:00')
     def test_return_tomorrow_lessons_take_correct_data_return_correct(self):
         result = request_handler.return_today_lessons(111111111)
         expected_text = 'Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
     
     @freeze_time('2019-01-09 03:00:00')
     def test_main_request_handler_take_tomorrow_lessons_request_return_correct(self):
         result = request_handler.main_request_handler('Какие завтра пары?', 111111111)
         expected_text = 'Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
         result = request_handler.return_where_is_the_classroom(111111111, 'где 10')
         self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_where_is_the_classroom_request_return_correct(self):
         result = request_handler.main_request_handler('где 10', 111111111)
         self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+
+    def test_main_request_handler_take_return_to_menu_return_menu(self):
+        result = request_handler.main_request_handler('Вернуться в меню', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_menu_stage_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Расписание'}], [{'text': 'Настройки'}]])
+
+    def test_main_request_handler_take_settings_and_user_not_in_news_subscribers_return_settins(self):
+        result = request_handler.main_request_handler('Настройки', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в меню'}]])
+
+    def test_main_request_handler_take_info_about_subscriptions_user_not_subscribe_return_correct_text(self):
+        result = request_handler.main_request_handler('Информация о подписках', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.info_about_subscriptions_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в меню'}]])
+
+    def test_main_request_handler_take_subsctibe_to_newsletter_then_in_bd_user_subscription_is_true(self):
+        result = request_handler.main_request_handler('Подписаться на рассылку новостей', 111111111)
+        status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(111111111)
+        self.assertEqual(result[0], 'Подписка активирована')
+        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(status, True)
+    
+    def test_main_request_handler_take_settings_and_user_already_in_news_subscribers_return_correct_settins(self):
+        result = request_handler.main_request_handler('Настройки', 222222222)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в меню'}]])
+
+    def test_main_request_handler_take_info_about_subscriptions_user_subscribe_return_correct_text(self):
+        result = request_handler.main_request_handler('Информация о подписках', 222222222)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.info_about_subscriptions_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в меню'}]])
+
+    def test_main_request_handler_take_unsubsctibe_to_newsletter_then_in_bd_user_subscription_is_false(self):
+        result = request_handler.main_request_handler('Отписаться от рассылки новостей', 222222222)
+        db_funcs_for_students_db.set_is_subscribe_to_newsletter(222222222, False)
+        status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(222222222)
+        self.assertEqual(result[0], 'Подписка отключена')
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(status, False)
+
+    def test_main_request_handler_take_go_to_timetables_return_timetables_menu(self):
+        result = request_handler.main_request_handler('Расписание', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_timetables_stage_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+
 
 if __name__ == '__main__':
     unittest.main()

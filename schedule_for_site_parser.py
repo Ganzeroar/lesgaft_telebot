@@ -8,7 +8,7 @@ def job():
     try:
         site_parser.run_undergraduate_parser()
     except Exception as exception:
-        main.send_custom_message_to_user(206171081, 'ЭКСЕЛЬ ПАРСЕР УМЕР')
+        main.send_custom_message_to_user(206171081, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {exception}')
         print(exception)
 
     #site_parser.run_all_parsers()

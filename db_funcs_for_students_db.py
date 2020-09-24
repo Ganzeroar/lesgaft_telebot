@@ -10,23 +10,48 @@ def create_db():
                     registration_date integer, number_of_group integer,
                     academic_degree text, education_form text, 
                     number_of_course integer, timetables_name text,
-                    in_registration_process text)
+                    in_registration_process text, is_subscribe_to_newsletter integer)
                     """)
 
-# функция для апдейта базы, возможно уже не нужна, проверить и удалить
+# функция для апдейта базы под новостную рассылку
 def add_columns_for_update():
     conn = sqlite3.connect('students.db')
     cursor = conn.cursor()
-    cursor.execute(f"ALTER TABLE users ADD COLUMN academic_degree text")
-    cursor.execute(f"ALTER TABLE users ADD COLUMN education_form text")
-    cursor.execute(f"ALTER TABLE users ADD COLUMN number_of_course integer")
-    cursor.execute(f"ALTER TABLE users ADD COLUMN timetable_name text")
-    cursor.execute(f"ALTER TABLE users ADD COLUMN in_registration_process integer")
+    cursor.execute(f"ALTER TABLE users ADD COLUMN is_subscribe_to_newsletter integer")
 
 def drop_db():
     conn = sqlite3.connect('students.db')
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS users")
+
+def get_subscribe_in_newsletter_status(user_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"SELECT is_subscribe_to_newsletter FROM users WHERE chat_id = {user_id}"
+    cursor.execute(string_sql)
+    bool_state = bool(cursor.fetchall()[0][0])
+    return bool_state
+
+def get_subscribed_to_newsletter_users():
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql = f"SELECT chat_id FROM users WHERE is_subscribe_to_newsletter = 1"
+    cursor.execute(string_sql)
+    subscribed_users = cursor.fetchall()
+    return subscribed_users
+
+def set_is_subscribe_to_newsletter(chat_id, bool_value):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+
+    if bool_value == True:
+        bool_value = 1
+    elif bool_value == False:
+        bool_value = 0
+
+    string_sql = f"UPDATE users SET is_subscribe_to_newsletter = '{bool_value}' WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
 
 def set_in_registration_process(chat_id, bool_value):
     conn = sqlite3.connect("students.db")
