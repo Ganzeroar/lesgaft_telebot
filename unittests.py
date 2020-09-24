@@ -617,7 +617,7 @@ class Test_excel_parser(unittest.TestCase):
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 class Test_request_handler(unittest.TestCase):
-    
+
     @classmethod
     def setUpClass(cls):
         try:
@@ -663,7 +663,7 @@ class Test_request_handler(unittest.TestCase):
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
         db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
-
+    
     @freeze_time('2019-01-10 03:00:00')
     def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
         result = request_handler.return_where_is_the_lesson(111111111)
@@ -717,41 +717,51 @@ class Test_request_handler(unittest.TestCase):
     def test_main_request_handler_take_return_to_menu_return_menu(self):
         result = request_handler.main_request_handler('Вернуться в меню', 111111111)
         self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_menu_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Расписание'}], [{'text': 'Настройки'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Расписание'}], [{'text': 'Настройки'}], [{'text': 'Что умеет ЛесгафтБот'}]])
+
+    def test_main_request_handler_take_what_lesgaftbot_can_do_return_text(self):
+        result = request_handler.main_request_handler('Что умеет ЛесгафтБот', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.what_lesgaftbot_can_do_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Расписание'}], [{'text': 'Настройки'}], [{'text': 'Что умеет ЛесгафтБот'}]])
 
     def test_main_request_handler_take_settings_and_user_not_in_news_subscribers_return_settins(self):
         result = request_handler.main_request_handler('Настройки', 111111111)
         self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+
+    def test_main_request_handler_take_subscriptions_and_newsletter_return_text(self):
+        result = request_handler.main_request_handler('Подписки и рассылки', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_subscriptions_and_newsletters_text)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в настройки'}]])
 
     def test_main_request_handler_take_info_about_subscriptions_user_not_subscribe_return_correct_text(self):
         result = request_handler.main_request_handler('Информация о подписках', 111111111)
         self.assertEqual(result[0], texts_for_lesgaft_bot.info_about_subscriptions_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в настройки'}]])
 
     def test_main_request_handler_take_subsctibe_to_newsletter_then_in_bd_user_subscription_is_true(self):
         result = request_handler.main_request_handler('Подписаться на рассылку новостей', 111111111)
         status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(111111111)
         self.assertEqual(result[0], 'Подписка активирована')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в настройки'}]])
         self.assertEqual(status, True)
     
     def test_main_request_handler_take_settings_and_user_already_in_news_subscribers_return_correct_settins(self):
         result = request_handler.main_request_handler('Настройки', 222222222)
         self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_info_about_subscriptions_user_subscribe_return_correct_text(self):
         result = request_handler.main_request_handler('Информация о подписках', 222222222)
         self.assertEqual(result[0], texts_for_lesgaft_bot.info_about_subscriptions_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Отписаться от рассылки новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в настройки'}]])
 
     def test_main_request_handler_take_unsubsctibe_to_newsletter_then_in_bd_user_subscription_is_false(self):
         result = request_handler.main_request_handler('Отписаться от рассылки новостей', 222222222)
         db_funcs_for_students_db.set_is_subscribe_to_newsletter(222222222, False)
         status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(222222222)
         self.assertEqual(result[0], 'Подписка отключена')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Вернуться в настройки'}]])
         self.assertEqual(status, False)
 
     def test_main_request_handler_take_go_to_timetables_return_timetables_menu(self):
@@ -762,7 +772,10 @@ class Test_request_handler(unittest.TestCase):
     def test_main_request_handler_take_communication_with_developer_return_text(self):
         result = request_handler.main_request_handler('Связь с разработчиком', 111111111)
         self.assertEqual(result[0], texts_for_lesgaft_bot.communication_with_developer_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписаться на рассылку новостей'}], [{'text': 'Информация о подписках'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+
+    
+
 
 if __name__ == '__main__':
     unittest.main()
