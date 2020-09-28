@@ -73,12 +73,15 @@ class Site_parser_undergraduate(Site_parser):
         self.run_excel_parser(all_files)
 
     def get_all_files(self):
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+
         all_files = []
         for number in range(8):
             # необходимо что бы правильно определить HTML код нужного расписания
             # ввиду плохого нейминга элементов на сайте
             number_of_row = number + 2
-            file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row)
+            file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row, soup_obj)
             all_files.append(file_link)
         return all_files
 
