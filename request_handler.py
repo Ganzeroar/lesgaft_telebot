@@ -102,6 +102,19 @@ def go_to_timetables_stage():
     text = texts_for_lesgaft_bot.go_to_timetables_stage_text
     return text, main_keyboard
 
+def create_start_stage():
+    main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    
+    item1 = telebot.types.KeyboardButton('Расписание')
+    item2 = telebot.types.KeyboardButton('Настройки')
+    item3 = telebot.types.KeyboardButton('Что умеет ЛесгафтБот')
+    
+    main_keyboard.add(item1, item2, item3)
+
+    text = texts_for_lesgaft_bot.greeting_text
+    return text, main_keyboard
+
+
 def go_to_menu_stage():
     main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
     

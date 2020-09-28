@@ -104,5 +104,8 @@ def get_db_name(name_of_group):
         
         column_name = [column_name[1] for column_name in cursor_for_name.fetchall()]
         if name_of_group in column_name:
+            #костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
+            if name_of_group == 'группа_414' and db_name == 'lovs_4_kurs':
+                continue 
             return db_name
     return None   

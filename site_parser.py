@@ -11,7 +11,7 @@ import main
 
 class Site_parser():
 
-    def is_Changed(self, new_file_link):
+    def is_changed(self, new_file_link):
         name_of_course = self.get_name_of_course(new_file_link)
         current_file_link = db.get_current_link(name_of_course)
         if current_file_link != new_file_link:
@@ -39,17 +39,22 @@ class Site_parser():
         excel_file.write(resp.content)
         excel_file.close()
 
-    def get_soup_obj(self):
+    def get_html_text(self):
         url = 'http://www.lesgaft.spb.ru/ru/schedule'
         resp = requests.get(url)
-        soup_obj = BeautifulSoup(resp.text, "lxml")
+        return resp.text
+        
+    def get_soup_obj(self, html_text):
+        soup_obj = BeautifulSoup(html_text, "lxml")
         return soup_obj
-
 
 class Site_parser_undergraduate(Site_parser):
 
     def run_full_time_undergraduate_parser(self):
-        changed_files = self.find_changed_files()
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+
+        changed_files = self.find_changed_files(soup_obj)
         if len(changed_files) > 0:
             main.send_custom_message_to_user(206171081, f'Новые расписания: {changed_files}')
         
@@ -69,17 +74,15 @@ class Site_parser_undergraduate(Site_parser):
 
     def get_all_files(self):
         all_files = []
-
         for number in range(8):
             # необходимо что бы правильно определить HTML код нужного расписания
             # ввиду плохого нейминга элементов на сайте
             number_of_row = number + 2
-            
             file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row)
             all_files.append(file_link)
         return all_files
 
-    def find_changed_files(self):
+    def find_changed_files(self, soup_obj):
         changed_files = []
 
         for number in range(8):
@@ -87,17 +90,16 @@ class Site_parser_undergraduate(Site_parser):
             # ввиду плохого нейминга элементов на сайте
             number_of_row = number + 2
             
-            new_file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row)
-            if self.is_Changed(new_file_link):
+            new_file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row, soup_obj)
+            if self.is_changed(new_file_link):
                 changed_files.append(new_file_link)
         return changed_files
 
-    def get_file_link_from_site_full_time_undergraduate(self, number_of_row):
-        new_file_link = self.find_file_link(number_of_row)
+    def get_file_link_from_site_full_time_undergraduate(self, number_of_row, soup_obj):
+        new_file_link = self.find_file_link(number_of_row, soup_obj)
         return new_file_link
 
-    def find_file_link(self, number_of_row):
-        soup_obj = self.get_soup_obj()
+    def find_file_link(self, number_of_row, soup_obj):
         html_string = self.create_html_string(number_of_row)
         element = soup_obj.find_all('div', class_ = html_string)
         element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
@@ -163,7 +165,7 @@ class Site_parser_undergraduate_imst(Site_parser):
 
         for number in range(4):
             new_file_link = links_from_site[number]
-            if self.is_Changed(new_file_link):
+            if self.is_changed(new_file_link):
                 changed_files.append(new_file_link)
         return changed_files
 
@@ -218,7 +220,7 @@ class Site_parser_magistracy_fk(Site_parser):
         for number in range(2):
             new_file_link = self.return_file_link_full_time_magistracy_fk(number)
             print(new_file_link)
-            if self.is_Changed(new_file_link):
+            if self.is_changed(new_file_link):
                 changed_files.append(new_file_link)
         return changed_files
 
@@ -267,7 +269,7 @@ class Site_parser_magistracy_afk(Site_parser):
         for number in range(2):
             new_file_link = self.return_file_link_full_time_magistracy_afk(number)
             print(new_file_link)
-            if self.is_Changed(new_file_link):
+            if self.is_changed(new_file_link):
                 changed_files.append(new_file_link)
         return changed_files
 
@@ -316,7 +318,7 @@ class Site_parser_magistracy_imst(Site_parser):
         for number in range(2):
             new_file_link = self.return_file_link_full_time_magistracy_imst(number)
             print(new_file_link)
-            if self.is_Changed(new_file_link):
+            if self.is_changed(new_file_link):
                 changed_files.append(new_file_link)
         return changed_files
 

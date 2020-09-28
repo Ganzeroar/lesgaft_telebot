@@ -51,14 +51,13 @@ def return_subscribed_to_news_users():
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    text = ''
+    text, keyboard = request_handler.create_start_stage()
     if db_funcs_for_students_db.user_already_in_db(message.from_user.id):
         text = 'С возвращением!'
     else:
         db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(message.from_user.first_name), str(message.from_user.last_name), int(message.date))
-        text = texts_for_lesgaft_bot.greeting_text
     try:
-        bot.send_message(message.from_user.id, text)
+        bot.send_message(message.from_user.id, text, reply_markup = keyboard)
     except Exception as exception:
         print('\n50\nОшибка в стартовой функции\n')
         print(exception)

@@ -13,6 +13,7 @@ import find_class_location
 import main
 import excel_parser
 import request_handler
+import site_parser
 import configurations
 
 import texts_for_tests
@@ -411,6 +412,76 @@ class Test_main(unittest.TestCase):
 
         
 
+class Test_site_parser_undergraduate(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        db_funcs_for_site_parser.create_db()
+        db_funcs_for_site_parser.insert_link_to_current_links()
+        db_funcs_for_site_parser.change_link_in_current_links('lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
+        #'zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._20.01.xlsx', '2020-09-25 10:32:26.783417+03:00')
+        db_funcs_for_site_parser.change_link_in_current_links('zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx')
+
+        db_funcs_for_site_parser.change_link_in_current_links('zovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_zovs.xls')
+        db_funcs_for_site_parser.change_link_in_current_links('lovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_lovs.xlsx')
+        
+        db_funcs_for_site_parser.change_link_in_current_links('zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
+        db_funcs_for_site_parser.change_link_in_current_links('lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
+        db_funcs_for_site_parser.change_link_in_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_zovs_19.02.xlsx')
+        db_funcs_for_site_parser.change_link_in_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.03.xlsx')
+        
+    @classmethod
+    def tearDownClass(cls):
+        db_funcs_for_site_parser.drop_db()
+
+    def test_is_changed_return_true(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.is_changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._25.02.xlsx')
+        self.assertEqual(result, True)
+
+    def test_is_changed_return_false(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.is_changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
+        self.assertEqual(result, False)
+
+    def test_find_changed_files_return_4_changed_file_link(self):
+        obj = site_parser.Site_parser_undergraduate()
+        soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+        result = obj.find_changed_files(soup_obj)
+        self.assertEqual(len(result), 4)
+        self.assertEqual(result, ['http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_lovs_19.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_19.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx'])
+
+    def test_get_file_link_from_site_full_time_undergraduate_return_filelink(self):
+        obj = site_parser.Site_parser_undergraduate()
+        soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+        result = obj.get_file_link_from_site_full_time_undergraduate(7, soup_obj)
+        self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx')
+
+    def test_find_file_link_return_correct_link(self):
+        obj = site_parser.Site_parser_undergraduate()
+        soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+        result = obj.find_file_link(8, soup_obj)
+        self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+
+    def test_create_html_string_return_correct_string_odd(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.create_html_string(5)
+        self.assertEqual(result, 'views-row views-row-5 views-row-odd')
+
+    def test_create_html_string_return_correct_string_even(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.create_html_string(2)
+        self.assertEqual(result, 'views-row views-row-2 views-row-even')
+
+    def test_get_name_of_course_return_correct(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.get_name_of_course('http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+        self.assertEqual(result, 'lovs_4_kurs')
+
+    def test_formate_name_return_correct(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.formate_name('3_kurs_zovs')
+        self.assertEqual(result, 'zovs_3_kurs')
+
 @unittest.skip("broken")
 class Test_site_parser_undergraduate_class(unittest.TestCase):
 
@@ -483,6 +554,7 @@ class Test_site_parser_undergraduate_class(unittest.TestCase):
             'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx', 
             'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx']
         self.assertEqual(res_1, expect_1)
+
 @unittest.skip("broken")
 class Test_excel_parser(unittest.TestCase):
 
@@ -616,6 +688,8 @@ class Test_excel_parser(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
+
+#@unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
 
     @classmethod
@@ -779,8 +853,6 @@ class Test_request_handler(unittest.TestCase):
         self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
         self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
 
-
-    
 
 
 if __name__ == '__main__':
