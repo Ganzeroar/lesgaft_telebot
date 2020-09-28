@@ -16,6 +16,7 @@ def drop_and_create_current_links_db():
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS current_links")
+    cursor.execute('CREATE TABLE all_links (course_and_faculty text, link text, time_of_change text)')
     cursor.execute('CREATE TABLE current_links (course_and_faculty text, link text)')
     insert_link_to_current_links()
 
