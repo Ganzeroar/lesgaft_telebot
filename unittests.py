@@ -6,6 +6,7 @@ import datetime
 import glob
 import pytz
 import sqlite3
+import os
 
 import find_time_and_location
 import find_lessons_at_date
@@ -697,6 +698,8 @@ class Test_request_handler(unittest.TestCase):
         try:
             db_funcs_for_students_db.drop_db()
             db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+
+            os.remove('wrong_timetables_reports.log')
         except:
             pass
         db_funcs_for_students_db.create_db()
@@ -742,51 +745,51 @@ class Test_request_handler(unittest.TestCase):
     def test_return_where_is_the_lesson_take_correct_data_return_correct(self):
         result = request_handler.return_where_is_the_lesson(111111111)
         self.assertEqual(result[0], 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-10 03:00:00')
     def test_main_request_handler_take_where_is_the_lesson_request_return_correct(self):
         result = request_handler.main_request_handler('Где пара?', 111111111)
         self.assertEqual(result[0], 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-09 03:00:00')
     def test_return_today_lessons_take_correct_data_return_correct(self):
         result = request_handler.return_today_lessons(111111111)
         expected_text = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-09 03:00:00')
     def test_main_request_handler_take_today_lessons_request_return_correct(self):
         result = request_handler.main_request_handler('Какие сегодня пары?', 111111111)
         expected_text = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     @freeze_time('2019-01-10 03:00:00')
     def test_return_tomorrow_lessons_take_correct_data_return_correct(self):
         result = request_handler.return_today_lessons(111111111)
         expected_text = 'Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
     
     @freeze_time('2019-01-09 03:00:00')
     def test_main_request_handler_take_tomorrow_lessons_request_return_correct(self):
         result = request_handler.main_request_handler('Какие завтра пары?', 111111111)
         expected_text = 'Расписание на четверг (10.01.2019.)\n\n9:45-11:15\nпредмет1 Зал№2\n\n'
         self.assertEqual(result[0], expected_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
         result = request_handler.return_where_is_the_classroom(111111111, 'где 10')
         self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_where_is_the_classroom_request_return_correct(self):
         result = request_handler.main_request_handler('где 10', 111111111)
         self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_return_to_menu_return_menu(self):
         result = request_handler.main_request_handler('Вернуться в меню', 111111111)
@@ -841,7 +844,19 @@ class Test_request_handler(unittest.TestCase):
     def test_main_request_handler_take_go_to_timetables_return_timetables_menu(self):
         result = request_handler.main_request_handler('Расписание', 111111111)
         self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_timetables_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
+
+    @freeze_time('2019-01-10 03:00:00')
+    def test_main_request_handler_take_wrong_timetables_return_correct_text_and_save_in_logfile(self):
+        result = request_handler.main_request_handler('Расписание неправильное', 111111111)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.wrong_timetables)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
+        with open('wrong_timetables_reports.log') as f:
+            f = f.readlines()
+        file_text = f
+        
+        assert_file_text = ['INFO:root:группа_417 10.01.2019.\n', "[('предмет1 Зал№2',)]\n", 'Юзер: 111111111\n']
+        self.assertEqual(file_text, assert_file_text)
 
     def test_main_request_handler_take_communication_with_developer_return_text(self):
         result = request_handler.main_request_handler('Связь с разработчиком', 111111111)

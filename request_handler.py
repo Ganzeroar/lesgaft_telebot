@@ -5,6 +5,7 @@ import datetime
 import pytz
 
 import db_funcs_for_students_db
+import db_funcs_for_subjects_db
 import texts_for_lesgaft_bot
 import find_time_and_location
 import find_lessons_at_date
@@ -16,7 +17,8 @@ def create_timetables_stage_keyboard():
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
     keyboard.add(item1, item2, item3, item4)
 
@@ -28,9 +30,10 @@ def change_group_old(user_id, message_text):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item3, item4)
+    main_keyboard.add(item1, item2, item3, item4, item5)
 
     text = db_funcs_for_students_db.overwrite_group(message_text, user_id)
     return text, main_keyboard
@@ -41,9 +44,10 @@ def return_where_is_the_lesson(chat_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item3, item4)
+    main_keyboard.add(item1, item2, item3, item4, item5)
     text = find_time_and_location.return_time_before_class_and_location(chat_id)
     return text, main_keyboard
 
@@ -53,9 +57,10 @@ def return_today_lessons(chat_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item3, item4)
+    main_keyboard.add(item1, item2, item3, item4, item5)
 
     time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
     text = find_lessons_at_date.return_lessons_at_date(chat_id, time_now)
@@ -67,9 +72,10 @@ def return_tomorrow_lessons(chat_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item3, item4)
+    main_keyboard.add(item1, item2, item3, item4, item5)
 
     time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
     tomorrow = time_now + datetime.timedelta(days=1)
@@ -82,9 +88,10 @@ def return_where_is_the_classroom(chat_id, message_text):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item3, item4)
+    main_keyboard.add(item1, item2, item3, item4, item5)
 
     text = find_time_and_location.return_location_of_class(chat_id, message_text)
     return text, main_keyboard
@@ -95,9 +102,10 @@ def go_to_timetables_stage():
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item3, item4)
+    main_keyboard.add(item1, item2, item3, item4, item5)
 
     text = texts_for_lesgaft_bot.go_to_timetables_stage_text
     return text, main_keyboard
@@ -222,7 +230,39 @@ def communication_with_developer():
     text = texts_for_lesgaft_bot.communication_with_developer_text
     return text, main_keyboard
 
+def save_info_about_wrong_timetables(user_id):
+    main_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
+    
+    item1 = telebot.types.KeyboardButton('Где пара?')
+    item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
+    item3 = telebot.types.KeyboardButton('Какие завтра пары?')
+    item4 = telebot.types.KeyboardButton('Расписание неправильное')
+    item5 = telebot.types.KeyboardButton('Вернуться в меню')
+    
+    main_keyboard.add(item1, item2, item3, item4, item5)
 
+    time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
+    number_of_group = db_funcs_for_students_db.get_group_number(user_id)
+    if number_of_group == False:
+        return 
+    name_of_group = 'группа_' + str(number_of_group)
+    db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
+    if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
+        return 
+
+    subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, time_now)
+    number_of_date = time_now.strftime("%d.%m.%Y.")
+    
+    logging.basicConfig(filename="wrong_timetables_reports.log", level=logging.INFO)
+    log_text = f'{name_of_group} {number_of_date}\n{subjects}\nЮзер: {user_id}'
+
+    logging.info(log_text)
+    
+    print(f'User {user_id} report about wrong newsletters')
+
+
+    text = texts_for_lesgaft_bot.wrong_timetables
+    return text, main_keyboard
 
 def main_request_handler(message_text, user_id):
     message_text = message_text.lower()
@@ -237,6 +277,8 @@ def main_request_handler(message_text, user_id):
         text, keyboard = return_today_lessons(user_id)
     elif message_text == 'какие завтра пары?':
         text, keyboard = return_tomorrow_lessons(user_id)
+    elif message_text == 'расписание неправильное':
+        text, keyboard = save_info_about_wrong_timetables(user_id)
     elif str(message_text[:3]).lower() == 'где' and message_text != 'где пара?':
         text, keyboard = return_where_is_the_classroom(user_id, message_text)
     elif message_text == 'вернуться в меню':
