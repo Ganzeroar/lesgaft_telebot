@@ -230,6 +230,7 @@ class Excel_parser():
                 db_funcs_for_subjects_db.save_date_and_time(db_name, date, time)
 
     def format_dates(self, dates):
+        dates = dates.replace(' ', '\n')
         list_of_dates = [element.replace(' ', '') for element in dates.rstrip().split('\n')]
         formatted_list_of_dates = []
         for date in list_of_dates:

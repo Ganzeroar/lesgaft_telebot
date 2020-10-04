@@ -23,7 +23,7 @@ import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import db_funcs_for_site_parser
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
     def test_take_long_str_return_error_text(self):
@@ -51,7 +51,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -119,7 +119,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -265,7 +265,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
 
-#@unittest.skip("not_need")
+@unittest.skip("not_need")
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -412,14 +412,13 @@ class Test_main(unittest.TestCase):
     #    self.assertEqual(number_of_course, 1)
 
         
-
+@unittest.skip("passed")
 class Test_site_parser_undergraduate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         db_funcs_for_site_parser.create_db()
         db_funcs_for_site_parser.insert_link_to_current_links()
         db_funcs_for_site_parser.change_link_in_current_links('lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
-        #'zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._20.01.xlsx', '2020-09-25 10:32:26.783417+03:00')
         db_funcs_for_site_parser.change_link_in_current_links('zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx')
 
         db_funcs_for_site_parser.change_link_in_current_links('zovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_zovs.xls')
@@ -483,214 +482,222 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.formate_name('3_kurs_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
-@unittest.skip("broken")
-class Test_site_parser_undergraduate_class(unittest.TestCase):
-
-    try:
-        db_funcs_for_site_parser.drop_db()
-    except:
-        None
-
+@unittest.skip("passed")
+class Test_site_parser_undergraduate_imist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         db_funcs_for_site_parser.create_db()
-        db_funcs_for_site_parser.insert_link_to_current_links()#'zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._20.01.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._25.02.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('zovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_1.02.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('lovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_lovs_19.02.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_zovs_19.02.xlsx')
-        #db_funcs_for_site_parser.insert_link_to_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.03.xlsx')
+        db_funcs_for_site_parser.insert_link_to_current_links()
+        db_funcs_for_site_parser.change_link_in_current_links('imst_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_1_kurs_imst_17.02.xlsx')
+        db_funcs_for_site_parser.change_link_in_current_links('imst_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_2_kurs_imst_05.12.xlsx')
+        db_funcs_for_site_parser.change_link_in_current_links('imst_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_3_kurs_imst_13.02.xlsx')
+        db_funcs_for_site_parser.change_link_in_current_links('imst_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_4_kurs_imst_05.12.xlsx')
+        #http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_3_kurs_imst_13.02.xlsx
+        #db_funcs_for_site_parser.change_link_in_current_links('zovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_zovs.xls')
+        #db_funcs_for_site_parser.change_link_in_current_links('lovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_lovs.xlsx')
+        #
+        #db_funcs_for_site_parser.change_link_in_current_links('zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
+        #db_funcs_for_site_parser.change_link_in_current_links('lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
+        #db_funcs_for_site_parser.change_link_in_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_zovs_19.02.xlsx')
+        #db_funcs_for_site_parser.change_link_in_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.03.xlsx')
         
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_site_parser.drop_db()
 
-    def test_return_even_or_odd(self):
-        obj = site_parser_class.Site_parser_unergraduate()
-        self.assertEqual(obj.return_even_or_odd(1), 'odd')
-        self.assertEqual(obj.return_even_or_odd(2), 'even')
-        self.assertEqual(obj.return_even_or_odd(5), 'odd')
-        self.assertEqual(obj.return_even_or_odd(8), 'even')
+    def test_is_changed_return_true(self):
+        obj = site_parser.Site_parser_undergraduate_imst()
+        result = obj.is_changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_2_kurs_imst_13.02.xlsx')
+        self.assertEqual(result, True)
 
-    def test_create_html_string(self):
-        obj = site_parser_class.Site_parser_unergraduate()
-        res_1 = obj.create_html_string(3)
-        res_2 = obj.create_html_string(4)
-        expect_1 = 'views-row views-row-3 views-row-odd'
-        expect_2 = 'views-row views-row-4 views-row-even'
-        self.assertEqual(res_1, expect_1)
-        self.assertEqual(res_2, expect_2)
+    def test_find_changed_files_return_2_changed_file_link(self):
+        obj = site_parser.Site_parser_undergraduate_imst()
+        soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+        result = obj.find_changed_files(soup_obj)
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result, ['http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_2_kurs_imst_13.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_4_kurs_imst_14.02.xlsx'])
 
-    def test_formate_name(self):
-        obj = site_parser_class.Site_parser_unergraduate()
-        res_1 = obj.formate_name('1_kurs_zovs')
-        expect_1 = 'zovs_1_kurs'
-        self.assertEqual(res_1, expect_1)
+    #def test_get_file_link_from_site_full_time_undergraduate_return_filelink(self):
+    #    obj = site_parser.Site_parser_undergraduate()
+    #    soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+    #    result = obj.get_file_link_from_site_full_time_undergraduate(7, soup_obj)
+    #    self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx')
+#
+    #def test_find_file_link_return_correct_link(self):
+    #    obj = site_parser.Site_parser_undergraduate()
+    #    soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+    #    result = obj.find_file_link(8, soup_obj)
+    #    self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+#
+    #def test_create_html_string_return_correct_string_odd(self):
+    #    obj = site_parser.Site_parser_undergraduate()
+    #    result = obj.create_html_string(5)
+    #    self.assertEqual(result, 'views-row views-row-5 views-row-odd')
+#
+    #def test_create_html_string_return_correct_string_even(self):
+    #    obj = site_parser.Site_parser_undergraduate()
+    #    result = obj.create_html_string(2)
+    #    self.assertEqual(result, 'views-row views-row-2 views-row-even')
+#
+    #def test_get_name_of_course_return_correct(self):
+    #    obj = site_parser.Site_parser_undergraduate()
+    #    result = obj.get_name_of_course('http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+    #    self.assertEqual(result, 'lovs_4_kurs')
+#
+    #def test_formate_name_return_correct(self):
+    #    obj = site_parser.Site_parser_undergraduate()
+    #    result = obj.formate_name('3_kurs_zovs')
+    #    self.assertEqual(result, 'zovs_3_kurs')
 
-    def test_is_Changed(self):
-        obj = site_parser_class.Site_parser_unergraduate()
-        res_1 = obj.is_Changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._20.01.xlsx')
-        res_2 = obj.is_Changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.01.xlsx')
-        self.assertEqual(res_1, False)
-        self.assertEqual(res_2, True)
 
-    def test_find_file_link(self):
-        obj = site_parser_class.Site_parser_unergraduate()
-        res_1 = obj.find_file_link(texts_for_tests.html_text, 2)
-        res_2 = obj.find_file_link(texts_for_tests.html_text, 3)
-        expect_1 = 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx'
-        expect_2 = 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx'
-        self.assertEqual(res_1, expect_1)
-        self.assertEqual(res_2, expect_2)
+#@unittest.skip("broken")
+class Test_excel_parser_undergraduate(unittest.TestCase):
 
-    @patch('requests.get', return_value = texts_for_tests.html_text)
-    def test_find_changed_files(self, get):
-        obj = site_parser_class.Site_parser_unergraduate()
-        res_1 = obj.find_changed_files()
-        expect_1 = ['http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx', 
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx', 
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_19.02.xlsx', 
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx', 
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx']
-        self.assertEqual(res_1, expect_1)
+    #@classmethod
+    #def setUpClass(cls):
+    #    configurations.month_to_skip = ['09', '10', '11', '12', '01']
+#
+    #@classmethod
+    #def tearDownClass(cls):
+    #    configurations.month_to_skip = ['09', '10', '11', '12', '01', '02']
+#
+    #conn = sqlite3.connect('subjects.db')
+    #cursor = conn.cursor()
 
-@unittest.skip("broken")
-class Test_excel_parser(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        configurations.month_to_skip = ['09', '10', '11', '12', '01']
-
-    @classmethod
-    def tearDownClass(cls):
-        configurations.month_to_skip = ['09', '10', '11', '12', '01', '02']
-
-    conn = sqlite3.connect('subjects.db')
-    cursor = conn.cursor()
-
-    def test_format_group_name(self):
-        names_from_excel = texts_for_tests.group_names_from_excel
-        normal_group_names = texts_for_tests.normal_group_names
-        obj = excel_parser.Excel_parser()
-        for x in range(len(normal_group_names)):
-            normal_name = normal_group_names[x]
-            excel_name = names_from_excel[x]
-            formatted_name = obj.format_group_name(excel_name)
-            self.assertEqual(normal_name, formatted_name)
-
-    def test_run_parser(self):
-        # тестируется только бакалавриат очка, потому что метод parse_work_file_using_name
-        # использует те же функци и методы и протестирован снизу
+    def test_format_date_return_correct(self):
         parser = excel_parser.Excel_parser()
-        parser.run_parser('test_time_tables/full_time_undergraduate')
-        groups_and_expected_number_of_records = {
-            'zovs_1_kurs' : 30,
-            'zovs_2_kurs' : 32,
-            'zovs_3_kurs' : 30,
-            'zovs_4_kurs' : 30,
-            'lovs_1_kurs' : 30,
-            'lovs_2_kurs' : 32,
-            'lovs_3_kurs' : 30,
-            'lovs_4_kurs' : 30,
-        }
-        for couple in groups_and_expected_number_of_records:
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            print(couple)
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
+        date = """05.09.
+                12.09.
+                19.09."""
+        result = parser.format_dates(date)
+        self.assertEqual(result, ['05.09.', '12.09.', '19.09.'])
+        
+        date_incorrect = "10.10 17.10 24.10"
+        result_2 = parser.format_dates(date_incorrect)
+        self.assertEqual(result_2, ['10.10.', '17.10.', '24.10.'])
+    
+#
+    #def test_format_group_name(self):
+    #    names_from_excel = texts_for_tests.group_names_from_excel
+    #    normal_group_names = texts_for_tests.normal_group_names
+    #    obj = excel_parser.Excel_parser()
+    #    for x in range(len(normal_group_names)):
+    #        normal_name = normal_group_names[x]
+    #        excel_name = names_from_excel[x]
+    #        formatted_name = obj.format_group_name(excel_name)
+    #        self.assertEqual(normal_name, formatted_name)
+#
+    #def test_run_parser(self):
+    #    # тестируется только бакалавриат очка, потому что метод parse_work_file_using_name
+    #    # использует те же функци и методы и протестирован снизу
+    #    parser = excel_parser.Excel_parser()
+    #    parser.run_parser('test_time_tables/full_time_undergraduate')
+    #    groups_and_expected_number_of_records = {
+    #        'zovs_1_kurs' : 30,
+    #        'zovs_2_kurs' : 32,
+    #        'zovs_3_kurs' : 30,
+    #        'zovs_4_kurs' : 30,
+    #        'lovs_1_kurs' : 30,
+    #        'lovs_2_kurs' : 32,
+    #        'lovs_3_kurs' : 30,
+    #        'lovs_4_kurs' : 30,
+    #    }
+    #    for couple in groups_and_expected_number_of_records:
+    #        req = f"SELECT COUNT(*) FROM {couple}"
+    #        self.cursor.execute(req)
+    #        expected_number_of_record = self.cursor.fetchall()[0][0]
+    #        actual_number_of_record = groups_and_expected_number_of_records[couple]
+    #        print(couple)
+    #        self.assertEqual(expected_number_of_record, actual_number_of_record)
+#
+    #def test_undergraduate_parser(self):
+    #    parser = excel_parser.Excel_parser()
+    #    groups_and_expected_number_of_records = {
+    #        'zovs_1_kurs' : 30,
+    #        'zovs_2_kurs' : 32,
+    #        'zovs_3_kurs' : 30,
+    #        'zovs_4_kurs' : 30,
+    #        'lovs_1_kurs' : 30,
+    #        'lovs_2_kurs' : 32,
+    #        'lovs_3_kurs' : 30,
+    #        'lovs_4_kurs' : 30,
+    #    }
+    #    for couple in groups_and_expected_number_of_records:
+    #        parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_undergraduate')
+    #        req = f"SELECT COUNT(*) FROM {couple}"
+    #        self.cursor.execute(req)
+    #        expected_number_of_record = self.cursor.fetchall()[0][0]
+    #        actual_number_of_record = groups_and_expected_number_of_records[couple]
+    #        print(couple)
+    #        self.assertEqual(expected_number_of_record, actual_number_of_record)
+#
+#
+    #def test_imst_parser(self):
+    #    parser = excel_parser.Excel_parser_undergraduate_imst()
+    #    groups_and_expected_number_of_records = {
+    #        'imst_1_kurs' : 36,
+    #        'imst_2_kurs' : 36,
+    #        'imst_3_kurs' : 36,
+    #        'imst_4_kurs' : 36,
+    #    }
+    #    for couple in groups_and_expected_number_of_records:
+    #        parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_undergraduate/imst')
+    #        req = f"SELECT COUNT(*) FROM {couple}"
+    #        self.cursor.execute(req)
+    #        expected_number_of_record = self.cursor.fetchall()[0][0]
+    #        actual_number_of_record = groups_and_expected_number_of_records[couple]
+    #        print(couple)
+    #        self.assertEqual(expected_number_of_record, actual_number_of_record)
+#
+#
+    #def test_mag_fk(self):
+    #    parser = excel_parser.Excel_parser()
+    #    groups_and_expected_number_of_records = {
+    #        'magistracy_fk_full_time_1_kurs' : 36,
+    #        'magistracy_fk_full_time_2_kurs' : 36,
+    #    }
+    #    for couple in groups_and_expected_number_of_records:
+    #        parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_fk')
+    #        req = f"SELECT COUNT(*) FROM {couple}"
+    #        self.cursor.execute(req)
+    #        expected_number_of_record = self.cursor.fetchall()[0][0]
+    #        actual_number_of_record = groups_and_expected_number_of_records[couple]
+    #        print(couple)
+    #        self.assertEqual(expected_number_of_record, actual_number_of_record)
+#
+#
+    #def test_mag_afk(self):
+    #    parser = excel_parser.Excel_parser()
+    #    groups_and_expected_number_of_records = {
+    #        'magistracy_afk_full_time_1_kurs' : 36,
+    #        'magistracy_afk_full_time_2_kurs' : 36,
+    #    }
+    #    for couple in groups_and_expected_number_of_records:
+    #        parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_afk')
+    #        req = f"SELECT COUNT(*) FROM {couple}"
+    #        self.cursor.execute(req)
+    #        expected_number_of_record = self.cursor.fetchall()[0][0]
+    #        actual_number_of_record = groups_and_expected_number_of_records[couple]
+    #        print(couple)
+    #        self.assertEqual(expected_number_of_record, actual_number_of_record)
+#
+    #def test_mag_imst(self):
+    #    parser = excel_parser.Excel_parser()
+    #    groups_and_expected_number_of_records = {
+    #        'magistracy_imst_full_time_1_kurs' : 36,
+    #        'magistracy_imst_full_time_2_kurs' : 36,
+    #    }
+    #    for couple in groups_and_expected_number_of_records:
+    #        parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_imst')
+    #        req = f"SELECT COUNT(*) FROM {couple}"
+    #        self.cursor.execute(req)
+    #        expected_number_of_record = self.cursor.fetchall()[0][0]
+    #        actual_number_of_record = groups_and_expected_number_of_records[couple]
+    #        print(couple)
+    #        self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    def test_undergraduate_parser(self):
-        parser = excel_parser.Excel_parser()
-        groups_and_expected_number_of_records = {
-            'zovs_1_kurs' : 30,
-            'zovs_2_kurs' : 32,
-            'zovs_3_kurs' : 30,
-            'zovs_4_kurs' : 30,
-            'lovs_1_kurs' : 30,
-            'lovs_2_kurs' : 32,
-            'lovs_3_kurs' : 30,
-            'lovs_4_kurs' : 30,
-        }
-        for couple in groups_and_expected_number_of_records:
-            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_undergraduate')
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            print(couple)
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-
-    def test_imst_parser(self):
-        parser = excel_parser.Excel_parser_undergraduate_imst()
-        groups_and_expected_number_of_records = {
-            'imst_1_kurs' : 36,
-            'imst_2_kurs' : 36,
-            'imst_3_kurs' : 36,
-            'imst_4_kurs' : 36,
-        }
-        for couple in groups_and_expected_number_of_records:
-            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_undergraduate/imst')
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            print(couple)
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
-
-
-    def test_mag_fk(self):
-        parser = excel_parser.Excel_parser()
-        groups_and_expected_number_of_records = {
-            'magistracy_fk_full_time_1_kurs' : 36,
-            'magistracy_fk_full_time_2_kurs' : 36,
-        }
-        for couple in groups_and_expected_number_of_records:
-            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_fk')
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            print(couple)
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
-
-
-    def test_mag_afk(self):
-        parser = excel_parser.Excel_parser()
-        groups_and_expected_number_of_records = {
-            'magistracy_afk_full_time_1_kurs' : 36,
-            'magistracy_afk_full_time_2_kurs' : 36,
-        }
-        for couple in groups_and_expected_number_of_records:
-            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_afk')
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            print(couple)
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
-
-    def test_mag_imst(self):
-        parser = excel_parser.Excel_parser()
-        groups_and_expected_number_of_records = {
-            'magistracy_imst_full_time_1_kurs' : 36,
-            'magistracy_imst_full_time_2_kurs' : 36,
-        }
-        for couple in groups_and_expected_number_of_records:
-            parser.parse_work_file_using_name(couple, 'test_time_tables/full_time_magistracy_imst')
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            print(couple)
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
-
-
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
 
     @classmethod
