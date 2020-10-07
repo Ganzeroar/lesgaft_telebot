@@ -122,9 +122,9 @@ class Site_parser_undergraduate(Site_parser):
 
     def get_name_of_course(self, file_link):
         course_names = ['1_kurs_lovs','1_kurs_zovs','2_kurs_lovs','2_kurs_zovs',
-            '3_kurs_lovs','3_kurs_dlya','4_kurs_lovs','4_kurs_zovs']
+            '3_kurs_lovs','3_kurs_int','4_kurs_lovs','4_kurs_zovs']
         #костыль из-за измеения 3 курса зовс
-        if '3_kurs_dlya' in file_link:
+        if '3_kurs_int' in file_link:
             return 'zovs_3_kurs'
         for name in course_names:
             if name in file_link:
@@ -137,6 +137,7 @@ class Site_parser_undergraduate(Site_parser):
         name_of_course = second_part + '_' + first_part
         return name_of_course
 
+
     def run_excel_parser(self, changed_files):
         for new_file_link in changed_files:
             name_of_course = self.get_name_of_course(new_file_link)
@@ -146,13 +147,31 @@ class Site_parser_undergraduate(Site_parser):
 class Site_parser_undergraduate_imst(Site_parser):
     
     def run_full_time_undergraduate_imst_parser(self):
-        changed_files = self.find_changed_files()
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+        
+        changed_files = self.find_changed_files(soup_obj)
         if len(changed_files) > 0:
+            main.send_custom_message_to_user(206171081, f'Новые расписания: {changed_files}')
+        
             self.create_new_excel_files('full_time_undergraduate/imst', changed_files)
             self.run_excel_parser(changed_files)
+        else:
+            main.send_custom_message_to_user(206171081, 'Изменений расписаний в ИМИСТЕ не обнаружено')
 
-    def return_file_links_from_site_imst(self):
-        soup_obj = self.get_soup_obj()
+    def find_changed_files(self, soup_obj):
+        changed_files = []
+        links_from_site = self.return_file_links_from_site_imst(soup_obj)
+
+        for number in range(4):
+            new_file_link = links_from_site[number]
+            if self.is_changed(new_file_link):
+                changed_files.append(new_file_link)
+        return changed_files
+
+
+    def return_file_links_from_site_imst(self, soup_obj):
+        
         element = soup_obj.find_all('div', class_ = f'views-row views-row-10 views-row-even')
         element_2 = element[0].find_all('div', class_ = 'field field-name-field-fl1 field-type-file field-label-hidden')
         imst_1 = element_2[0].find_all('a', href=True)[0]['href']
@@ -161,16 +180,6 @@ class Site_parser_undergraduate_imst(Site_parser):
         imst_4 = element_2[0].find_all('a', href=True)[3]['href']
 
         return imst_1, imst_2, imst_3, imst_4
-
-    def find_changed_files(self):
-        changed_files = []
-        links_from_site = self.return_file_links_from_site_imst()
-
-        for number in range(4):
-            new_file_link = links_from_site[number]
-            if self.is_changed(new_file_link):
-                changed_files.append(new_file_link)
-        return changed_files
 
     def get_name_of_course(self, file_link):
         course_names = ['1_kurs_imst', '2_kurs_imst', '3_kurs_imst', '4_kurs_imst', '1_kurs_imist', '2_kurs_imist', '3_kurs_imist', '4_kurs_imist']
@@ -192,9 +201,6 @@ class Site_parser_undergraduate_imst(Site_parser):
             name_of_course = self.get_name_of_course(new_file_link)
             parser = excel_parser.Excel_parser_undergraduate_imst()
             parser.parse_work_file_using_name(name_of_course, 'full_time_undergraduate/imst')
-
-
-
 class Site_parser_magistracy_fk(Site_parser):
 
     def run_full_time_magistracy_fk(self):
@@ -205,7 +211,9 @@ class Site_parser_magistracy_fk(Site_parser):
             self.run_excel_parser(changed_files)
 
     def return_file_link_full_time_magistracy_fk(self, number_of_course):
-        soup_obj = self.get_soup_obj()
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+        
         element = soup_obj.find_all('div', class_ = f'views-row views-row-11 views-row-odd')
         if number_of_course == 0:
             element_2 = element[0].find_all('div', class_ = 'field-item even')
@@ -256,7 +264,9 @@ class Site_parser_magistracy_afk(Site_parser):
             self.run_excel_parser(changed_files)
 
     def return_file_link_full_time_magistracy_afk(self, number_of_course):
-        soup_obj = self.get_soup_obj()
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+        
         element = soup_obj.find_all('div', class_ = f'views-row views-row-12 views-row-even')
         if number_of_course == 0:
             element_2 = element[0].find_all('div', class_ = 'field-item even')
@@ -305,11 +315,13 @@ class Site_parser_magistracy_imst(Site_parser):
             self.run_excel_parser(changed_files)
 
     def return_file_link_full_time_magistracy_imst(self, number_of_course):
-        soup_obj = self.get_soup_obj()
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+        
         element = soup_obj.find_all('div', class_ = f'views-row views-row-13 views-row-odd')
         if number_of_course == 0:
             element_2 = element[0].find_all('div', class_ = 'field-item even')
-            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
+            new_file_link = element_2[2].find_all('a', href=True)[0]['href']
         elif number_of_course == 1:
             element_2 = element[0].find_all('div', class_ = 'field-item odd')
             new_file_link = element_2[0].find_all('a', href=True)[0]['href']
