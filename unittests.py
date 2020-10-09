@@ -412,10 +412,15 @@ class Test_main(unittest.TestCase):
     #    self.assertEqual(number_of_course, 1)
 
         
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_site_parser_undergraduate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        try:
+            db_funcs_for_site_parser.drop_db()
+        except:
+            pass
+        
         db_funcs_for_site_parser.create_db()
         db_funcs_for_site_parser.insert_link_to_current_links()
         db_funcs_for_site_parser.change_link_in_current_links('lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
@@ -477,15 +482,26 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.get_name_of_course('http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
         self.assertEqual(result, 'lovs_4_kurs')
 
+    #Тест на обход бага, когда учебный отдел приделывает 'int' к расписанию
+    def test_get_name_of_course_int_bag_return_correct(self):
+        obj = site_parser.Site_parser_undergraduate()
+        result = obj.get_name_of_course('http://lesgaft.spb.ru/sites/default/files//shedul//3_kurs_int_07.10.xlsx')
+        self.assertEqual(result, 'zovs_3_kurs')
+        
     def test_formate_name_return_correct(self):
         obj = site_parser.Site_parser_undergraduate()
         result = obj.formate_name('3_kurs_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        try:
+            db_funcs_for_site_parser.drop_db()
+        except:
+            pass
+        
         db_funcs_for_site_parser.create_db()
         db_funcs_for_site_parser.insert_link_to_current_links()
         db_funcs_for_site_parser.change_link_in_current_links('imst_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_1_kurs_imst_17.02.xlsx')
@@ -517,11 +533,11 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result, ['http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_2_kurs_imst_13.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_4_kurs_imst_14.02.xlsx'])
 
-    #def test_get_file_link_from_site_full_time_undergraduate_return_filelink(self):
-    #    obj = site_parser.Site_parser_undergraduate()
-    #    soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
-    #    result = obj.get_file_link_from_site_full_time_undergraduate(7, soup_obj)
-    #    self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx')
+    def test_return_file_link_from_site_imst_return_filelink(self):
+        obj = site_parser.Site_parser_undergraduate_imst()
+        soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
+        result = obj.return_file_links_from_site_imst(soup_obj)
+        self.assertEqual(result, ('http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_1_kurs_imst_17.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_2_kurs_imst_13.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_3_kurs_imst_13.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//raspisanie_4_kurs_imst_14.02.xlsx'))
 #
     #def test_find_file_link_return_correct_link(self):
     #    obj = site_parser.Site_parser_undergraduate()

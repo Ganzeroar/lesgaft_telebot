@@ -27,11 +27,10 @@ class Site_parser():
     def create_new_excel_files(self, route, changed_files):
         for new_file_link in changed_files:
             date_and_time_now = self.get_date_and_time_now()
+            print('here new file link = ' + str(new_file_link))
             name_of_course = self.get_name_of_course(new_file_link)
             print('created new excel ' + str(name_of_course))
             self.create_table(route, name_of_course, new_file_link)
-            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(name_of_course, str(new_file_link))
     
     def create_table(self, route, name_of_course, new_file_link):
         excel_file = open(f'time_tables/{route}/{name_of_course}.xlsx', 'wb')
@@ -55,7 +54,7 @@ class Site_parser_undergraduate(Site_parser):
         soup_obj = self.get_soup_obj(html_text)
 
         changed_files = self.find_changed_files(soup_obj)
-        if len(changed_files) > 0:
+        if len(changed_files) > 0: #changd_files = [None]
             main.send_custom_message_to_user(206171081, f'Новые расписания: {changed_files}')
         
             date_and_time_now = self.get_date_and_time_now()
@@ -63,9 +62,17 @@ class Site_parser_undergraduate(Site_parser):
             print('Изменения в ' + str(changed_files))
             self.create_new_excel_files('full_time_undergraduate', changed_files)
             self.run_excel_parser(changed_files)
+            self.save_new_links_in_db(changed_files)
         else:
             main.send_custom_message_to_user(206171081, 'Изменений расписаний не обнаружено')
 
+    def save_new_links_in_db(self, changed_files):
+        for new_file_link in changed_files:
+            date_and_time_now = self.get_date_and_time_now()
+            name_of_course = self.get_name_of_course(new_file_link)
+            db.insert_link_to_all_links(name_of_course, str(new_file_link), date_and_time_now)
+            db.change_link_in_current_links(name_of_course, str(new_file_link))
+    
     def run_full_time_undergraduate_parser_without_checking_changed_files(self):
         all_files = self.get_all_files()
         print(all_files)

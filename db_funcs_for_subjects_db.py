@@ -107,5 +107,11 @@ def get_db_name(name_of_group):
             #костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
             if name_of_group == 'группа_414' and db_name == 'lovs_4_kurs':
                 return 'zovs_4_kurs'
+            elif name_of_group == 'группа_411' and db_name == 'lovs_4_kurs':
+                return 'zovs_4_kurs'
+            elif name_of_group == 'группа_412' and db_name == 'lovs_4_kurs':
+                return 'zovs_4_kurs'
+            elif name_of_group == 'группа_413' and db_name == 'lovs_4_kurs':
+                return 'zovs_4_kurs'
             return db_name
     return None   
