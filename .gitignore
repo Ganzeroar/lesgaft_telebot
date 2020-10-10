@@ -6,7 +6,12 @@ students.db
 *.xlsx
 config.py
 tasks.txt
-time_tables/
-time_tables/full_time_magistracy/*.xlsx
-time_tables/full_time_magistracy
+time_tables/full_time_undergraduate/*.xlsx
+time_tables/full_time_undergraduate_magistracy
+time_tables/full_time_imst/*.xlsx
+time_tables/full_time_imst
+time_tables/full_time_magistracy_fk/*.xlsx
+time_tables/full_time_magistracy_fk
+time_tables/full_time_magistracy_afk/*.xlsx
+time_tables/full_time_magistracy_afk
 .vscode/
