@@ -357,7 +357,7 @@ class Excel_parser():
         group_name = group_name.lower().rstrip()
         unnecessary_symbols = [';', ':', '(', ')', '"', '.', ',']
         symbols_for_change = ['\n', ' ', '-']
-        numbers_for_delete_before = ['380404', '380402', '430402', '420402']
+        numbers_for_delete_before = ['380404', '380402', '430402', '420402', '410405']
         numbers_for_delete_after = ['380302', '430302', '430301', '410305', '420301', '420302']
         if 'гр.' in group_name:
             first = group_name[:-3]
@@ -371,8 +371,6 @@ class Excel_parser():
         for symbol in symbols_for_change:
             if symbol in group_name:
                 group_name = group_name.replace(symbol, '_')
-        if '__' in group_name:
-            group_name = group_name.replace('__', '_')
         for num in numbers_for_delete_before:
             if num in group_name:
                 group_name = group_name[6:]
@@ -383,21 +381,25 @@ class Excel_parser():
             group_name = group_name[1:]
         if group_name[-1] == '_':
             group_name = group_name[:-1]
+        while '__' in group_name:
+            group_name = group_name.replace('__', '_')
+        if group_name[-1] == '_':
+            group_name = group_name[:-1]
         return group_name
 
     def return_first_group_name(self, db_name):
         if db_name == 'magistracy_fk_full_time_1_kurs':
-            first_group_name = 'гр_1'
+            first_group_name = 'гимнастика'
         elif db_name == 'magistracy_fk_full_time_2_kurs':
-            first_group_name = 'гимнастика_плавание_футбол'
+            first_group_name = 'гимнастика'
         elif db_name == 'magistracy_imst_full_time_1_kurs':
-            first_group_name = 'менеджмент_направленность_профиль_менеджмент_в_спорте'
+            first_group_name = 'туризм_направленность_профиль_туристская_деятельность_с_сфере_физической_культуры_и_спорта'
         elif db_name == 'magistracy_imst_full_time_2_kurs':
-            first_group_name = 'государственное_и_муниципальное_управление_направленность_профиль_государственное_и_муниципальное_управление_в_отрасли_физической_культуры_и_спорта'
+            first_group_name = 'менеджмент_8_направленность_профиль_менеджмент_в_спорте'
         elif db_name == 'magistracy_afk_full_time_1_kurs':
             first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз'
         elif db_name == 'magistracy_afk_full_time_2_kurs':
-            first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_ограниченными_возможностями_здоровья'
+            first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз'
         elif db_name == 'zovs_1_kurs':
             first_group_name = 'группа_113'
         elif db_name == 'zovs_2_kurs':

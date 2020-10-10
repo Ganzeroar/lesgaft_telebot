@@ -328,7 +328,7 @@ class Site_parser_magistracy_imst(Site_parser):
         element = soup_obj.find_all('div', class_ = f'views-row views-row-13 views-row-odd')
         if number_of_course == 0:
             element_2 = element[0].find_all('div', class_ = 'field-item even')
-            new_file_link = element_2[2].find_all('a', href=True)[0]['href']
+            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
         elif number_of_course == 1:
             element_2 = element[0].find_all('div', class_ = 'field-item odd')
             new_file_link = element_2[0].find_all('a', href=True)[0]['href']
@@ -414,5 +414,6 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    run_undergraduate_parser()
+    run_magistracy_imst_parser()
+    #run_undergraduate_parser()
     #run_all_parsers()
