@@ -80,7 +80,7 @@ class Excel_parser():
                 print('skipped' + ws_name)
                 continue
             first_group_name = self.return_first_group_name(db_name)
-            list_of_groups = self.return_all_groups_names(work_sheet, first_group_name)
+            list_of_groups = self.return_all_groups_names(work_sheet, first_group_name, db_name)
             db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
             return
 
@@ -151,6 +151,21 @@ class Excel_parser():
                         dates = self.get_value_of_merged_call(work_sheet, row-1, dates_column)
                     group_name = work_sheet.cell(row = groups_row, column = column).value
                     group_name = self.format_group_name(group_name)
+                    undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs', 'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
+
+                    if db_name in undegrdaduate_timetables:
+                        group_number = self.format_group_name(work_sheet.cell(row = groups_row-1, column = column).value)
+                        group_name = group_name + '_' + group_number
+
+                    
+                    #if group_name == 'афк':
+                    #    right_group_name = self.format_group_name(work_sheet.cell(row = groups_row, column = column+1).value)
+                    #    left_group_name = self.format_group_name(work_sheet.cell(row = groups_row, column = column-1).value)
+                    #    if right_group_name == 'афк':
+                    #        group_name = 'афк_левая_группа'
+                    #    elif left_group_name == 'афк':
+                    #        group_name = 'афк_правая_группа'
+                        
                     #if not self.is_group_name_in_db(group_name):
                     if not db_funcs_for_subjects_db.is_group_exist(group_name, db_name):
                         db_funcs_for_subjects_db.save_group(db_name, group_name)
@@ -168,7 +183,8 @@ class Excel_parser():
                 if first_group_name in viewed_cell:
                     return row
 
-    def return_all_groups_names(self, work_sheet, first_group_name):
+    def return_all_groups_names(self, work_sheet, first_group_name, db_name):
+        undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs', 'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
         groups_names = []
         row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
@@ -176,6 +192,16 @@ class Excel_parser():
             group_cell = work_sheet.cell(row = row_number, column = column).value
             if type(group_cell) == str :
                 group_cell = self.format_group_name(group_cell)
+                if db_name in undegrdaduate_timetables:
+                    group_number = self.format_group_name(work_sheet.cell(row = row_number-1, column = column).value)
+                    group_cell = group_cell + '_' + group_number
+
+                #print(group_cell)
+                #if group_cell == 'афк':
+                #    if 'афк_левая_группа' in groups_names:
+                #        group_cell = 'афк_правая_группа'
+                #    else:
+                #        group_cell = 'афк_левая_группа'
                 groups_names.append(group_cell)
         return groups_names
 
@@ -354,6 +380,8 @@ class Excel_parser():
             return 'magistracy_afk_full_time_2_kurs'
 
     def format_group_name(self, group_name):
+        if bool(group_name) == False:
+            return
         group_name = group_name.lower().rstrip()
         unnecessary_symbols = [';', ':', '(', ')', '"', '.', ',']
         symbols_for_change = ['\n', ' ', '-']
@@ -381,10 +409,13 @@ class Excel_parser():
             group_name = group_name[1:]
         if group_name[-1] == '_':
             group_name = group_name[:-1]
+        while '/' in group_name:
+            group_name = group_name.replace('/', '_')
         while '__' in group_name:
             group_name = group_name.replace('__', '_')
         if group_name[-1] == '_':
             group_name = group_name[:-1]
+        
         return group_name
 
     def return_first_group_name(self, db_name):
@@ -401,21 +432,29 @@ class Excel_parser():
         elif db_name == 'magistracy_afk_full_time_2_kurs':
             first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз'
         elif db_name == 'zovs_1_kurs':
-            first_group_name = 'группа_113'
+            first_group_name = 'пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_фехтование_антидопинг_фехтование'
+            #first_group_name = 'группа_113'
         elif db_name == 'zovs_2_kurs':
-            first_group_name = 'группа_212'
+            first_group_name = 'атлетизм_пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_бокс_антидопинг_татл'
+            #first_group_name = 'группа_212'
         elif db_name == 'zovs_3_kurs':
-            first_group_name = 'группа_312'
+            first_group_name = 'самбо_атлетизм_антидопинг_тяжатл_антидопинг_бодибилдинг'
+            #first_group_name = 'группа_312'
         elif db_name == 'zovs_4_kurs':
-            first_group_name = 'группа_411'
+            first_group_name = 'самбо_бодибилдинг_пауэрлифтинг_тяжелая_атлетика_гиревой_спорт_фехтование'
+            #first_group_name = 'группа_411'
         elif db_name == 'lovs_1_kurs':
-            first_group_name = 'группа_101'
+            first_group_name = 'художественная_гимнастика_худгим_антидопинг_менеджмент_худгим'
+            #first_group_name = 'группа_101'
         elif db_name == 'lovs_2_kurs':
-            first_group_name = 'группа_201'
+            first_group_name = 'худ_гимнастика'
+            #first_group_name = 'группа_201'
         elif db_name == 'lovs_3_kurs':
-            first_group_name = 'группа_301'
+            first_group_name = 'худ_гимн'
+            #first_group_name = 'группа_301'
         elif db_name == 'lovs_4_kurs':
-            first_group_name = 'группа_401'
+            first_group_name = 'художественная_гимнастика_акробатич_рок_н_ролл'
+            #first_group_name = 'группа_401'
         elif db_name == 'imst_1_kurs':
             first_group_name = 'менеджмент'
         elif db_name == 'imst_2_kurs':

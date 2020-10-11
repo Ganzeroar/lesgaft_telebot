@@ -51,7 +51,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -119,7 +119,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -412,7 +412,7 @@ class Test_main(unittest.TestCase):
     #    self.assertEqual(number_of_course, 1)
 
         
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_site_parser_undergraduate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -604,29 +604,6 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             self.assertEqual(normal_name, formatted_name)
 
     #@unittest.skip("passed")
-    def test_run_parser(self):
-        # тестируется только бакалавриат очка, потому что метод parse_work_file_using_name
-        # использует те же функци и методы и протестирован снизу
-        parser = excel_parser.Excel_parser()
-        parser.run_parser('test_time_tables/full_time_undergraduate')
-        groups_and_expected_number_of_records = {
-            'zovs_1_kurs' : 31,
-            'zovs_2_kurs' : 35,
-            'zovs_3_kurs' : 35,
-            'zovs_4_kurs' : 34,
-            'lovs_1_kurs' : 35,
-            'lovs_2_kurs' : 32,
-            'lovs_3_kurs' : 32,
-            'lovs_4_kurs' : 32,
-        }
-        for couple in groups_and_expected_number_of_records:
-            req = f"SELECT COUNT(*) FROM {couple}"
-            self.cursor.execute(req)
-            expected_number_of_record = self.cursor.fetchall()[0][0]
-            actual_number_of_record = groups_and_expected_number_of_records[couple]
-            self.assertEqual(expected_number_of_record, actual_number_of_record)
-
-    #@unittest.skip("passed")
     def test_undergraduate_parser(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -648,7 +625,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_imst_parser(self):
         parser = excel_parser.Excel_parser_undergraduate_imst()
         groups_and_expected_number_of_records = {
@@ -666,7 +643,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_mag_fk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -682,7 +659,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_mag_afk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -698,6 +675,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
+    @unittest.skip("passed")
     def test_mag_imst(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -714,7 +692,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
 
     @classmethod
