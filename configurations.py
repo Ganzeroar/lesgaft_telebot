@@ -1,1 +1,1 @@
-month_to_skip = []
+month_to_skip = ['08', '09', '10', '11', '12']

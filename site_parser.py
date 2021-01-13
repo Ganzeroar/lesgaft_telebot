@@ -19,6 +19,13 @@ class Site_parser():
         else:
             return False
 
+    def is_file_exist(self, new_file_link):
+        resp = requests.get(new_file_link)
+        if resp.status_code == 200:
+            return True
+        else:
+            return False
+
     def get_date_and_time_now(self):
         msc_timezone = pytz.timezone('Europe/Moscow')
         date_and_time_now = str(datetime.datetime.now(tz=msc_timezone))
@@ -26,7 +33,9 @@ class Site_parser():
 
     def create_new_excel_files(self, route, changed_files):
         for new_file_link in changed_files:
-            date_and_time_now = self.get_date_and_time_now()
+            #date_and_time_now = self.get_date_and_time_now()
+            if self.is_file_exist(new_file_link) == False:
+                continue
             print('here new file link = ' + str(new_file_link))
             name_of_course = self.get_name_of_course(new_file_link)
             print('created new excel ' + str(name_of_course))
@@ -101,7 +110,7 @@ class Site_parser_undergraduate(Site_parser):
             number_of_row = number + 2
             
             new_file_link = self.get_file_link_from_site_full_time_undergraduate(number_of_row, soup_obj)
-            if self.is_changed(new_file_link):
+            if self.is_changed(new_file_link) and self.is_file_exist(new_file_link):
                 changed_files.append(new_file_link)
         return changed_files
 
@@ -129,7 +138,7 @@ class Site_parser_undergraduate(Site_parser):
 
     def get_name_of_course(self, file_link):
         course_names = ['1_kurs_lovs','1_kurs_zovs','2_kurs_lovs','2_kurs_zovs',
-            '3_kurs_lovs','3_kurs_int','4_kurs_lovs','4_kurs_zovs']
+            '3_kurs_lovs','3_kurs_zovs','3_kurs_int','4_kurs_lovs','4_kurs_zovs']
         #костыль из-за измеения 3 курса зовс
         if '3_kurs_int' in file_link:
             return 'zovs_3_kurs'
@@ -414,6 +423,4 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    run_magistracy_imst_parser()
-    #run_undergraduate_parser()
-    #run_all_parsers()
+    run_undergraduate_parser()

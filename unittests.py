@@ -23,7 +23,7 @@ import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import db_funcs_for_site_parser
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
     def test_take_long_str_return_error_text(self):
@@ -51,7 +51,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -119,7 +119,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -265,7 +265,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
 
-@unittest.skip("not_need")
+#@unittest.skip("not_need")
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -448,7 +448,9 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.is_changed('http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
         self.assertEqual(result, False)
 
-    def test_find_changed_files_return_4_changed_file_link(self):
+    @patch.object(site_parser.Site_parser, 'is_file_exist')
+    def test_find_changed_files_return_4_changed_file_link(self, is_file_exist_mock):
+        is_file_exist_mock.return_value = 200 
         obj = site_parser.Site_parser_undergraduate()
         soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
         result = obj.find_changed_files(soup_obj)
@@ -493,7 +495,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.formate_name('3_kurs_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
-#@unittest.skip("passed")
+##@unittest.skip("passed")
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -569,9 +571,9 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
 #@unittest.skip("broken")
 class Test_excel_parser_undergraduate(unittest.TestCase):
 
-    #@classmethod
-    #def setUpClass(cls):
-    #    configurations.month_to_skip = ['09', '10', '11', '12', '01']
+    @classmethod
+    def setUpClass(cls):
+        configurations.month_to_skip = ['01', '02', '03']
 #
     #@classmethod
     #def tearDownClass(cls):
@@ -591,7 +593,13 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
         date_incorrect = "10.10 17.10 24.10"
         result_2 = parser.format_dates(date_incorrect)
         self.assertEqual(result_2, ['10.10.', '17.10.', '24.10.'])
-    
+
+    def test_is_in_month_to_skip(self):
+        work_sheet_names = ['<Worksheet "с 05.01>"', '<Worksheet "с ауд. 28.09-03.02>"', '<Worksheet "с  07.09. - 26.03.>"', '<Worksheet "с ауд. 30.11.-05.01.>"', '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"']
+        obj = excel_parser.Excel_parser()
+        for name in work_sheet_names:
+            result = obj.is_reason_to_skip(name)
+            self.assertTrue(result)
 
     def test_format_group_name(self):
         names_from_excel = texts_for_tests.group_names_from_excel
@@ -603,7 +611,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             formatted_name = obj.format_group_name(excel_name)
             self.assertEqual(normal_name, formatted_name)
 
-    #@unittest.skip("passed")
+    ##@unittest.skip("passed")
     def test_undergraduate_parser(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -625,7 +633,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_imst_parser(self):
         parser = excel_parser.Excel_parser_undergraduate_imst()
         groups_and_expected_number_of_records = {
@@ -643,7 +651,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_mag_fk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -659,7 +667,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_mag_afk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -675,7 +683,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_mag_imst(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -692,7 +700,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
 
     @classmethod
