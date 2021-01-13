@@ -23,7 +23,7 @@ import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import db_funcs_for_site_parser
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
     def test_take_long_str_return_error_text(self):
@@ -51,7 +51,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -119,7 +119,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -265,7 +265,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
 
-#@unittest.skip("not_need")
+@unittest.skip("not_need")
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -495,7 +495,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.formate_name('3_kurs_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
-##@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -568,7 +568,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
     #    self.assertEqual(result, 'zovs_3_kurs')
 
 
-#@unittest.skip("broken")
+@unittest.skip("broken")
 class Test_excel_parser_undergraduate(unittest.TestCase):
 
     @classmethod
@@ -611,7 +611,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             formatted_name = obj.format_group_name(excel_name)
             self.assertEqual(normal_name, formatted_name)
 
-    ##@unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_undergraduate_parser(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -633,7 +633,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_imst_parser(self):
         parser = excel_parser.Excel_parser_undergraduate_imst()
         groups_and_expected_number_of_records = {
@@ -651,7 +651,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_mag_fk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -667,7 +667,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_mag_afk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -683,7 +683,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    #@unittest.skip("passed")
+    @unittest.skip("passed")
     def test_mag_imst(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -699,8 +699,57 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
+class Test_db_funcs_for_subjects_db(unittest.TestCase):
 
-#@unittest.skip("passed")
+    @classmethod
+    def setUpClass(cls):
+        try:
+            db_funcs_for_students_db.drop_db()
+            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+
+            os.remove('wrong_timetables_reports.log')
+        except:
+            pass
+
+        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '9:45')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '11:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '13:30')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '15:15')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '17:00')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '11:30', 'группа_417', 'предмет2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '13:30', 'группа_417', 'предмет3')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '15:15', 'группа_417', 'предмет4')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+        
+    @classmethod
+    def tearDownClass(cls):
+        db_funcs_for_students_db.drop_db()
+        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+    
+    @freeze_time('2019-01-10 03:00:00')
+    def test_get_db_name_take_correct_return_correct(self):
+        result = db_funcs_for_subjects_db.get_db_name('группа_417')
+        self.assertEqual(result, 'zovs_4_kurs')
+        
+        result = db_funcs_for_subjects_db.get_db_name('группа_416')
+        self.assertEqual(result, 'zovs_4_kurs')
+        
+
+
+@unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
 
     @classmethod

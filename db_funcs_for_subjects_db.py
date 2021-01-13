@@ -102,8 +102,15 @@ def get_db_name(name_of_group):
         columns_names_in_db = f"PRAGMA table_info({str(db_name)})"
         cursor_for_name.execute(columns_names_in_db)
         
-        column_name = [column_name[1] for column_name in cursor_for_name.fetchall()]
-        if name_of_group in column_name:
+        column_names = [column_name[1] for column_name in cursor_for_name.fetchall()]
+        #print()
+        #print(name_of_group)
+        #print(column_name)
+        #print()
+        for column_name in column_names:
+            if name_of_group in column_name:
+                return db_name
+        if name_of_group in column_names:
             #костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
             if name_of_group == 'группа_414' and db_name == 'lovs_4_kurs':
                 return 'zovs_4_kurs'
