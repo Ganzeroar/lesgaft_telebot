@@ -57,15 +57,18 @@ def is_time_between(begin_time, end_time, check_time=None):
         return check_time >= begin_time or check_time <= end_time
     
 def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson, date, before_or_during = 'before'):
-    number_of_group = db_funcs_for_students_db.get_group_number(chat_id)
-    if number_of_group == False:
+    name_of_group = db_funcs_for_students_db.get_group_number(chat_id)
+    if name_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
-    name_of_group = 'группа_' + str(number_of_group)
+    #name_of_group = 'группа_' + str(name_of_group)
+    print(chat_id)
     db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
+    print(db_name)
     if db_name == None:
         return 'Такой группы не существует. Измени номер группы.'
     
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
+    print(today_subjects)
     if number_of_lesson == 6:
         return 'Сегодня у тебя больше нет пар.'
     if bool(today_subjects) == False or today_subjects == None:

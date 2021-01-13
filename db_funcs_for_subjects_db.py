@@ -87,6 +87,7 @@ def get_subjects_today(name_of_group, db_name, date):
     current_date = day + '.' + month + '.'
 
     req = f"SELECT {name_of_group} FROM {db_name} WHERE date = '{current_date}'"
+    print(req)
     cursor.execute(req)
     return cursor.fetchall()
 
@@ -102,8 +103,12 @@ def get_db_name(name_of_group):
         columns_names_in_db = f"PRAGMA table_info({str(db_name)})"
         cursor_for_name.execute(columns_names_in_db)
         
-        column_name = [column_name[1] for column_name in cursor_for_name.fetchall()]
-        if name_of_group in column_name:
+        column_names = [column_name[1] for column_name in cursor_for_name.fetchall()]
+        if name_of_group:
+            if len(name_of_group) == 3:
+                column_names = [column_name[-3:] for column_name in column_names]
+
+        if name_of_group in column_names:
             #костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
             if name_of_group == 'группа_414' and db_name == 'lovs_4_kurs':
                 return 'zovs_4_kurs'

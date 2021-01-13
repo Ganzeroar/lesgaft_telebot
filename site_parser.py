@@ -414,6 +414,6 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    run_magistracy_imst_parser()
-    #run_undergraduate_parser()
+    #run_magistracy_imst_parser()
+    run_undergraduate_parser()
     #run_all_parsers()

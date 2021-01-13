@@ -62,8 +62,8 @@ def get_subjects_today(name_of_group, db_name, date):
     else:
         return False
 
-def get_db_name(number_of_group):
-    number_of_group = 'Группа_' + str(number_of_group)
+def get_db_name(name_of_group):
+    #name_of_group = 'Группа_' + str(name_of_group)
 
     con = sqlite3.connect('subjects_PT_undergrade.db')
     cursor = con.cursor()
@@ -75,6 +75,10 @@ def get_db_name(number_of_group):
         cursor_for_name.execute(columns_names_in_db)
         
         column_name = [column_name[1] for column_name in cursor_for_name.fetchall()]
-        if number_of_group in column_name:
+        print()
+        print(column_name)
+        print(name_of_group)
+        print()
+        if name_of_group in column_name:
             return db_name
     return None   

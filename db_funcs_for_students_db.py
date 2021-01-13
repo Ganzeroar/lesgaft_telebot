@@ -7,7 +7,7 @@ def create_db():
     
     cursor.execute("""CREATE TABLE users
                     (chat_id integer, first_name text, last_name text,
-                    registration_date integer, number_of_group integer,
+                    registration_date integer, number_of_group text,
                     academic_degree text, education_form text, 
                     number_of_course integer, timetables_name text,
                     in_registration_process text, is_subscribe_to_newsletter integer)
@@ -170,7 +170,7 @@ def update_group(chat_id, group_number):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    string_sql = f"UPDATE users SET number_of_group  = {group_number} WHERE chat_id = {chat_id}"
+    string_sql = f"UPDATE users SET number_of_group  = '{group_number}' WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
 

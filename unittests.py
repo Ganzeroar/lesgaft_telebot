@@ -51,7 +51,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -59,46 +59,64 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         try:
             db_funcs_for_students_db.drop_db()
             db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+            db_funcs_for_subjects_db.drop_db('imst_4_kurs')
         except:
             pass
         db_funcs_for_students_db.create_db()
         db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
         db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
-        db_funcs_for_students_db.update_group(111111111, 417)
+        db_funcs_for_students_db.starting_insert_data(333333333, 'Ganzeroar3', None, 1576085837)
+        db_funcs_for_students_db.starting_insert_data(444444444, 'Ganzeroar4', None, 1576085837)
+        db_funcs_for_students_db.update_group(111111111, 'лыжный_спорт_биатлон_группа_417')
+        db_funcs_for_students_db.update_group(333333333, 'реклама_и_связи_с_общественностью')
+        db_funcs_for_students_db.update_group(444444444, '417')
 
         db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['лыжный_спорт_биатлон_группа_417'])
         db_funcs_for_subjects_db.save_dates_and_times('zovs_4_kurs', [['09.01.']], ['9:45'])
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'лыжный_спорт_биатлон_группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_dates_and_times('zovs_4_kurs', [['10.01.']], ['9:45'])
-        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'лыжный_спорт_биатлон_группа_417', 'предмет1 Зал№2')
+        db_funcs_for_subjects_db.create_db('imst_4_kurs')
+        db_funcs_for_subjects_db.save_groups('imst_4_kurs', ['реклама_и_связи_с_общественностью'])
+        db_funcs_for_subjects_db.save_dates_and_times('imst_4_kurs', [['09.01.']], ['9:45'])
+        db_funcs_for_subjects_db.save_subj('imst_4_kurs', '09.01.', '9:45', 'реклама_и_связи_с_общественностью', 'предмет1')
+        db_funcs_for_subjects_db.save_dates_and_times('imst_4_kurs', [['10.01.']], ['9:45'])
+        db_funcs_for_subjects_db.save_subj('imst_4_kurs', '10.01.', '9:45', 'реклама_и_связи_с_общественностью', 'предмет1 Зал№2')
 
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
         db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
     
+    @unittest.skip("passed")
     def test_user_id_not_in_db_return_error_message(self):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(123, 1, date)
         self.assertEqual(result, 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.')
     
+    @unittest.skip("passed")
     def test_group_isnt_exist_return_error_message(self):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(222222222, 1, date)
         self.assertEqual(result, 'Такой группы не существует. Измени номер группы.')
     
+    @unittest.skip("passed")
     def test_num_of_lessons_bigger_then_6_return_error_message(self):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 6, date)
+        result_2 = find_time_and_location.return_text_about_time_before_lesson_with_location(444444444, 6, date)
         self.assertEqual(result, 'Сегодня у тебя больше нет пар.')
+        self.assertEqual(result_2, 'Сегодня у тебя больше нет пар.')
     
+    @unittest.skip("passed")
     @freeze_time('2019-01-11 09:45:00')
     def test_today_subjects_equal_false_return_error_message(self):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, texts_for_lesgaft_bot.error)
     
+    @unittest.skip("passed")
     @freeze_time('2019-01-11 09:45:00')
     def test_today_subjects_equal_none_return_error_message(self):
         date = datetime.datetime.now()
@@ -111,14 +129,25 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
     def test_when_before_lessons_return_correct_data(self, find_class_location):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
+        result_2 = find_time_and_location.return_text_about_time_before_lesson_with_location(444444444, 0, date)
+        print(result_2)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1\n\nпуть')
+        self.assertEqual(result_2, 'Через 3:45 начнётся\nпредмет1\n\nпуть')
     
+    @unittest.skip("passed")
     @freeze_time('2019-01-10 06:00:00')
     def test_real_when_before_lessons_return_correct_data(self):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
-
+    
+    @unittest.skip("passed")
+    @freeze_time('2019-01-09 06:00:00')
+    @patch('find_class_location.find_class_location', return_value = 'путь')
+    def test_imst_when_before_lessons_return_correct_data(self, find_class_location):
+        date = datetime.datetime.now()
+        result = find_time_and_location.return_text_about_time_before_lesson_with_location(333333333, 0, date)
+        self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1\n\nпуть')
 @unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
@@ -253,6 +282,7 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         expected_string = 'В субботу (14.12.2019.) у тебя нет пар'
         self.assertEqual(result, expected_string)
 
+@unittest.skip("passed")
 
 class Test_find_class_location_find_class_location(unittest.TestCase):
 
@@ -493,7 +523,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.formate_name('3_kurs_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
-#@unittest.skip("passed")
+@unittest.skip("passed")
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -566,7 +596,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
     #    self.assertEqual(result, 'zovs_3_kurs')
 
 
-#@unittest.skip("broken")
+@unittest.skip("passed")
 class Test_excel_parser_undergraduate(unittest.TestCase):
 
     #@classmethod
@@ -603,7 +633,6 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             formatted_name = obj.format_group_name(excel_name)
             self.assertEqual(normal_name, formatted_name)
 
-    #@unittest.skip("passed")
     def test_undergraduate_parser(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -625,7 +654,6 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
     def test_imst_parser(self):
         parser = excel_parser.Excel_parser_undergraduate_imst()
         groups_and_expected_number_of_records = {
@@ -643,7 +671,6 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
     def test_mag_fk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -659,7 +686,6 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
     def test_mag_afk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -869,6 +895,45 @@ class Test_request_handler(unittest.TestCase):
         result = request_handler.main_request_handler('Вернуться в настройки', 111111111)
         self.assertEqual(result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
         self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [{'text': 'Связь с разработчиком'}],[{'text': 'Вернуться в меню'}]])
+
+@unittest.skip("failed")
+class Test_excel_parser_and_request_handler(unittest.TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+    
+        try:
+            db_funcs_for_students_db.drop_db()
+            all_tables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs', 'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs', 
+                'imst_1_kurs', 'imst_2_kurs', 'imst_3_kurs', 'imst_4_kurs', 'magistracy_fk_full_time_1_kurs', 'magistracy_fk_full_time_2_kurs',
+                'magistracy_afk_full_time_1_kurs', 'magistracy_afk_full_time_2_kurs', 'magistracy_imst_full_time_1_kurs', 'magistracy_imst_full_time_2_kurs']
+            for table in all_tables:
+                db_funcs_for_subjects_db.drop_db(table)
+        except:
+            pass
+
+        db_funcs_for_students_db.create_db()
+        db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
+        db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
+        db_funcs_for_students_db.update_group(111111111, 'лыжный_спорт_биатлон_группа_417')
+
+        
+    @classmethod
+    def tearDownClass(cls):
+        pass
+        #db_funcs_for_students_db.drop_db()
+        #db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+    
+    @freeze_time('2019-01-09 03:00:00')
+    def run_full_functional_test(self):
+        parser = excel_parser.Excel_parser()
+        parser.run_all_parsers()
+
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
+        self.assertEqual(result, expected_string)
+
 
 
 
