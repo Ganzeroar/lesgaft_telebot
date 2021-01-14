@@ -74,6 +74,19 @@ def is_group_exist(name_of_group, db_name):
     else:
         return False
 
+def return_new_group_name(name_of_group, db_name):
+
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    columns_names_in_db = f"PRAGMA table_info({db_name})"
+    cursor.execute(columns_names_in_db)
+    
+    columns_names = [column_name[1] for column_name in cursor.fetchall()]
+    for column_name in columns_names:
+        if name_of_group in column_name:
+            return column_name
+
+
 def get_subjects_today(name_of_group, db_name, date):
     
     conn = sqlite3.connect('subjects.db')

@@ -119,7 +119,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1 Зал№2\n\nМанеж, первый этаж')
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
 
     @classmethod
@@ -132,10 +132,14 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         db_funcs_for_students_db.create_db()
         db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
         db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
+        db_funcs_for_students_db.starting_insert_data(333333333, 'Ganzeroar3', None, 1576085837)
         db_funcs_for_students_db.update_group(111111111, 417)
+        db_funcs_for_students_db.update_group(333333333, 416)
+
 
         db_funcs_for_subjects_db.create_db('zovs_4_kurs')
         db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '13:30')
@@ -149,6 +153,15 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
         
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+        
+
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '13:30')
@@ -204,6 +217,15 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         expected_string = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
         self.assertEqual(result, expected_string)
     
+    @freeze_time('2019-01-09 03:00:00')
+    def test_new_db_column_names_return_correct_message(self):
+        #тест для проверки новых имён столбиков в базе
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(333333333, date)
+        expected_string = 'Расписание на среду (09.01.2019.)\n\n9:45-11:15\nпредмет1\n\n11:30-13:00\nпредмет2\n\n13:30-15:00\nпредмет3\n\n15:15-16:45\nпредмет4\n\n17:00-18:30\nпредмет5\n\n'
+        self.assertEqual(result, expected_string)
+    
+
     @freeze_time('2019-01-14 03:00:00')
     def test_6_subject_all_correct_return_correct_message(self):
         date = datetime.datetime.now()
@@ -753,6 +775,10 @@ class Test_db_funcs_for_subjects_db(unittest.TestCase):
         
         result = db_funcs_for_subjects_db.is_group_exist('группа_416', 'zovs_4_kurs')
         self.assertTrue(result)
+
+    def test_return_new_group_name(self):
+        result = db_funcs_for_subjects_db.return_new_group_name('группа_416', 'zovs_4_kurs')
+        self.assertEqual(result, 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416')
         
 
 @unittest.skip("passed")

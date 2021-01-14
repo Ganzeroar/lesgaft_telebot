@@ -20,6 +20,8 @@ def return_lessons_at_date(user_id, date):
     if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
         return 'Твоей группы не существует. Измени номер группы.'
 
+    name_of_group = db_funcs_for_subjects_db.return_new_group_name(name_of_group, db_name)
+
     subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
     if name_of_group == 'группа_414':
         print(subjects)
