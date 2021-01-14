@@ -66,6 +66,9 @@ def is_group_exist(name_of_group, db_name):
     cursor.execute(columns_names_in_db)
     
     columns_names = [column_name[1] for column_name in cursor.fetchall()]
+    for column_name in columns_names:
+        if name_of_group in column_name:
+            return True
     if name_of_group in columns_names:
         return True
     else:
@@ -103,10 +106,6 @@ def get_db_name(name_of_group):
         cursor_for_name.execute(columns_names_in_db)
         
         column_names = [column_name[1] for column_name in cursor_for_name.fetchall()]
-        #print()
-        #print(name_of_group)
-        #print(column_name)
-        #print()
         for column_name in column_names:
             if name_of_group in column_name:
                 return db_name

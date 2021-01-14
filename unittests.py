@@ -744,10 +744,16 @@ class Test_db_funcs_for_subjects_db(unittest.TestCase):
         result = db_funcs_for_subjects_db.get_db_name('группа_417')
         self.assertEqual(result, 'zovs_4_kurs')
         
-        result = db_funcs_for_subjects_db.get_db_name('группа_416')
+        result = db_funcs_for_subjects_db.get_db_name('конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416')
         self.assertEqual(result, 'zovs_4_kurs')
         
-
+    def test_isgroup_exist(self):
+        result = db_funcs_for_subjects_db.is_group_exist('группа_417', 'zovs_4_kurs')
+        self.assertTrue(result)
+        
+        result = db_funcs_for_subjects_db.is_group_exist('группа_416', 'zovs_4_kurs')
+        self.assertTrue(result)
+        
 
 @unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
