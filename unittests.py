@@ -23,7 +23,7 @@ import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import db_funcs_for_site_parser
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
 
     def test_take_long_str_return_error_text(self):
@@ -51,7 +51,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
         result = find_time_and_location.return_location_of_class(123456789, 'где кафедра теории и методики неолимпийских видов спорта')
         self.assertEqual(result, 'Мойка, третий этаж, после лестницы направо, по левую сторону')
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_find_time_and_location_return_text_about_time_before_lesson_with_location(unittest.TestCase):
 
     @classmethod
@@ -64,7 +64,9 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         db_funcs_for_students_db.create_db()
         db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
         db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
+        db_funcs_for_students_db.starting_insert_data(333333333, 'Ganzeroar3', None, 1576085837)
         db_funcs_for_students_db.update_group(111111111, 417)
+        db_funcs_for_students_db.update_group(333333333, 416)
 
         db_funcs_for_subjects_db.create_db('zovs_4_kurs')
         db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
@@ -72,6 +74,13 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_dates_and_times('zovs_4_kurs', [['10.01.']], ['9:45'])
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+        
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
+        db_funcs_for_subjects_db.save_dates_and_times('zovs_4_kurs', [['09.01.']], ['9:45'])
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+        db_funcs_for_subjects_db.save_dates_and_times('zovs_4_kurs', [['10.01.']], ['9:45'])
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+    
 
     @classmethod
     def tearDownClass(cls):
@@ -111,6 +120,13 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
     def test_when_before_lessons_return_correct_data(self, find_class_location):
         date = datetime.datetime.now()
         result = find_time_and_location.return_text_about_time_before_lesson_with_location(111111111, 0, date)
+        self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1\n\nпуть')
+    
+    @freeze_time('2019-01-09 06:00:00')
+    @patch('find_class_location.find_class_location', return_value = 'путь')
+    def test_when_before_lessons_return_correct_data_new_db_column_names(self, find_class_location):
+        date = datetime.datetime.now()
+        result = find_time_and_location.return_text_about_time_before_lesson_with_location(333333333, 0, date)
         self.assertEqual(result, 'Через 3:45 начнётся\nпредмет1\n\nпуть')
     
     @freeze_time('2019-01-10 06:00:00')
@@ -287,7 +303,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
 
-@unittest.skip("not_need")
+#@unittest.skip("not_need")
 class Test_main(unittest.TestCase):
     
     @classmethod
@@ -434,7 +450,7 @@ class Test_main(unittest.TestCase):
     #    self.assertEqual(number_of_course, 1)
 
         
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_site_parser_undergraduate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -590,7 +606,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
     #    self.assertEqual(result, 'zovs_3_kurs')
 
 
-@unittest.skip("broken")
+#@unittest.skip("broken")
 class Test_excel_parser_undergraduate(unittest.TestCase):
 
     @classmethod
@@ -655,7 +671,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_imst_parser(self):
         parser = excel_parser.Excel_parser_undergraduate_imst()
         groups_and_expected_number_of_records = {
@@ -673,7 +689,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_mag_fk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -689,7 +705,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_mag_afk(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -705,7 +721,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             print(couple)
             self.assertEqual(expected_number_of_record, actual_number_of_record)
 
-    @unittest.skip("passed")
+    #@unittest.skip("passed")
     def test_mag_imst(self):
         parser = excel_parser.Excel_parser()
         groups_and_expected_number_of_records = {
@@ -781,7 +797,7 @@ class Test_db_funcs_for_subjects_db(unittest.TestCase):
         self.assertEqual(result, 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416')
         
 
-@unittest.skip("passed")
+#@unittest.skip("passed")
 class Test_request_handler(unittest.TestCase):
 
     @classmethod

@@ -65,6 +65,8 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
     if db_name == None:
         return 'Такой группы не существует. Измени номер группы.'
     
+    name_of_group = db_funcs_for_subjects_db.return_new_group_name(name_of_group, db_name)
+
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
     if number_of_lesson == 6:
         return 'Сегодня у тебя больше нет пар.'

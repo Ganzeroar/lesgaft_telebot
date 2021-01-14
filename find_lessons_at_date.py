@@ -23,12 +23,7 @@ def return_lessons_at_date(user_id, date):
     name_of_group = db_funcs_for_subjects_db.return_new_group_name(name_of_group, db_name)
 
     subjects = db_funcs_for_subjects_db.get_subjects_today(name_of_group, db_name, date)
-    if name_of_group == 'группа_414':
-        print(subjects)
-        print(name_of_group)
-        print(db_name)
-        print(date)
-        print(user_id)
+    
     number_of_date = date.strftime("%d.%m.%Y.")
     if set(subjects) == {('нет предмета',)}:
         print('User: ' + str(user_id) +  ' from ' + str(number_of_group) + ' ask about ' + str(number_of_date))
