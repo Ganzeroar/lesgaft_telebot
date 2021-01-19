@@ -66,6 +66,7 @@ class Excel_parser():
             if self.is_reason_to_skip(ws_name):
                 print('skipped' + ws_name)
                 continue
+            print('create groups in ' + str(work_sheet))
             first_group_name = self.return_first_group_name(db_name)
             list_of_groups = self.return_all_groups_names(work_sheet, first_group_name, db_name)
             db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
@@ -187,8 +188,11 @@ class Excel_parser():
                 if db_name in undegrdaduate_timetables:
                     if self.is_merged(work_sheet, row_number-1, column):
                         group_number = self.get_value_of_merged_call(work_sheet, row_number-1, column)
-                    group_number = self.format_group_name(work_sheet.cell(row = row_number-1, column = column).value)
-                    group_cell = group_cell + '_' + group_number
+                    else: 
+                        group_number = work_sheet.cell(row = row_number-1, column = column).value
+
+                    group_number_formatted = self.format_group_name(group_number)
+                    group_cell = group_cell + '_' + group_number_formatted
 
                 #print(group_cell)
                 #if group_cell == 'афк':
@@ -246,14 +250,11 @@ class Excel_parser():
 
     def is_reason_to_skip(self, worksheet_name):
         month_to_skip = configurations.month_to_skip
-        if worksheet_name[-4:-2].isdigit and worksheet_name[-4:-2] in month_to_skip:
-            return True
-        elif worksheet_name[-5:-3].isdigit and worksheet_name[-5:-3] in month_to_skip:
-            return True
-        elif 'шапка' in worksheet_name.lower() or 'ссылки' in worksheet_name.lower(): 
-            return True
-        else:
-            return False
+        for num in range(0, -15, -1):
+            if worksheet_name[num-2:num].isdigit:
+                if worksheet_name[num-2:num] in month_to_skip:
+                    return True
+        return False            
 
     def save_dates_and_times(self, db_name, dates, times):
         for date in dates:

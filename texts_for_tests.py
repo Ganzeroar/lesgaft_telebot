@@ -372,7 +372,8 @@ normal_group_names = [
 'самбо_атлетизм_антидопинг_тяжатл_антидопинг_бодибилдинг',
 'худ_гимнастика',
 'худ_гимн',
-'художественная_гимнастика_акробатич_рок_н_ролл'
+'художественная_гимнастика_акробатич_рок_н_ролл',
+'ссии'
 
 
 ]
@@ -539,6 +540,8 @@ group_name_45 = '''Художественная гимнастика
 рок-н-ролл
 '''
 
+group_name_46 = '''ССиИ'''
+
 group_names_from_excel = [group_name_1, group_name_2, group_name_3, group_name_4, 
   group_name_5, group_name_6, group_name_7, group_name_8, group_name_9, group_name_10,
   group_name_11, group_name_12, group_name_13, group_name_14, group_name_15, group_name_16,
@@ -546,5 +549,5 @@ group_names_from_excel = [group_name_1, group_name_2, group_name_3, group_name_4
   group_name_23, group_name_24, group_name_25, group_name_26, group_name_27, group_name_28,
   group_name_29, group_name_30, group_name_31, group_name_32, group_name_33, group_name_34,
   group_name_35, group_name_36, group_name_37, group_name_38, group_name_39, group_name_40,
-  group_name_41, group_name_42, group_name_43, group_name_44, group_name_45
+  group_name_41, group_name_42, group_name_43, group_name_44, group_name_45, group_name_46
 ]
