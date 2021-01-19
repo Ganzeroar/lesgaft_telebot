@@ -254,6 +254,8 @@ class Excel_parser():
             if worksheet_name[num-2:num].isdigit:
                 if worksheet_name[num-2:num] in month_to_skip:
                     return True
+        if 'шапка' in worksheet_name.lower() or 'ссылки' in worksheet_name.lower():
+            return True 
         return False            
 
     def save_dates_and_times(self, db_name, dates, times):
