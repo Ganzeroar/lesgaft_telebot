@@ -34,7 +34,7 @@ def return_where_is_the_lesson(chat_id):
     #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
     
-    main_keyboard.add(item1, item2, item4, item5)
+    main_keyboard.add(item1, item2, item3, item5)
     text = find_time_and_location.return_time_before_class_and_location(chat_id)
     return text, main_keyboard
 
