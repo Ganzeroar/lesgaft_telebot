@@ -639,6 +639,13 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             result = obj.is_reason_to_skip(name)
             self.assertTrue(result)
 
+    def test_is_not_in_month_to_skip(self):
+        work_sheet_names = ['<Worksheet "с 05.01>"', '<Worksheet "с ауд. 28.09-03.02>"', '<Worksheet "с  07.09. - 26.03.>"', '<Worksheet "с ауд. 30.11.-05.01.>"', '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"', '<Worksheet "с 31.08.-12.01. ">', '<Worksheet "с 21.09. - 24.02. практика">', '<Worksheet "шапка">']
+        obj = excel_parser.Excel_parser()
+        for name in work_sheet_names:
+            result = obj.is_reason_to_skip(name)
+            self.assertTrue(result)
+
     def test_format_group_name(self):
         names_from_excel = texts_for_tests.group_names_from_excel
         normal_group_names = texts_for_tests.normal_group_names
@@ -812,11 +819,15 @@ class Test_request_handler(unittest.TestCase):
         db_funcs_for_students_db.create_db()
         db_funcs_for_students_db.starting_insert_data(111111111, 'Ganzeroar', None, 1576085837)
         db_funcs_for_students_db.starting_insert_data(222222222, 'Ganzeroar2', None, 1576085837)
+        db_funcs_for_students_db.starting_insert_data(333333333, 'Ganzeroar3', None, 1576085837)
         db_funcs_for_students_db.update_group(111111111, 417)
         db_funcs_for_students_db.set_is_subscribe_to_newsletter(222222222, True)
+        db_funcs_for_students_db.update_group(333333333, 416)
 
         db_funcs_for_subjects_db.create_db('zovs_4_kurs')
         db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
+
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '09.01.', '13:30')
@@ -829,6 +840,15 @@ class Test_request_handler(unittest.TestCase):
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
+        db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '10.01.', '9:45')
+        db_funcs_for_subjects_db.save_subj('zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+        
         
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time('zovs_4_kurs', '14.01.', '11:30')
@@ -963,6 +983,18 @@ class Test_request_handler(unittest.TestCase):
         file_text = f
         
         assert_file_text = ['INFO:root:группа_417 10.01.2019.\n', "[('предмет1 Зал№2',)]\n", 'Юзер: 111111111\n']
+        self.assertEqual(file_text, assert_file_text)
+
+    @freeze_time('2019-01-10 03:00:00')
+    def test_main_request_handler_take_wrong_timetables_return_correct_text_and_save_in_logfile_new_group(self):
+        result = request_handler.main_request_handler('Расписание неправильное', 333333333)
+        self.assertEqual(result[0], texts_for_lesgaft_bot.wrong_timetables)
+        self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [{'text': 'Какие завтра пары?'}],[{'text': 'Расписание неправильное'}] ,[{'text': 'Вернуться в меню'}]])
+        with open('wrong_timetables_reports.log') as f:
+            f = f.readlines()
+        file_text = f
+        
+        assert_file_text = ['INFO:root:конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416 10.01.2019.\n', "[('предмет1 Зал№2',), ('предмет1 Зал№2',)]\n", 'Юзер: 333333333\n']
         self.assertEqual(file_text, assert_file_text)
 
     def test_main_request_handler_take_communication_with_developer_return_text(self):
