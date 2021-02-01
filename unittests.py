@@ -633,18 +633,33 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
         self.assertEqual(result_2, ['10.10.', '17.10.', '24.10.'])
 
     def test_is_in_month_to_skip(self):
-        work_sheet_names = ['<Worksheet "с 05.01>"', '<Worksheet "с ауд. 28.09-03.02>"', '<Worksheet "с  07.09. - 26.03.>"', '<Worksheet "с ауд. 30.11.-05.01.>"', '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"', '<Worksheet "с 31.08.-12.01. ">', '<Worksheet "с 21.09. - 24.02. практика">', '<Worksheet "шапка">']
+        work_sheet_names = ['<Worksheet "с 05.01>"',
+                            '<Worksheet "с ауд. 28.09-03.02>"',
+                            '<Worksheet "с  07.09. - 26.03.>"',
+                            '<Worksheet "с ауд. 30.11.-05.01.>"',
+                            '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"',
+                            '<Worksheet "с 31.08.-12.01. ">',
+                            '<Worksheet "с 21.09. - 24.02. практика">',
+                            '<Worksheet "шапка">',
+                            '<Worksheet "ЛЫЖИ">']
         obj = excel_parser.Excel_parser()
         for name in work_sheet_names:
             result = obj.is_reason_to_skip(name)
             self.assertTrue(result)
 
-    def test_is_not_in_month_to_skip(self):
-        work_sheet_names = ['<Worksheet "с 05.01>"', '<Worksheet "с ауд. 28.09-03.02>"', '<Worksheet "с  07.09. - 26.03.>"', '<Worksheet "с ауд. 30.11.-05.01.>"', '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"', '<Worksheet "с 31.08.-12.01. ">', '<Worksheet "с 21.09. - 24.02. практика">', '<Worksheet "шапка">']
-        obj = excel_parser.Excel_parser()
-        for name in work_sheet_names:
-            result = obj.is_reason_to_skip(name)
-            self.assertTrue(result)
+    #def test_is_not_in_month_to_skip(self):
+    #    work_sheet_names = ['<Worksheet "с 05.01>"',
+    #                        '<Worksheet "с ауд. 28.09-03.02>"',
+    #                        '<Worksheet "с  07.09. - 26.03.>"',
+    #                        '<Worksheet "с ауд. 30.11.-05.01.>"',
+    #                        '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"',
+    #                        '<Worksheet "с 31.08.-12.01. ">',
+    #                        '<Worksheet "с 21.09. - 24.02. практика">',
+    #                        '<Worksheet "шапка">']
+    #    obj = excel_parser.Excel_parser()
+    #    for name in work_sheet_names:
+    #        result = obj.is_reason_to_skip(name)
+    #        self.assertTrue(result)
 
     def test_format_group_name(self):
         names_from_excel = texts_for_tests.group_names_from_excel

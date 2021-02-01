@@ -17,3 +17,4 @@ time_tables/full_time_magistracy_afk
 .vscode/
 /LESGAFT_ENV/
 lesgaft_bot.egg-info/
+*.db-journal
