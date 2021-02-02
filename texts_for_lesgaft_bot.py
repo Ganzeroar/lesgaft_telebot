@@ -45,7 +45,7 @@ invalid_text = """
 Где 223
 
 Что бы сменить группу просто напиши 3 цифры своей группы, например "321"
-""" 
+"""
 
 mystical_error_text = """
 Если ты видишь это сообщение, значит ты - тот самый редчайший пользователь, 
@@ -70,9 +70,9 @@ timetable_mag = "МАГИСТРАТУРА. Физическая культура
 timetable_mag_afk = "МАГИСТРАТУРА. Физическая культура для лиц с отклонениями в состоянии здоровья (АФК)"
 timetable_mag_tour = "МАГИСТРАТУРА. Туризм, Менеджмент, Журналистика, ГМУ"
 
-timetables_names = [timetable_lovs_1, timetable_lovs_2, timetable_lovs_3, 
-    timetable_lovs_4, timetable_zovs_1, timetable_zovs_2, timetable_zovs_3, 
-    timetable_zovs_4, timetable_imst, timetable_mag, timetable_mag_afk, timetable_mag_tour]
+timetables_names = [timetable_lovs_1, timetable_lovs_2, timetable_lovs_3,
+                    timetable_lovs_4, timetable_zovs_1, timetable_zovs_2, timetable_zovs_3,
+                    timetable_zovs_4, timetable_imst, timetable_mag, timetable_mag_afk, timetable_mag_tour]
 
 go_to_timetables_stage_text = 'В этом разделе ты можешь посмотреть расписание. Воспользуйся специальными кнопками или напиши в чат интересущий тебя день недели, например "Понедельник", в этом случае я пришлю расписание на предстоящий понедельник. Если я показываю неправильное расписание - нажми на соответствующую кнопку и скоро ошибка будет исправлена'
 
