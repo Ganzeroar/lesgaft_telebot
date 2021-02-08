@@ -723,14 +723,6 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
 # @unittest.skip("broken")
 class Test_excel_parser_undergraduate(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        configurations.month_to_skip = ['01', '02', '03']
-#
-    # @classmethod
-    # def tearDownClass(cls):
-    #    configurations.month_to_skip = ['09', '10', '11', '12', '01', '02']
-#
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
 
@@ -747,6 +739,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
         self.assertEqual(result_2, ['10.10.', '17.10.', '24.10.'])
 
     def test_is_in_month_to_skip(self):
+        configurations.month_to_skip = ['01', '02', '03']
         work_sheet_names = ['<Worksheet "с 05.01>"',
                             '<Worksheet "с ауд. 28.09-03.02>"',
                             '<Worksheet "с  07.09. - 26.03.>"',
@@ -759,7 +752,23 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
         obj = excel_parser.Excel_parser()
         for name in work_sheet_names:
             result = obj.is_reason_to_skip(name)
+            print(name)
             self.assertTrue(result)
+
+    def test_is_month_valid(self):
+        configurations.month_to_skip = ['08', '09', '10']
+        work_sheet_names = ['<Worksheet "с 05.01>"',
+                            '<Worksheet "с ауд. 28.01-03.02>"',
+                            '<Worksheet "с  07.02. - 26.03.>"',
+                            '<Worksheet "с ауд. 30.11.-05.01.>"',
+                            '<Worksheet "ПОКА БЕЗ АУД. с 21.12.-26.02>"',
+                            '<Worksheet "с 31.01.-12.01. ">',
+                            '<Worksheet "с 21.02. - 24.02. практика">', 
+                            '<Worksheet "с  08.02.-13.02.">']
+        obj = excel_parser.Excel_parser()
+        for name in work_sheet_names:
+            result = obj.is_reason_to_skip(name)
+            self.assertFalse(result)
 
     def test_format_group_name(self):
         names_from_excel = texts_for_tests.group_names_from_excel
@@ -1019,7 +1028,7 @@ class Test_request_handler(unittest.TestCase):
             'zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
             'zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
-        #db_funcs_for_subjects_db.save_date_and_time(
+        # db_funcs_for_subjects_db.save_date_and_time(
         #    'zovs_4_kurs', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
             'zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
