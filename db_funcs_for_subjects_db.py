@@ -107,6 +107,14 @@ def get_subjects_today(name_of_group, db_name, date):
     cursor.execute(req)
     return cursor.fetchall()
 
+def get_dates(db_name):
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    req = f"SELECT date FROM {db_name}"
+    cursor.execute(req)
+    return cursor.fetchall()
+
+
 
 def get_db_name(name_of_group):
     #name_of_group = 'группа_' + str(name_of_group)

@@ -1,6 +1,7 @@
 import time
 from openpyxl import Workbook, load_workbook, utils
 import glob
+import datetime
 
 import db_funcs_for_subjects_db
 import configurations
@@ -22,6 +23,7 @@ class Excel_parser():
 
     def parse_work_file_using_name(self, name, route):
         print('Парсер запущен на ' + name)
+
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         for work_file in work_files:
             if name in work_file:
@@ -76,7 +78,6 @@ class Excel_parser():
     def create_dates_and_times_in_db(self, work_sheet, db_name):
         dates_column = self.const_dates_column
         time_column = self.const_time_column
-
         times = []
         for row in range(1, self.const_quantity_of_rows):
             time_cell = str(work_sheet.cell(row=row, column=time_column).value)
@@ -85,7 +86,7 @@ class Excel_parser():
                 if time_value == '9:45':
                     times = []
                     times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column)
+                    dates = self.get_dates(work_sheet, row, dates_column, db_name)
                 elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
                     times.append(time_value)
                 elif time_value == '17:00':
@@ -183,6 +184,19 @@ class Excel_parser():
                 if first_group_name in viewed_cell:
                     return row
 
+    def validate_date(self, date, db_name):
+        dates_in_db = db_funcs_for_subjects_db.get_dates(db_name)
+        for elem in dates_in_db:
+            if elem [0] == date:
+                current_date = datetime.datetime.strptime(f"2021-{date[3:5]}-{date[0:2]}","%Y-%m-%d")
+                future_date = datetime.timedelta(days=7)
+                days_to_add = current_date + future_date
+                date_next_week = days_to_add.strftime("%d.%m.%Y.")
+                date_next_week_formatted = date_next_week[0:2] + '.' + date_next_week[3:5] + '.'
+                return date_next_week_formatted
+
+        return date
+
     def return_all_groups_names(self, work_sheet, first_group_name, db_name):
         undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs',
                                     'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
@@ -274,6 +288,7 @@ class Excel_parser():
 
     def save_dates_and_times(self, db_name, dates, times):
         for date in dates:
+            date = self.validate_date(date, db_name)
             for time in times:
                 db_funcs_for_subjects_db.save_date_and_time(
                     db_name, date, time)
@@ -299,12 +314,13 @@ class Excel_parser():
             formatted_list_of_dates.append(date)
         return formatted_list_of_dates
 
-    def get_dates(self, work_sheet, row, dates_column):
+    def get_dates(self, work_sheet, row, dates_column, db_name):
         dates = work_sheet.cell(row=row, column=dates_column).value
         if self.is_merged(work_sheet, row, dates_column):
             dates = self.get_value_of_merged_call(
                 work_sheet, row, dates_column)
         dates = self.format_dates(dates)
+        dates = self.validate_date(dates, db_name)
         return dates
 
     def get_value_of_merged_call(self, work_sheet, row, column):
@@ -328,6 +344,7 @@ class Excel_parser():
 
     def save_subj_in_db(self, db_name, dates, time, group_name, subject):
         dates = self.format_dates(dates)
+
         for date in dates:
             db_funcs_for_subjects_db.save_subj(
                 db_name, date, time, group_name, subject)
