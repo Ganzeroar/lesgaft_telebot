@@ -5,13 +5,13 @@ import glob
 import db_funcs_for_subjects_db
 import configurations
 
+
 class Excel_parser():
 
     const_dates_column = 1
     const_time_column = 3
     const_quantity_of_rows = 50
     const_first_group_column = 4
-
 
     def run_parser(self, route):
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
@@ -30,7 +30,7 @@ class Excel_parser():
                 db_funcs_for_subjects_db.drop_db(db_name)
                 db_funcs_for_subjects_db.create_db(db_name)
                 self.create_groups_in_db(work_book, db_name)
-            
+
                 for ws in work_book.sheetnames:
                     work_sheet = work_book[ws]
                     ws_name = str(work_sheet)
@@ -66,8 +66,10 @@ class Excel_parser():
             if self.is_reason_to_skip(ws_name):
                 print('skipped' + ws_name)
                 continue
+            print('create groups in ' + str(work_sheet))
             first_group_name = self.return_first_group_name(db_name)
-            list_of_groups = self.return_all_groups_names(work_sheet, first_group_name, db_name)
+            list_of_groups = self.return_all_groups_names(
+                work_sheet, first_group_name, db_name)
             db_funcs_for_subjects_db.save_groups(db_name, list_of_groups)
             return
 
@@ -75,10 +77,9 @@ class Excel_parser():
         dates_column = self.const_dates_column
         time_column = self.const_time_column
 
-        first_row = self.find_row_of_first_lesson(work_sheet)
         times = []
         for row in range(1, self.const_quantity_of_rows):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
+            time_cell = str(work_sheet.cell(row=row, column=time_column).value)
             if time_cell != None and self.is_time(time_cell):
                 time_value = self.format_time(time_cell)
                 if time_value == '9:45':
@@ -89,16 +90,20 @@ class Excel_parser():
                     times.append(time_value)
                 elif time_value == '17:00':
                     times.append(time_value)
-                    next_cell = str(work_sheet.cell(row = row + 1, column = time_column).value)
-                    next_cell = self.format_time(next_cell) if self.is_time(next_cell) else False
+                    next_cell = str(work_sheet.cell(
+                        row=row + 1, column=time_column).value)
+                    next_cell = self.format_time(
+                        next_cell) if self.is_time(next_cell) else False
 
-                    after_next_cell = str(work_sheet.cell(row = row + 2, column = time_column).value)
-                    after_next_cell = self.format_time(after_next_cell) if self.is_time(after_next_cell) else False
+                    after_next_cell = str(work_sheet.cell(
+                        row=row + 2, column=time_column).value)
+                    after_next_cell = self.format_time(
+                        after_next_cell) if self.is_time(after_next_cell) else False
 
                     if self.is_time(next_cell) or self.is_time(after_next_cell):
                         if next_cell == '9:45' or after_next_cell == '9:45' and next_cell != '18:40':
                             self.save_dates_and_times(db_name, dates, times)
-                            continue                               
+                            continue
                         elif next_cell == '18:40' or after_next_cell == '18:40':
                             continue
                     elif next_cell == False and after_next_cell == False:
@@ -112,99 +117,105 @@ class Excel_parser():
         dates_column = self.const_dates_column
 
         first_group_name = self.return_first_group_name(db_name)
-        groups_columns = self.return_columns_numbers_of_all_groups_cells(work_sheet, first_group_name)
+        groups_columns = self.return_columns_numbers_of_all_groups_cells(
+            work_sheet, first_group_name)
         first_row = self.find_row_of_first_lesson(work_sheet)
         if first_row == None:
             return False
-        groups_row = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
+        groups_row = self.find_number_of_groups_cell_row(
+            work_sheet, first_group_name)
         times = ['9:45', '11:30', '13:30', '15:15', '17:00', '18:40']
         for column in groups_columns:
             for row in range(first_row, self.const_quantity_of_rows):
-                subject = work_sheet.cell(row = row, column = column).value
+                subject = work_sheet.cell(row=row, column=column).value
                 if self.is_merged(work_sheet, row, column):
-                    subject = self.get_value_of_merged_call(work_sheet, row, column)
+                    subject = self.get_value_of_merged_call(
+                        work_sheet, row, column)
                 if subject == None:
                     subject = 'нет предмета'
-                time_cell = work_sheet.cell(row = row, column = time_column).value
+                time_cell = work_sheet.cell(row=row, column=time_column).value
                 if time_cell == None:
                     continue
                 time = self.format_time(str(time_cell))
                 if time in times:
-                    dates = work_sheet.cell(row = row, column = dates_column).value
+                    dates = work_sheet.cell(row=row, column=dates_column).value
                     if self.is_merged(work_sheet, row, dates_column):
-                        dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
+                        dates = self.get_value_of_merged_call(
+                            work_sheet, row, dates_column)
                     if self.is_merged(work_sheet, row, dates_column) == False and self.is_merged(work_sheet, row-1, dates_column):
-                        dates = self.get_value_of_merged_call(work_sheet, row-1, dates_column)
-                    group_name = work_sheet.cell(row = groups_row, column = column).value
+                        dates = self.get_value_of_merged_call(
+                            work_sheet, row-1, dates_column)
+                    group_name = work_sheet.cell(
+                        row=groups_row, column=column).value
                     if bool(group_name) == False:
                         continue
                     group_name = self.format_group_name(group_name)
-                    undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs', 'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
+                    undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs',
+                                                'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
 
                     if db_name in undegrdaduate_timetables:
 
                         if self.is_merged(work_sheet, groups_row-1, column):
-                            group_number = self.format_group_name(self.get_value_of_merged_call(work_sheet, groups_row-1, column))
+                            group_number = self.format_group_name(
+                                self.get_value_of_merged_call(work_sheet, groups_row-1, column))
                         else:
-                            group_number = self.format_group_name(work_sheet.cell(row = groups_row-1, column = column).value)
+                            group_number = self.format_group_name(
+                                work_sheet.cell(row=groups_row-1, column=column).value)
                         group_name = group_name + '_' + group_number
 
-                    
-                    #if group_name == 'афк':
-                    #    right_group_name = self.format_group_name(work_sheet.cell(row = groups_row, column = column+1).value)
-                    #    left_group_name = self.format_group_name(work_sheet.cell(row = groups_row, column = column-1).value)
-                    #    if right_group_name == 'афк':
-                    #        group_name = 'афк_левая_группа'
-                    #    elif left_group_name == 'афк':
-                    #        group_name = 'афк_правая_группа'
-                        
-                    #if not self.is_group_name_in_db(group_name):
                     if not db_funcs_for_subjects_db.is_group_exist(group_name, db_name):
-                        db_funcs_for_subjects_db.save_group(db_name, group_name)
-                    self.save_subj_in_db(db_name, dates, time, group_name, subject)
+                        db_funcs_for_subjects_db.save_group(
+                            db_name, group_name)
+                    self.save_subj_in_db(
+                        db_name, dates, time, group_name, subject)
                 else:
-                    print(f'Какая-то ошибка в эксель парсере в колонке {column}, ряде {row}, расписании {db_name}, холсте {work_sheet}, предмете {subject}, времени {time}')
+                    print(
+                        f'Какая-то ошибка в эксель парсере в колонке {column}, ряде {row}, расписании {db_name}, холсте {work_sheet}, предмете {subject}, времени {time}')
         print('ws finished')
 
     def find_number_of_groups_cell_row(self, work_sheet, first_group_name):
         first_group_column = self.const_first_group_column
         for row in range(1, 10):
-            viewed_cell = str(work_sheet.cell(row = row, column = first_group_column).value)
+            viewed_cell = str(work_sheet.cell(
+                row=row, column=first_group_column).value)
             if type(viewed_cell) == str:
                 viewed_cell = self.format_group_name(viewed_cell)
                 if first_group_name in viewed_cell:
                     return row
 
     def return_all_groups_names(self, work_sheet, first_group_name, db_name):
-        undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs', 'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
+        undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs',
+                                    'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
         groups_names = []
-        row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
+        row_number = self.find_number_of_groups_cell_row(
+            work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
-            group_cell = work_sheet.cell(row = row_number, column = column).value
-            if type(group_cell) == str :
+            group_cell = work_sheet.cell(row=row_number, column=column).value
+            if type(group_cell) == str:
                 group_cell = self.format_group_name(group_cell)
                 if db_name in undegrdaduate_timetables:
                     if self.is_merged(work_sheet, row_number-1, column):
-                        group_number = self.get_value_of_merged_call(work_sheet, row_number-1, column)
-                    group_number = self.format_group_name(work_sheet.cell(row = row_number-1, column = column).value)
-                    group_cell = group_cell + '_' + group_number
+                        group_number = self.get_value_of_merged_call(
+                            work_sheet, row_number-1, column)
+                    else:
+                        group_number = work_sheet.cell(
+                            row=row_number-1, column=column).value
 
-                #print(group_cell)
-                #if group_cell == 'афк':
-                #    if 'афк_левая_группа' in groups_names:
-                #        group_cell = 'афк_правая_группа'
-                #    else:
-                #        group_cell = 'афк_левая_группа'
+                    group_number_formatted = self.format_group_name(
+                        group_number)
+                    group_cell = group_cell + '_' + group_number_formatted
+
                 groups_names.append(group_cell)
         return groups_names
 
     def return_columns_numbers_of_all_groups_cells(self, work_sheet, first_group_name):
         columns_numbers_of_all_groups_cells = []
-        row_number = self.find_number_of_groups_cell_row(work_sheet, first_group_name)
+        row_number = self.find_number_of_groups_cell_row(
+            work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
-            group_cell = work_sheet.cell(row = row_number, column = column).value
+            group_cell = work_sheet.cell(row=row_number, column=column).value
             if type(group_cell) == str:
                 group_cell = self.format_group_name(group_cell)
                 columns_numbers_of_all_groups_cells.append(column)
@@ -216,12 +227,12 @@ class Excel_parser():
             if (cell.coordinate in mergedCell):
                 return True
         return False
-    
+
     def is_time(self, time):
-        times = ['9:45', '09:45', '9.45', '09.45', '11:30', '11.30', '13:30', 
-        '13.30', '15:15', '15.15', '17:00', '17.00', '18:40', '18.40','9:45:00', 
-        '09:45:00', '9.45:00', '09.45:00', '11:30:00', '11.30:00', '13:30:00', 
-        '13.30:00', '15:15:00','15.15:00', '17:00:00', '17.00:00', '18:40:00', '18.40:00']
+        times = ['9:45', '09:45', '9.45', '09.45', '11:30', '11.30', '13:30',
+                 '13.30', '15:15', '15.15', '17:00', '17.00', '18:40', '18.40', '9:45:00',
+                 '09:45:00', '9.45:00', '09.45:00', '11:30:00', '11.30:00', '13:30:00',
+                 '13.30:00', '15:15:00', '15.15:00', '17:00:00', '17.00:00', '18:40:00', '18.40:00']
         if time in times:
             return True
         else:
@@ -230,7 +241,8 @@ class Excel_parser():
     def format_time(self, time):
         time = str(time)
         # в расписании чаще всего косячат тут
-        first_times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
+        first_times = ['9:45', '09:45', '9.45', '09.45',
+                       '9:45:00', '09:45:00', '9.45:00', '09.45:00']
         if time in first_times:
             time = '9:45'
         if '.' in time:
@@ -246,25 +258,30 @@ class Excel_parser():
 
     def is_reason_to_skip(self, worksheet_name):
         month_to_skip = configurations.month_to_skip
-        if worksheet_name[-4:-2].isdigit and worksheet_name[-4:-2] in month_to_skip:
-            return True
-        elif worksheet_name[-5:-3].isdigit and worksheet_name[-5:-3] in month_to_skip:
-            return True
+
+        for num in range(0, -15, -1):
+            if worksheet_name[num-2:num].isdigit():
+                if worksheet_name[num-2:num] in month_to_skip:
+                    return True
+                else:
+                    break
         words_to_skip = configurations.words_to_skip
-        for x in words_to_skip:
-            if x in worksheet_name.lower():
+        lower_ws_name = worksheet_name.lower()
+        for word in words_to_skip:
+            if word in lower_ws_name:
                 return True
-        else:
-            return False
+        return False
 
     def save_dates_and_times(self, db_name, dates, times):
         for date in dates:
             for time in times:
-                db_funcs_for_subjects_db.save_date_and_time(db_name, date, time)
+                db_funcs_for_subjects_db.save_date_and_time(
+                    db_name, date, time)
 
     def format_dates(self, dates):
         dates = dates.replace(' ', '\n')
-        list_of_dates = [element.replace(' ', '') for element in dates.rstrip().split('\n')]
+        list_of_dates = [element.replace(' ', '')
+                         for element in dates.rstrip().split('\n')]
         formatted_list_of_dates = []
         for date in list_of_dates:
             if date == '':
@@ -283,11 +300,12 @@ class Excel_parser():
         return formatted_list_of_dates
 
     def get_dates(self, work_sheet, row, dates_column):
-        dates = work_sheet.cell(row = row, column = dates_column).value
+        dates = work_sheet.cell(row=row, column=dates_column).value
         if self.is_merged(work_sheet, row, dates_column):
-            dates = self.get_value_of_merged_call(work_sheet, row, dates_column)
+            dates = self.get_value_of_merged_call(
+                work_sheet, row, dates_column)
         dates = self.format_dates(dates)
-        return dates  
+        return dates
 
     def get_value_of_merged_call(self, work_sheet, row, column):
         cell = work_sheet.cell(row, column)
@@ -295,58 +313,61 @@ class Excel_parser():
             if (cell.coordinate in mergedCell):
                 column_coor = list(mergedCell)[0][1]
                 row_coor = list(mergedCell)[1][1]
-                result_value = work_sheet.cell(row = row_coor, column = column_coor).value
+                result_value = work_sheet.cell(
+                    row=row_coor, column=column_coor).value
                 return result_value
 
     def find_row_of_first_lesson(self, work_sheet):
         time_column = self.const_time_column
-        times = ['9:45', '09:45', '9.45', '09.45', '9:45:00', '09:45:00', '9.45:00', '09.45:00']
+        times = ['9:45', '09:45', '9.45', '09.45',
+                 '9:45:00', '09:45:00', '9.45:00', '09.45:00']
         for row in range(1, 10):
-            time_cell = str(work_sheet.cell(row = row, column = time_column).value)
+            time_cell = str(work_sheet.cell(row=row, column=time_column).value)
             if time_cell in times:
-                return row 
+                return row
 
     def save_subj_in_db(self, db_name, dates, time, group_name, subject):
         dates = self.format_dates(dates)
         for date in dates:
-            db_funcs_for_subjects_db.save_subj(db_name, date, time, group_name, subject)
+            db_funcs_for_subjects_db.save_subj(
+                db_name, date, time, group_name, subject)
 
-    group_names = ['гр_1', 'гр_2', 'гр_3', 'гр_4', 'гр_5', 'гр_6', 'гр_7', 
-        'гр_8', 'гр_9', 'гр_10', 'гр_11', 'гр_12', 'гр_13', 
-        'гимнастика_плавание_футбол',
-        'лёгкая_атлетика_спортивные_игры', 
-        'велоспорт_водномоторный_и_парусный_спорт_гребной_спорт_атлетизм_бокс_борьба_фехтование_нвс',
-        'хоккей_керлинг_биатлон_лыжный_спорт_конькобежный_спорт_и_фк', 
-        'профессиональное_образование_в_сфере_физической_культуры_и_спорта',
-        'комплексное_научное_обеспечение_спортивной_подготовки', 
-        'физкультурно_оздоровительная_работа',
-        'комплексная_реабилитация_в_физической_культуре_и_спорте', 
-        'медико_биологическое_сопровождение_физической_культуры_и_спорта',
-        'менеджмент_направленность_профиль_менеджмент_в_спорте', 
-        'туризм_направленность_профиль_туристская_деятельность_с_сфере_физической_культуры_и_спорта',
-        'журналистика_направленность_профиль_спортивная_журналистика',
-        'государственное_и_муниципальное_управление_направленность_профиль_государственное_и_муниципальное_управление_в_отрасли_физической_культуры_и_спорта',
-        'менеджмент_направленность_профиль_менеджмент_в_спорте', 
-        'туризм_направленность_профиль_туристская_деятельность_с_сфере_физической_культуры_и_спорта',
-        'журналистика_направленность_профиль_спортивная_журналистика',
-        'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз',
-        'спортивная_подготовка_лиц_с_овз_включая_инвалидов',
-        'физическая_реабилитация',
-        'педагогическая_гидрореабилитация',
-        'современная_хореография_и_танцы_в_коррекции_нарушений_у_лиц_с_овз',
-        'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_ограниченными_возможностями_здоровья',
-        'технологии_профилактики_и_коррекции_аддиктивного_поведения',
-        'спортивная_подготовка_лиц_с_ограниченными_возможностями_здоровья_включая_инвалидов',
-        'педагогическая_гидрореабилитация',
-        'физическая_реабилитация',
-        'современная_хореография_и_танцы_в_коррекции_нарушений_у_лиц_с_отклонениями_в_состоянии_здоровья',
-        'менеджмент', 
-        'международные_отношения', 
-        'журналистика', 
-        'туризм', 
-        'сервис', 
-        'реклама и связи с общественностью'
-    ]
+    group_names = ['гр_1', 'гр_2', 'гр_3', 'гр_4', 'гр_5', 'гр_6', 'гр_7',
+                   'гр_8', 'гр_9', 'гр_10', 'гр_11', 'гр_12', 'гр_13',
+                   'гимнастика_плавание_футбол',
+                   'лёгкая_атлетика_спортивные_игры',
+                   'велоспорт_водномоторный_и_парусный_спорт_гребной_спорт_атлетизм_бокс_борьба_фехтование_нвс',
+                   'хоккей_керлинг_биатлон_лыжный_спорт_конькобежный_спорт_и_фк',
+                   'профессиональное_образование_в_сфере_физической_культуры_и_спорта',
+                   'комплексное_научное_обеспечение_спортивной_подготовки',
+                   'физкультурно_оздоровительная_работа',
+                   'комплексная_реабилитация_в_физической_культуре_и_спорте',
+                   'медико_биологическое_сопровождение_физической_культуры_и_спорта',
+                   'менеджмент_направленность_профиль_менеджмент_в_спорте',
+                   'туризм_направленность_профиль_туристская_деятельность_с_сфере_физической_культуры_и_спорта',
+                   'журналистика_направленность_профиль_спортивная_журналистика',
+                   'государственное_и_муниципальное_управление_направленность_профиль_государственное_и_муниципальное_управление_в_отрасли_физической_культуры_и_спорта',
+                   'менеджмент_направленность_профиль_менеджмент_в_спорте',
+                   'туризм_направленность_профиль_туристская_деятельность_с_сфере_физической_культуры_и_спорта',
+                   'журналистика_направленность_профиль_спортивная_журналистика',
+                   'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз',
+                   'спортивная_подготовка_лиц_с_овз_включая_инвалидов',
+                   'физическая_реабилитация',
+                   'педагогическая_гидрореабилитация',
+                   'современная_хореография_и_танцы_в_коррекции_нарушений_у_лиц_с_овз',
+                   'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_ограниченными_возможностями_здоровья',
+                   'технологии_профилактики_и_коррекции_аддиктивного_поведения',
+                   'спортивная_подготовка_лиц_с_ограниченными_возможностями_здоровья_включая_инвалидов',
+                   'педагогическая_гидрореабилитация',
+                   'физическая_реабилитация',
+                   'современная_хореография_и_танцы_в_коррекции_нарушений_у_лиц_с_отклонениями_в_состоянии_здоровья',
+                   'менеджмент',
+                   'международные_отношения',
+                   'журналистика',
+                   'туризм',
+                   'сервис',
+                   'реклама и связи с общественностью'
+                   ]
 
     def return_db_name(self, file_name):
         if 'zovs_1_kurs' in file_name:
@@ -392,8 +413,10 @@ class Excel_parser():
         group_name = group_name.lower().rstrip()
         unnecessary_symbols = [';', ':', '(', ')', '"', '.', ',']
         symbols_for_change = ['\n', ' ', '-']
-        numbers_for_delete_before = ['380404', '380402', '430402', '420402', '410405']
-        numbers_for_delete_after = ['380302', '430302', '430301', '410305', '420301', '420302']
+        numbers_for_delete_before = [
+            '380404', '380402', '430402', '420402', '410405']
+        numbers_for_delete_after = [
+            '380302', '430302', '430301', '410305', '420301', '420302']
         if 'гр.' in group_name:
             first = group_name[:-3]
             second = group_name[2:]
@@ -422,7 +445,7 @@ class Excel_parser():
             group_name = group_name.replace('__', '_')
         if group_name[-1] == '_':
             group_name = group_name[:-1]
-        
+
         return group_name
 
     def return_first_group_name(self, db_name):
@@ -472,27 +495,33 @@ class Excel_parser():
             first_group_name = 'менеджмент'
         return first_group_name
 
+
 class Excel_parser_undergraduate_imst(Excel_parser):
     const_first_group_column = 7
     const_time_column = 6
     const_dates_column = 4
 
+
 def run_undergraduate_parser():
     parser = Excel_parser()
     parser.run_parser('full_time_undergraduate')
 
+
 def run_undergraduate_imst_parser():
     parser = Excel_parser_undergraduate_imst()
     parser.run_parser('full_time_undergraduate/imst')
-    
+
+
 def run_magistracy_fk_parser():
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_fk')
-    
+
+
 def run_magistracy_afk_parser():
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_afk')
-    
+
+
 def run_magistracy_imst_parser():
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_imst')
@@ -508,18 +537,19 @@ def run_magistracy_imst_parser():
     parser = Excel_parser_undergraduate_imst()
     parser.run_parser('full_time_undergraduate/imst')
 
+
 def run_all_parsers():
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_fk')
     parser = Excel_parser()
     parser.run_parser('full_time_magistracy_imst')
     parser = Excel_parser()
-    parser.run_parser('full_time_magistracy_afk') 
+    parser.run_parser('full_time_magistracy_afk')
     parser = Excel_parser()
     parser.run_parser('full_time_undergraduate')
     parser = Excel_parser_undergraduate_imst()
     parser.run_parser('full_time_undergraduate/imst')
 
+
 if __name__ == "__main__":
     run_undergraduate_parser()
-    #run_all_parsers()

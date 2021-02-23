@@ -1,62 +1,62 @@
 import sqlite3
 
+
 def create_db(db_name):
-    
+
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     cursor.execute(f"CREATE TABLE {db_name} (date text, time text)")
 
+
 def drop_db(db_name):
-    
+
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS " + db_name)
-    
+
+
 def save_groups(db_name, list_of_groups):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     for group in list_of_groups:
         cursor.execute(f"ALTER TABLE {db_name} ADD COLUMN {group} text")
 
+
 def save_group(db_name, group_name):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     cursor.execute(f"ALTER TABLE {db_name} ADD COLUMN {group_name} text")
 
+
 def save_date_and_time(db_name, date, time):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    cursor.execute(f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
+    cursor.execute(
+        f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
     conn.commit()
+
 
 def save_dates_and_times(db_name, list_of_dates, list_of_times):
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    
+
     for list_dates in list_of_dates:
         for date in list_dates:
             for time in list_of_times:
-                cursor.execute(f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
+                cursor.execute(
+                    f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
     conn.commit()
+
 
 def save_subj(db_name, date, time, group, subj):
     db_name = db_name
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    
+
     req = f"UPDATE {db_name} SET {group} = '{subj}' WHERE date = '{date}' AND time = '{time}'"
     cursor.execute(req)
     conn.commit()
 
-def get_subject_now(num_of_group, date, time):
-    
-    conn = sqlite3.connect('subjects.db')
-    cursor = conn.cursor()
-
-def get_subject_week(num_of_group, date):
-    
-    conn = sqlite3.connect('subjects.db')
-    cursor = conn.cursor()
 
 def is_group_exist(name_of_group, db_name):
 
@@ -64,7 +64,7 @@ def is_group_exist(name_of_group, db_name):
     cursor = conn.cursor()
     columns_names_in_db = f"PRAGMA table_info({db_name})"
     cursor.execute(columns_names_in_db)
-    
+
     columns_names = [column_name[1] for column_name in cursor.fetchall()]
     for column_name in columns_names:
         if name_of_group in column_name:
@@ -74,13 +74,14 @@ def is_group_exist(name_of_group, db_name):
     else:
         return False
 
+
 def return_new_group_name(name_of_group, db_name):
 
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
     columns_names_in_db = f"PRAGMA table_info({db_name})"
     cursor.execute(columns_names_in_db)
-    
+
     columns_names = [column_name[1] for column_name in cursor.fetchall()]
     for column_name in columns_names:
         if name_of_group in column_name:
@@ -88,10 +89,10 @@ def return_new_group_name(name_of_group, db_name):
 
 
 def get_subjects_today(name_of_group, db_name, date):
-    
+
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()
-    
+
     day = str(date.day)
     if len(day) == 1:
         # нужно для базы данных, в которой формат дат состоит из двух чисел
@@ -106,6 +107,7 @@ def get_subjects_today(name_of_group, db_name, date):
     cursor.execute(req)
     return cursor.fetchall()
 
+
 def get_db_name(name_of_group):
     #name_of_group = 'группа_' + str(name_of_group)
 
@@ -117,13 +119,14 @@ def get_db_name(name_of_group):
         cursor_for_name = con.cursor()
         columns_names_in_db = f"PRAGMA table_info({str(db_name)})"
         cursor_for_name.execute(columns_names_in_db)
-        
-        column_names = [column_name[1] for column_name in cursor_for_name.fetchall()]
+
+        column_names = [column_name[1]
+                        for column_name in cursor_for_name.fetchall()]
         for column_name in column_names:
             if name_of_group in column_name:
                 return db_name
         if name_of_group in column_names:
-            #костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
+            # костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
             if name_of_group == 'группа_414' and db_name == 'lovs_4_kurs':
                 return 'zovs_4_kurs'
             elif name_of_group == 'группа_411' and db_name == 'lovs_4_kurs':
@@ -133,4 +136,4 @@ def get_db_name(name_of_group):
             elif name_of_group == 'группа_413' and db_name == 'lovs_4_kurs':
                 return 'zovs_4_kurs'
             return db_name
-    return None   
+    return None
