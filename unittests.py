@@ -639,6 +639,14 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             result = obj.is_reason_to_skip(name)
             self.assertTrue(result)
 
+    def test_words_to_skip_in_name_of_worksheet(self):
+        work_sheet_names = ['ТИМИВС,ТСТ,ПСС', 'ЛЫЖИ']
+        obj = excel_parser.Excel_parser()
+        for name in work_sheet_names:
+            result = obj.is_reason_to_skip(name)
+            self.assertTrue(result)
+
+
     def test_format_group_name(self):
         names_from_excel = texts_for_tests.group_names_from_excel
         normal_group_names = texts_for_tests.normal_group_names

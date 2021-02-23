@@ -250,8 +250,10 @@ class Excel_parser():
             return True
         elif worksheet_name[-5:-3].isdigit and worksheet_name[-5:-3] in month_to_skip:
             return True
-        elif 'шапка' in worksheet_name.lower() or 'ссылки' in worksheet_name.lower(): 
-            return True
+        words_to_skip = configurations.words_to_skip
+        for x in words_to_skip:
+            if x in worksheet_name.lower():
+                return True
         else:
             return False
 
