@@ -13,7 +13,6 @@ import handler_of_unusual_requests as handler
 
 
 def change_group_old(user_id, message_text):
-    print('change')
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
 
@@ -298,7 +297,6 @@ def main_request_handler(message_text, user_id):
 
     time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
     text, keyboard = '', ''
-    print(message_text)
     if len(message_text) == 3 and message_text.isdigit():
         text, keyboard = change_group_old(user_id, message_text)
     elif message_text == 'где пара?':

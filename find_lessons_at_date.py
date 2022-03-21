@@ -22,14 +22,11 @@ def return_lessons_at_date(user_id, date):
     if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
         return 'Твоей группы не существует. Измени номер группы.'
 
-    print(name_of_group)
     name_of_group = db_funcs_for_subjects_db.return_new_group_name(
         name_of_group, db_name)
 
     subjects = db_funcs_for_subjects_db.get_subjects_today(
         name_of_group, db_name, date)
-    print(1)
-    print(subjects)
 
     number_of_date = date.strftime("%d.%m.%Y.")
     if set(subjects) == {('нет предмета',)}:
