@@ -8,6 +8,7 @@ import config
 import db_funcs_for_students_db
 import texts_for_lesgaft_bot
 import request_handler
+import excel_validator
 
 bot = telebot.TeleBot(config.token)
 
@@ -73,12 +74,40 @@ def start_message(message):
 def handle_request_and_send_answer(message):
     text, keyboard = request_handler.main_request_handler(
         message.text, message.from_user.id)
+    if db_funcs_for_students_db.user_already_in_db(message.from_user.id) == False:
+        db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(
+            message.from_user.first_name), str(message.from_user.last_name), int(message.date))
+    
     try:
         bot.send_message(message.from_user.id, text, reply_markup=keyboard)
     except Exception as exception:
         print(
             f'Exception with send message to user = {str(message.from_user.id)} | {exception}')
 
+@bot.message_handler(content_types=['document'])
+def handle_docs_photo(message):
+    try:
+        chat_id = message.chat.id
+
+        file_info = bot.get_file(message.document.file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+        #print(file_info)
+        #print(downloaded_file)
+        print(f'User {str(message.from_user.id)} tryed')        
+        print(message.document.file_name)
+
+        src = r"C:\Users\ganze\Desktop\lesgaftbot_2\lesgaft_telebot\time_tables\documents_for_validate\\" + message.document.file_name;
+        print(src)
+        with open(src, 'wb') as new_file:
+            new_file.write(downloaded_file)
+
+        bot.reply_to(message, "Сканирование запущено")
+        obj = excel_validator.Excel_validator()
+        result = obj.run_validator('documents_for_validate')
+        #result = excel_validator.Excel_validator.run_validator('documents_for_validate')
+        bot.reply_to(message, result)
+    except Exception as e:
+        bot.reply_to(message, e)
 
 def main_run():
     try:

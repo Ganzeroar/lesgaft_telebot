@@ -1,4 +1,5 @@
 import time
+from unittest import result
 from openpyxl import Workbook, load_workbook, utils
 import glob
 import datetime
@@ -205,6 +206,7 @@ class Excel_parser():
             work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
+            #print(self.format_group_name('Худ.  гимн.'))
             group_cell = work_sheet.cell(row=row_number, column=column).value
             if type(group_cell) == str:
                 group_cell = self.format_group_name(group_cell)
@@ -225,7 +227,7 @@ class Excel_parser():
 
     def return_columns_numbers_of_all_groups_cells(self, work_sheet, first_group_name):
         columns_numbers_of_all_groups_cells = []
-        row_number = self.find_number_of_groups_cell_row(
+        row_number = self.find_number_of_groups_cell_row(   
             work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
@@ -325,13 +327,18 @@ class Excel_parser():
 
     def get_value_of_merged_call(self, work_sheet, row, column):
         cell = work_sheet.cell(row, column)
+        cell_value = []
+        if cell.value != None:
+            return cell.value
         for mergedCell in work_sheet.merged_cells.ranges:
-            if (cell.coordinate in mergedCell):
-                column_coor = list(mergedCell)[0][1]
-                row_coor = list(mergedCell)[1][1]
-                result_value = work_sheet.cell(
-                    row=row_coor, column=column_coor).value
-                return result_value
+            if cell.coordinate in mergedCell:
+                cell_value.append(mergedCell)
+                #column_coor = list(mergedCell)[0][1]
+                #row_coor = list(mergedCell)[1][1]
+                #result_value = work_sheet.cell(
+                #    row=row_coor, column=column_coor).value
+        result_value = work_sheet.cell(cell_value[0].min_row, cell_value[0].min_col).value
+        return result_value
 
     def find_row_of_first_lesson(self, work_sheet):
         time_column = self.const_time_column
@@ -387,21 +394,21 @@ class Excel_parser():
                    ]
 
     def return_db_name(self, file_name):
-        if 'zovs_1_kurs' in file_name:
+        if '1_zovs' in file_name:
             return 'zovs_1_kurs'
-        elif 'zovs_2_kurs' in file_name:
+        elif '2_zovs' in file_name:
             return 'zovs_2_kurs'
-        elif 'zovs_3_kurs' in file_name:
+        elif '3_zovs' in file_name:
             return 'zovs_3_kurs'
-        elif 'zovs_4_kurs' in file_name:
+        elif '4_zovs' in file_name:
             return 'zovs_4_kurs'
-        elif 'lovs_1_kurs' in file_name:
+        elif '1_lovs' in file_name:
             return 'lovs_1_kurs'
-        elif 'lovs_2_kurs' in file_name:
+        elif '2_lovs' in file_name:
             return 'lovs_2_kurs'
-        elif 'lovs_3_kurs' in file_name:
+        elif '3_lovs' in file_name:
             return 'lovs_3_kurs'
-        elif 'lovs_4_kurs' in file_name:
+        elif '4_lovs' in file_name:
             return 'lovs_4_kurs'
         elif 'imst_1_kurs' in file_name:
             return 'imst_1_kurs'
@@ -464,7 +471,7 @@ class Excel_parser():
             group_name = group_name[:-1]
 
         return group_name
-
+        
     def return_first_group_name(self, db_name):
         if db_name == 'magistracy_fk_full_time_1_kurs':
             first_group_name = 'гимнастика'
@@ -479,28 +486,28 @@ class Excel_parser():
         elif db_name == 'magistracy_afk_full_time_2_kurs':
             first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз'
         elif db_name == 'zovs_1_kurs':
-            first_group_name = 'пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_фехтование_антидопинг_фехтование'
+            first_group_name = 'атлетизм_тхэквондо_тхэквондо_антидопинг'
             #first_group_name = 'группа_113'
         elif db_name == 'zovs_2_kurs':
-            first_group_name = 'атлетизм_пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_бокс_антидопинг_татл'
+            first_group_name = 'пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_фехтование_фехтование_антидопинг'
             #first_group_name = 'группа_212'
         elif db_name == 'zovs_3_kurs':
-            first_group_name = 'самбо_атлетизм'
+            first_group_name = 'атлетизм_пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_бокс'
             #first_group_name = 'группа_312'
         elif db_name == 'zovs_4_kurs':
-            first_group_name = 'самбо_бодибилдинг_пауэрлифтинг_тяжелая_атлетика_гиревой_спорт_фехтование'
+            first_group_name = 'самбо_атлетизм'
             #first_group_name = 'группа_411'
         elif db_name == 'lovs_1_kurs':
-            first_group_name = 'художественная_гимнастика_худгим_антидопинг_менеджмент_худгим'
+            first_group_name = 'художественная_гимнастика_художественная_гимнастика_антидопинг'
             #first_group_name = 'группа_101'
         elif db_name == 'lovs_2_kurs':
-            first_group_name = 'худ_гимнастика'
+            first_group_name = 'худ_гимн_худ_гимн_антидопинг'
             #first_group_name = 'группа_201'
         elif db_name == 'lovs_3_kurs':
             first_group_name = 'худ_гимн'
             #first_group_name = 'группа_301'
         elif db_name == 'lovs_4_kurs':
-            first_group_name = 'художественная_гимнастика_акробатич_рок_н_ролл'
+            first_group_name = 'худ_гимн'
             #first_group_name = 'группа_401'
         elif db_name == 'imst_1_kurs':
             first_group_name = 'менеджмент'
@@ -570,3 +577,7 @@ def run_all_parsers():
 
 if __name__ == "__main__":
     run_undergraduate_parser()
+
+#оставить все строчки на 17:00
+#добавить строчку на 18:40 только когда есть пары
+#парсер парсит - видит пустую строку - оповещает об этом составителя расписания

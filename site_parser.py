@@ -38,6 +38,8 @@ class Site_parser():
                 continue
             print('here new file link = ' + str(new_file_link))
             name_of_course = self.get_name_of_course(new_file_link)
+            #if name_of_course == None:
+            #    return None
             print('created new excel ' + str(name_of_course))
             self.create_table(route, name_of_course, new_file_link)
 
@@ -71,8 +73,8 @@ class Site_parser_undergraduate(Site_parser):
             date_and_time_now = self.get_date_and_time_now()
             print(f'Дата = {date_and_time_now}')
             print('Изменения в ' + str(changed_files))
-            self.create_new_excel_files(
-                'full_time_undergraduate', changed_files)
+            self.create_new_excel_files('full_time_undergraduate', changed_files)
+            
             self.run_excel_parser(changed_files)
             self.save_new_links_in_db(changed_files)
         else:
@@ -145,15 +147,12 @@ class Site_parser_undergraduate(Site_parser):
             return 'odd'
 
     def get_name_of_course(self, file_link):
-        course_names = ['1_kurs_lovs', '1_kurs_zovs', '2_kurs_lovs', '2_kurs_zovs',
-                        '3_kurs_lovs', '3_kurs_zovs', '3_kurs_int', '4_kurs_lovs', '4_kurs_zovs']
-        # костыль из-за измеения 3 курса зовс
-        if '3_kurs_int' in file_link:
-            return 'zovs_3_kurs'
+        course_names = ['1_lovs', '1_zovs', '2_lovs', '2_zovs',
+                        '3_lovs', '3_zovs', '4_lovs', '4_zovs']
         for name in course_names:
             if name in file_link:
-                name_of_course = self.formate_name(name)
-                return name_of_course
+                return name
+        #return None
 
     def formate_name(self, name):
         first_part = name[:6]
