@@ -202,7 +202,7 @@ def find_class_location(subject):
         splitted_by_new_line = subject.split('\n')
         for element in splitted_by_new_line:
             if 'ауд.' in element:
-                return find_class_location_used_number(element[4:])
+                return find_class_location_used_number(element[5:])
     elif 'Зал' in subject:
         if '№2' in subject:
             return 'Манеж, первый этаж'
