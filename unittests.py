@@ -1205,7 +1205,7 @@ class Test_request_handler(unittest.TestCase):
         result = request_handler.main_request_handler('Настройки', 111111111)
         self.assertEqual(
             result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [
+        self.assertEqual(result[1].keyboard, [[
                          {'text': 'Связь с разработчиком'}], [{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_subscriptions_and_newsletter_return_text(self):
@@ -1238,7 +1238,7 @@ class Test_request_handler(unittest.TestCase):
         result = request_handler.main_request_handler('Настройки', 222222222)
         self.assertEqual(
             result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [
+        self.assertEqual(result[1].keyboard, [[
                          {'text': 'Связь с разработчиком'}], [{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_info_about_subscriptions_user_subscribe_return_correct_text(self):
@@ -1305,7 +1305,7 @@ class Test_request_handler(unittest.TestCase):
             'Связь с разработчиком', 111111111)
         self.assertEqual(
             result[0], texts_for_lesgaft_bot.communication_with_developer_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [
+        self.assertEqual(result[1].keyboard, [[
                          {'text': 'Связь с разработчиком'}], [{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_return_to_settings_return_text(self):
@@ -1313,7 +1313,7 @@ class Test_request_handler(unittest.TestCase):
             'Вернуться в настройки', 111111111)
         self.assertEqual(
             result[0], texts_for_lesgaft_bot.go_to_settings_stage_text)
-        self.assertEqual(result[1].keyboard, [[{'text': 'Подписки и рассылки'}], [
+        self.assertEqual(result[1].keyboard, [[
                          {'text': 'Связь с разработчиком'}], [{'text': 'Вернуться в меню'}]])
 
 

@@ -121,7 +121,6 @@ def create_start_stage():
     item3 = telebot.types.KeyboardButton('Что умеет ЛесгафтБот')
 
     main_keyboard.add(item1, item2, item3)
-
     text = texts_for_lesgaft_bot.greeting_text
     return text, main_keyboard
 
@@ -158,11 +157,10 @@ def go_to_settings_stage():
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
 
-    item1 = telebot.types.KeyboardButton('Подписки и рассылки')
-    item2 = telebot.types.KeyboardButton('Связь с разработчиком')
-    item3 = telebot.types.KeyboardButton('Вернуться в меню')
+    item1 = telebot.types.KeyboardButton('Связь с разработчиком')
+    item2 = telebot.types.KeyboardButton('Вернуться в меню')
 
-    main_keyboard.add(item1, item2, item3)
+    main_keyboard.add(item1, item2)
 
     text = texts_for_lesgaft_bot.go_to_settings_stage_text
     return text, main_keyboard
@@ -241,11 +239,10 @@ def communication_with_developer():
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
 
-    item1 = telebot.types.KeyboardButton('Подписки и рассылки')
-    item2 = telebot.types.KeyboardButton('Связь с разработчиком')
-    item3 = telebot.types.KeyboardButton('Вернуться в меню')
+    item1 = telebot.types.KeyboardButton('Связь с разработчиком')
+    item2 = telebot.types.KeyboardButton('Вернуться в меню')
 
-    main_keyboard.add(item1, item2, item3)
+    main_keyboard.add(item1, item2)
 
     text = texts_for_lesgaft_bot.communication_with_developer_text
     return text, main_keyboard
