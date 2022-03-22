@@ -20,6 +20,14 @@ class Excel_parser():
         print(work_files)
         for work_file in work_files:
             print('file = ' + work_file)
+            if '1_lovs' in work_file:
+                continue
+            elif '1_zovs' in work_file:
+                continue
+            elif '3_lovs' in work_file:
+                continue
+            elif '3_zovs' in work_file:
+                continue
             self.parse_work_file(work_file)
 
     def parse_work_file_using_name(self, name, route):
@@ -29,6 +37,9 @@ class Excel_parser():
         for work_file in work_files:
             if name in work_file:
                 db_name = self.return_db_name(work_file)
+                print(1)
+                print(work_file)
+                print(db_name)
                 work_book = load_workbook(work_file)
                 db_funcs_for_subjects_db.drop_db(db_name)
                 db_funcs_for_subjects_db.create_db(db_name)
@@ -395,21 +406,21 @@ class Excel_parser():
 
     def return_db_name(self, file_name):
         if '1_zovs' in file_name:
-            return 'zovs_1_kurs'
+            return 'zovs_1'
         elif '2_zovs' in file_name:
-            return 'zovs_2_kurs'
+            return 'zovs_2'
         elif '3_zovs' in file_name:
-            return 'zovs_3_kurs'
+            return 'zovs_3'
         elif '4_zovs' in file_name:
-            return 'zovs_4_kurs'
+            return 'zovs_4'
         elif '1_lovs' in file_name:
-            return 'lovs_1_kurs'
+            return 'lovs_1'
         elif '2_lovs' in file_name:
-            return 'lovs_2_kurs'
+            return 'lovs_2'
         elif '3_lovs' in file_name:
-            return 'lovs_3_kurs'
+            return 'lovs_3'
         elif '4_lovs' in file_name:
-            return 'lovs_4_kurs'
+            return 'lovs_4'
         elif 'imst_1_kurs' in file_name:
             return 'imst_1_kurs'
         elif 'imst_2_kurs' in file_name:
@@ -485,28 +496,28 @@ class Excel_parser():
             first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз'
         elif db_name == 'magistracy_afk_full_time_2_kurs':
             first_group_name = 'адаптивное_физическое_воспитание_в_системе_образования_обучающихся_с_овз'
-        elif db_name == 'zovs_1_kurs':
+        elif db_name == 'zovs_1':
             first_group_name = 'атлетизм_тхэквондо_тхэквондо_антидопинг'
             #first_group_name = 'группа_113'
-        elif db_name == 'zovs_2_kurs':
+        elif db_name == 'zovs_2':
             first_group_name = 'пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_фехтование_фехтование_антидопинг'
             #first_group_name = 'группа_212'
-        elif db_name == 'zovs_3_kurs':
+        elif db_name == 'zovs_3':
             first_group_name = 'атлетизм_пауэрлифтинг_гиревой_спорт_бодибилдинг_тяжелая_атлетика_бокс'
             #first_group_name = 'группа_312'
-        elif db_name == 'zovs_4_kurs':
+        elif db_name == 'zovs_4':
             first_group_name = 'самбо_атлетизм'
             #first_group_name = 'группа_411'
-        elif db_name == 'lovs_1_kurs':
+        elif db_name == 'lovs_1':
             first_group_name = 'художественная_гимнастика_художественная_гимнастика_антидопинг'
             #first_group_name = 'группа_101'
-        elif db_name == 'lovs_2_kurs':
+        elif db_name == 'lovs_2':
             first_group_name = 'худ_гимн_худ_гимн_антидопинг'
             #first_group_name = 'группа_201'
-        elif db_name == 'lovs_3_kurs':
+        elif db_name == 'lovs_3':
             first_group_name = 'худ_гимн'
             #first_group_name = 'группа_301'
-        elif db_name == 'lovs_4_kurs':
+        elif db_name == 'lovs_4':
             first_group_name = 'худ_гимн'
             #first_group_name = 'группа_401'
         elif db_name == 'imst_1_kurs':

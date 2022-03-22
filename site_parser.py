@@ -151,8 +151,9 @@ class Site_parser_undergraduate(Site_parser):
                         '3_lovs', '3_zovs', '4_lovs', '4_zovs']
         for name in course_names:
             if name in file_link:
-                name_of_course = self.formate_name(name)
-                return name_of_course
+                return name
+                #name_of_course = self.formate_name(name)
+                #return name_of_course
         #return None
 
     def formate_name(self, name):
