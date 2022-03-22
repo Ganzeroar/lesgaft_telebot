@@ -592,7 +592,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
         result = obj.find_changed_files(soup_obj)
         self.assertEqual(len(result), 4)
-        self.assertEqual(result, ['http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_lovs_19.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_19.02.xlsx',
+        self.assertEqual(result, ['http://www.lesgaft.spb.ru/sites/default/files//shedul//2_lovs_19.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_zovs_19.02.xlsx',
                                   'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_zovs_-_2_sem._17.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx'])
 
     def test_get_file_link_from_site_full_time_undergraduate_return_filelink(self):
@@ -626,16 +626,9 @@ class Test_site_parser_undergraduate(unittest.TestCase):
             'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx')
         self.assertEqual(result, 'lovs_4_kurs')
 
-    # Тест на обход бага, когда учебный отдел приделывает 'int' к расписанию
-    def test_get_name_of_course_int_bag_return_correct(self):
-        obj = site_parser.Site_parser_undergraduate()
-        result = obj.get_name_of_course(
-            'http://lesgaft.spb.ru/sites/default/files//shedul//3_int_07.10.xlsx')
-        self.assertEqual(result, 'zovs_3_kurs')
-
     def test_formate_name_return_correct(self):
         obj = site_parser.Site_parser_undergraduate()
-        result = obj.formate_name('3_kurs_zovs')
+        result = obj.formate_name('3_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
 # @unittest.skip("passed")

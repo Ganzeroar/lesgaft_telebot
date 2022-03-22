@@ -151,13 +151,14 @@ class Site_parser_undergraduate(Site_parser):
                         '3_lovs', '3_zovs', '4_lovs', '4_zovs']
         for name in course_names:
             if name in file_link:
-                return name
+                name_of_course = self.formate_name(name)
+                return name_of_course
         #return None
 
     def formate_name(self, name):
-        first_part = name[:6]
-        second_part = name[-4:]
-        name_of_course = second_part + '_' + first_part
+        first_part = name[0]
+        second_part = name[2:]
+        name_of_course = second_part + '_' + first_part + '_kurs'
         return name_of_course
 
     def run_excel_parser(self, changed_files):
