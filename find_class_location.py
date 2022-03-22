@@ -241,7 +241,7 @@ def find_class_location(subject):
     elif 'Бассейн' in subject:
         return texts_for_lesgaft_bot.havent_way_to_place
     elif 'Манеж' in subject:
-        return texts_for_lesgaft_bot.havent_way_to_place
+        return 'От входа на Декабристов идти к главному корпусу, после первой арки налево'
     elif 'Кавголово' in subject:
         return texts_for_lesgaft_bot.havent_way_to_place
     else:

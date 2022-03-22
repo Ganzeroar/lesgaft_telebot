@@ -551,9 +551,9 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         db_funcs_for_site_parser.create_db()
         db_funcs_for_site_parser.insert_link_to_current_links()
         db_funcs_for_site_parser.change_link_in_current_links(
-            'lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
+            'lovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_lovs_-_2_sem._20.02.xlsx')
         db_funcs_for_site_parser.change_link_in_current_links(
-            'zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_zovs_-_2_sem._17.02.xlsx')
+            'zovs_1_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_zovs_-_2_sem._17.02.xlsx')
 
         db_funcs_for_site_parser.change_link_in_current_links(
             'zovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_zovs.xls')
@@ -561,13 +561,13 @@ class Test_site_parser_undergraduate(unittest.TestCase):
             'lovs_2_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_lovs.xlsx')
 
         db_funcs_for_site_parser.change_link_in_current_links(
-            'zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
+            'zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_zovs_-_2_sem._20.02.xlsx')
         db_funcs_for_site_parser.change_link_in_current_links(
-            'lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
+            'lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_lovs_-_2_sem._19.02.xlsx')
         db_funcs_for_site_parser.change_link_in_current_links(
-            'zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_zovs_19.02.xlsx')
+            'zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_zovs_19.02.xlsx')
         db_funcs_for_site_parser.change_link_in_current_links(
-            'lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.03.xlsx')
+            'lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.03.xlsx')
 
     @classmethod
     def tearDownClass(cls):
@@ -576,13 +576,13 @@ class Test_site_parser_undergraduate(unittest.TestCase):
     def test_is_changed_return_true(self):
         obj = site_parser.Site_parser_undergraduate()
         result = obj.is_changed(
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._25.02.xlsx')
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_lovs_-_2_sem._25.02.xlsx')
         self.assertEqual(result, True)
 
     def test_is_changed_return_false(self):
         obj = site_parser.Site_parser_undergraduate()
         result = obj.is_changed(
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_kurs_lovs_-_2_sem._20.02.xlsx')
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//1_lovs_-_2_sem._20.02.xlsx')
         self.assertEqual(result, False)
 
     @patch.object(site_parser.Site_parser, 'is_file_exist')
@@ -593,7 +593,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.find_changed_files(soup_obj)
         self.assertEqual(len(result), 4)
         self.assertEqual(result, ['http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_lovs_19.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//2_kurs_zovs_19.02.xlsx',
-                                  'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx'])
+                                  'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_zovs_-_2_sem._17.02.xlsx', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx'])
 
     def test_get_file_link_from_site_full_time_undergraduate_return_filelink(self):
         obj = site_parser.Site_parser_undergraduate()
@@ -601,14 +601,14 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.get_file_link_from_site_full_time_undergraduate(
             7, soup_obj)
         self.assertEqual(
-            result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._17.02.xlsx')
+            result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_zovs_-_2_sem._17.02.xlsx')
 
     def test_find_file_link_return_correct_link(self):
         obj = site_parser.Site_parser_undergraduate()
         soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
         result = obj.find_file_link(8, soup_obj)
         self.assertEqual(
-            result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+            result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx')
 
     def test_create_html_string_return_correct_string_odd(self):
         obj = site_parser.Site_parser_undergraduate()
@@ -623,14 +623,14 @@ class Test_site_parser_undergraduate(unittest.TestCase):
     def test_get_name_of_course_return_correct(self):
         obj = site_parser.Site_parser_undergraduate()
         result = obj.get_name_of_course(
-            'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+            'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx')
         self.assertEqual(result, 'lovs_4_kurs')
 
     # Тест на обход бага, когда учебный отдел приделывает 'int' к расписанию
     def test_get_name_of_course_int_bag_return_correct(self):
         obj = site_parser.Site_parser_undergraduate()
         result = obj.get_name_of_course(
-            'http://lesgaft.spb.ru/sites/default/files//shedul//3_kurs_int_07.10.xlsx')
+            'http://lesgaft.spb.ru/sites/default/files//shedul//3_int_07.10.xlsx')
         self.assertEqual(result, 'zovs_3_kurs')
 
     def test_formate_name_return_correct(self):
@@ -665,8 +665,8 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
         #
         #db_funcs_for_site_parser.change_link_in_current_links('zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
         #db_funcs_for_site_parser.change_link_in_current_links('lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
-        #db_funcs_for_site_parser.change_link_in_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_zovs_19.02.xlsx')
-        #db_funcs_for_site_parser.change_link_in_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.03.xlsx')
+        #db_funcs_for_site_parser.change_link_in_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_zovs_19.02.xlsx')
+        #db_funcs_for_site_parser.change_link_in_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.03.xlsx')
 
     @classmethod
     def tearDownClass(cls):
@@ -697,7 +697,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
     #    obj = site_parser.Site_parser_undergraduate()
     #    soup_obj = obj.get_soup_obj(texts_for_tests.html_text)
     #    result = obj.find_file_link(8, soup_obj)
-    #    self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+    #    self.assertEqual(result, 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx')
 #
     # def test_create_html_string_return_correct_string_odd(self):
     #    obj = site_parser.Site_parser_undergraduate()
@@ -711,7 +711,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
 #
     # def test_get_name_of_course_return_correct(self):
     #    obj = site_parser.Site_parser_undergraduate()
-    #    result = obj.get_name_of_course('http://www.lesgaft.spb.ru/sites/default/files//shedul//4_kurs_lovs_19.02.xlsx')
+    #    result = obj.get_name_of_course('http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.02.xlsx')
     #    self.assertEqual(result, 'lovs_4_kurs')
 #
     # def test_formate_name_return_correct(self):
