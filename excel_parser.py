@@ -20,14 +20,7 @@ class Excel_parser():
         print(work_files)
         for work_file in work_files:
             print('file = ' + work_file)
-            if '1_lovs' in work_file:
-                continue
-            elif '1_zovs' in work_file:
-                continue
-            elif '3_lovs' in work_file:
-                continue
-            elif '3_zovs' in work_file:
-                continue
+            
             self.parse_work_file(work_file)
 
     def parse_work_file_using_name(self, name, route):
@@ -163,8 +156,8 @@ class Excel_parser():
                     if bool(group_name) == False:
                         continue
                     group_name = self.format_group_name(group_name)
-                    undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs',
-                                                'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
+                    undegrdaduate_timetables = ['zovs_1', 'zovs_2', 'zovs_3',
+                                                'zovs_4', 'lovs_1', 'lovs_2', 'lovs_3', 'lovs_4']
 
                     if db_name in undegrdaduate_timetables:
 
@@ -210,8 +203,8 @@ class Excel_parser():
         return date
 
     def return_all_groups_names(self, work_sheet, first_group_name, db_name):
-        undegrdaduate_timetables = ['zovs_1_kurs', 'zovs_2_kurs', 'zovs_3_kurs',
-                                    'zovs_4_kurs', 'lovs_1_kurs', 'lovs_2_kurs', 'lovs_3_kurs', 'lovs_4_kurs']
+        undegrdaduate_timetables = ['zovs_1', 'zovs_2', 'zovs_3',
+                                    'zovs_4', 'lovs_1', 'lovs_2', 'lovs_3', 'lovs_4']
         groups_names = []
         row_number = self.find_number_of_groups_cell_row(
             work_sheet, first_group_name)
