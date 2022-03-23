@@ -62,7 +62,10 @@ class Excel_validator():
     def is_reason_to_skip(self, worksheet_name):
         month_to_skip = configurations.month_to_skip
         month = worksheet_name[-3:-1]
+        #day = worksheet_name[9:11]
         if month in month_to_skip:
+        #    if day in configurations.day_to_parse:
+        #        return False
             return True
         return False
         
@@ -468,41 +471,41 @@ class Excel_validator():
         return constants
 
     def check_file_name(self, file_name):
-        if '1_zovs' in file_name or '1_ЗОВС' in file_name:
+        if '1_zovs' in file_name or '1_ZOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '2_zovs' in file_name or '2_ЗОВС' in file_name:
+        elif '2_zovs' in file_name or '2_ZOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '3_zovs' in file_name or '3_ЗОВС' in file_name:
+        elif '3_zovs' in file_name or '3_ZOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '4_zovs' in file_name or '4_ЗОВС' in file_name:
+        elif '4_zovs' in file_name or '4_ZOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '1_lovs' in file_name or '1_ЛОВС' in file_name:
+        elif '1_lovs' in file_name or '1_LOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '2_lovs' in file_name or '2_ЛОВС' in file_name:
+        elif '2_lovs' in file_name or '2_LOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '3_lovs' in file_name or '3_ЛОВС' in file_name:
+        elif '3_lovs' in file_name or '3_LOVS' in file_name:
             return 'Имя файла ОК\n'
-        elif '4_lovs' in file_name or '4_ЛОВС' in file_name:
+        elif '4_lovs' in file_name or '4_LOVS' in file_name:
             return 'Имя файла ОК\n'
         else:
             return f'Ошибка в имени файла {file_name}\n'
 
     def find_clear_file_name(self, file_name):
-        if '1_zovs' in file_name or '1_ЗОВС' in file_name:
+        if '1_zovs' in file_name or '1_ZOVS' in file_name:
             return 'zovs_1'
-        elif '2_zovs' in file_name or '2_ЗОВС' in file_name:
+        elif '2_zovs' in file_name or '2_ZOVS' in file_name:
             return 'zovs_2'
-        elif '3_zovs' in file_name or '3_ЗОВС' in file_name:
+        elif '3_zovs' in file_name or '3_ZOVS' in file_name:
             return 'zovs_3'
-        elif '4_zovs' in file_name or '4_ЗОВС' in file_name:
+        elif '4_zovs' in file_name or '4_ZOVS' in file_name:
             return 'zovs_4'
-        elif '1_lovs' in file_name or '1_ЛОВС' in file_name:
+        elif '1_lovs' in file_name or '1_LOVS' in file_name:
             return 'lovs_1'
-        elif '2_lovs' in file_name or '2_ЛОВС' in file_name:
+        elif '2_lovs' in file_name or '2_LOVS' in file_name:
             return 'lovs_2'
-        elif '3_lovs' in file_name or '3_ЛОВС' in file_name:
+        elif '3_lovs' in file_name or '3_LOVS' in file_name:
             return 'lovs_3'
-        elif '4_lovs' in file_name or '4_ЛОВС' in file_name:
+        elif '4_lovs' in file_name or '4_LOVS' in file_name:
             return 'lovs_4'
         else:
             return None

@@ -29,7 +29,7 @@ class Excel_parser():
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         for work_file in work_files:
             if name in work_file:
-                db_name = self.return_db_name(work_file)
+                db_name = self.return_db_name(work_file.lower())
                 print(1)
                 print(work_file)
                 print(db_name)
@@ -49,7 +49,7 @@ class Excel_parser():
                     self.parse_work_sheet(work_sheet, db_name)
 
     def parse_work_file(self, work_file):
-        db_name = self.return_db_name(work_file)
+        db_name = self.return_db_name(work_file.lower())
         db_funcs_for_subjects_db.drop_db(db_name)
         db_funcs_for_subjects_db.create_db(db_name)
 
