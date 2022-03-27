@@ -20,6 +20,10 @@ words_to_skip = [
 
 ]
 
+day_and_month_to_parse = [
+    '02.04.',
+    '09.04.',
+]
 
 #подбить константы под каждое расписание
 group_constants = {

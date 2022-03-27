@@ -21,6 +21,7 @@ def drop_and_create_current_links_db():
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS current_links")
+    cursor.executescript("DROP TABLE IF EXISTS all_links")
     cursor.execute(
         'CREATE TABLE all_links (course_and_faculty text, link text, time_of_change text)')
     cursor.execute(
@@ -39,14 +40,14 @@ def insert_link_to_all_links(course_and_faculty, link, time_of_change):
 
 def insert_link_to_current_links():
     group_names = [
-        'lovs_1_kurs',
-        'lovs_2_kurs',
-        'lovs_3_kurs',
-        'lovs_4_kurs',
-        'zovs_1_kurs',
-        'zovs_2_kurs',
-        'zovs_3_kurs',
-        'zovs_4_kurs',
+        'lovs_1',
+        'lovs_2',
+        'lovs_3',
+        'lovs_4',
+        'zovs_1',
+        'zovs_2',
+        'zovs_3',
+        'zovs_4',
         'imst_1_kurs',
         'imst_2_kurs',
         'imst_3_kurs',
@@ -69,12 +70,23 @@ def insert_link_to_current_links():
 
 def change_link_in_current_links(course_and_faculty, link):
     print('changed ' + link)
+    correct_courese_and_faculty = get_correct_column_name(course_and_faculty)
     conn = sqlite3.connect('links_from_site.db')
     cursor = conn.cursor()
     cursor.execute(
-        f"UPDATE current_links SET link = '{link}' WHERE course_and_faculty = '{course_and_faculty}'")
+        f"UPDATE current_links SET link = '{link}' WHERE course_and_faculty = '{correct_courese_and_faculty}'")
     conn.commit()
 
+def get_correct_column_name(course_and_faculty):
+    course_names = ['1_lovs', '1_zovs', '2_lovs', '2_zovs',
+                        '3_lovs', '3_zovs', '4_lovs', '4_zovs']
+    for name in course_names:
+        if name in course_and_faculty:
+            month = course_and_faculty[2:]
+            day = course_and_faculty[0]
+            correct_name = month + '_' + day
+            return correct_name
+        
 
 def get_current_link(name):
     conn = sqlite3.connect('links_from_site.db')

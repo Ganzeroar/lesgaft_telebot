@@ -30,9 +30,6 @@ class Excel_parser():
         for work_file in work_files:
             if name in work_file:
                 db_name = self.return_db_name(work_file.lower())
-                print(1)
-                print(work_file)
-                print(db_name)
                 work_book = load_workbook(work_file)
                 db_funcs_for_subjects_db.drop_db(db_name)
                 db_funcs_for_subjects_db.create_db(db_name)
@@ -285,6 +282,9 @@ class Excel_parser():
                     return True
                 else:
                     break
+        last_day_and_month = worksheet_name[-8:-2]
+        if last_day_and_month not in configurations.day_and_month_to_parse:
+            return True
         words_to_skip = configurations.words_to_skip
         lower_ws_name = worksheet_name.lower()
         for word in words_to_skip:
