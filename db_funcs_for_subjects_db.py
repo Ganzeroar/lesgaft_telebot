@@ -1,4 +1,5 @@
 import sqlite3
+from unicodedata import name
 
 
 def create_db(db_name):
@@ -59,6 +60,9 @@ def save_subj(db_name, date, time, group, subj):
 
 
 def is_group_exist(name_of_group, db_name):
+
+    if name_of_group == 'группа_405' or name_of_group == 'группа_412' or name_of_group == 'группа_413':
+        return True
 
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()

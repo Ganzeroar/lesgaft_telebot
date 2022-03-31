@@ -66,7 +66,10 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'группа_' + str(number_of_group)
-    db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
+    if name_of_group == 'группа_405' or name_of_group == 'группа_412' or name_of_group == 'группа_413':
+        db_name = db_funcs_for_students_db.get_db_name(chat_id)
+    else:
+        db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
     if db_name == None:
         return 'Такой группы не существует. Измени номер группы.'
 
@@ -75,8 +78,6 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
 
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(
         name_of_group, db_name, date)
-    print(today_subjects)
-    print(len(today_subjects))
     if len(today_subjects) == 5:
         if number_of_lesson == 5:
             return 'Сегодня у тебя больше нет пар'
@@ -90,7 +91,6 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
         if today_subjects[number_of_lesson][0] != 'нет предмета':
             if before_or_during == 'before':
                 next_subject = today_subjects[number_of_lesson][0]
-                print(today_subjects)
                 formate_of_time = '%H:%M'
                 today_time = date.strftime("%H:%M")
                 today_date = datetime.datetime.strptime(

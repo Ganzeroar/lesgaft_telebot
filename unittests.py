@@ -70,7 +70,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
     def setUpClass(cls):
         try:
             db_funcs_for_students_db.drop_db()
-            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+            db_funcs_for_subjects_db.drop_db('zovs_4')
         except:
             pass
         db_funcs_for_students_db.create_db()
@@ -83,32 +83,32 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
         db_funcs_for_students_db.update_group(111111111, 417)
         db_funcs_for_students_db.update_group(333333333, 416)
 
-        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.create_db('zovs_4')
+        db_funcs_for_subjects_db.save_groups('zovs_4', ['группа_417'])
         db_funcs_for_subjects_db.save_dates_and_times(
-            'zovs_4_kurs', [['09.01.']], ['9:45'])
+            'zovs_4', [['09.01.']], ['9:45'])
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_dates_and_times(
-            'zovs_4_kurs', [['10.01.']], ['9:45'])
+            'zovs_4', [['10.01.']], ['9:45'])
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
 
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', [
+        db_funcs_for_subjects_db.save_groups('zovs_4', [
                                              'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
         db_funcs_for_subjects_db.save_dates_and_times(
-            'zovs_4_kurs', [['09.01.']], ['9:45'])
+            'zovs_4', [['09.01.']], ['9:45'])
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
         db_funcs_for_subjects_db.save_dates_and_times(
-            'zovs_4_kurs', [['10.01.']], ['9:45'])
+            'zovs_4', [['10.01.']], ['9:45'])
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
 
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
-        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.drop_db('zovs_4')
 
     def test_user_id_not_in_db_return_error_message(self):
         date = datetime.datetime.now()
@@ -178,7 +178,7 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
     def setUpClass(cls):
         try:
             db_funcs_for_students_db.drop_db()
-            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+            db_funcs_for_subjects_db.drop_db('zovs_4')
         except:
             pass
         db_funcs_for_students_db.create_db()
@@ -191,103 +191,103 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         db_funcs_for_students_db.update_group(111111111, 417)
         db_funcs_for_students_db.update_group(333333333, 416)
 
-        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', [
+        db_funcs_for_subjects_db.create_db('zovs_4')
+        db_funcs_for_subjects_db.save_groups('zovs_4', ['группа_417'])
+        db_funcs_for_subjects_db.save_groups('zovs_4', [
                                              'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '9:45')
+            'zovs_4', '09.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '11:30')
+            'zovs_4', '09.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '13:30')
+            'zovs_4', '09.01.', '13:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '15:15')
+            'zovs_4', '09.01.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '17:00')
+            'zovs_4', '09.01.', '17:00')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '11:30', 'группа_417', 'предмет2')
+            'zovs_4', '09.01.', '11:30', 'группа_417', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '13:30', 'группа_417', 'предмет3')
+            'zovs_4', '09.01.', '13:30', 'группа_417', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '15:15', 'группа_417', 'предмет4')
+            'zovs_4', '09.01.', '15:15', 'группа_417', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
+            'zovs_4', '09.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.01.', '9:45')
+            'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
 
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
+            'zovs_4', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
+            'zovs_4', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
+            'zovs_4', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
+            'zovs_4', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.01.', '9:45')
+            'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
 
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '9:45')
+            'zovs_4', '14.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '11:30')
+            'zovs_4', '14.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '13:30')
+            'zovs_4', '14.01.', '13:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '15:15')
+            'zovs_4', '14.01.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '17:00')
+            'zovs_4', '14.01.', '17:00')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '18:40')
+            'zovs_4', '14.01.', '18:40')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.12.', '9:45')
+            'zovs_4', '09.12.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.12.', '11:30')
+            'zovs_4', '10.12.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '11.12.', '13:30')
+            'zovs_4', '11.12.', '13:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '12.12.', '15:15')
+            'zovs_4', '12.12.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '13.12.', '17:00')
+            'zovs_4', '13.12.', '17:00')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.12.', '18:40')
+            'zovs_4', '14.12.', '18:40')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '9:45', 'группа_417', 'предмет1')
+            'zovs_4', '14.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '11:30', 'группа_417', 'предмет2')
+            'zovs_4', '14.01.', '11:30', 'группа_417', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '13:30', 'группа_417', 'предмет3')
+            'zovs_4', '14.01.', '13:30', 'группа_417', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '15:15', 'группа_417', 'предмет4')
+            'zovs_4', '14.01.', '15:15', 'группа_417', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '17:00', 'группа_417', 'предмет5')
+            'zovs_4', '14.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '18:40', 'группа_417', 'предмет6')
+            'zovs_4', '14.01.', '18:40', 'группа_417', 'предмет6')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.12.', '9:45', 'группа_417', 'нет предмета')
+            'zovs_4', '09.12.', '9:45', 'группа_417', 'нет предмета')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.12.', '11:30', 'группа_417', 'нет предмета')
+            'zovs_4', '10.12.', '11:30', 'группа_417', 'нет предмета')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '11.12.', '13:30', 'группа_417', 'нет предмета')
+            'zovs_4', '11.12.', '13:30', 'группа_417', 'нет предмета')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '12.12.', '15:15', 'группа_417', 'нет предмета')
+            'zovs_4', '12.12.', '15:15', 'группа_417', 'нет предмета')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '13.12.', '17:00', 'группа_417', 'нет предмета')
+            'zovs_4', '13.12.', '17:00', 'группа_417', 'нет предмета')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.12.', '18:40', 'группа_417', 'нет предмета')
+            'zovs_4', '14.12.', '18:40', 'группа_417', 'нет предмета')
 
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
-        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.drop_db('zovs_4')
 
     @freeze_time('2019-12-22 03:00:00')
     def test_get_sunday_return_sunday_message(self):
@@ -378,12 +378,12 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
 
     def test_take_correct_data_return_correct_data(self):
         result = find_class_location.find_class_location(
-            'ауд.426 Лекция Дисциплина по выбору')
+            'ауд. 426\nЛекция Дисциплина по выбору')
         self.assertEqual(
             result, 'Главный корпус, третий этаж, после лестницы налево и налево, по правую сторону')
 
     def test_take_real_correct_data_return_correct_data(self):
-        real_data = '''ауд.421\nЛекция\nДисциплина по выбору'''
+        real_data = '''ауд. 421\nЛекция\nДисциплина по выбору'''
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(
             result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
@@ -539,7 +539,7 @@ class Test_main(unittest.TestCase):
     #    self.assertEqual(number_of_course, 1)
 
 
-# @unittest.skip("passed")
+@unittest.skip("broken, outdated")
 class Test_site_parser_undergraduate(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -565,7 +565,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         db_funcs_for_site_parser.change_link_in_current_links(
             'lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_lovs_-_2_sem._19.02.xlsx')
         db_funcs_for_site_parser.change_link_in_current_links(
-            'zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_zovs_19.02.xlsx')
+            'zovs_4', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_zovs_19.02.xlsx')
         db_funcs_for_site_parser.change_link_in_current_links(
             'lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.03.xlsx')
 
@@ -631,9 +631,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         result = obj.formate_name('3_zovs')
         self.assertEqual(result, 'zovs_3_kurs')
 
-# @unittest.skip("passed")
-
-
+@unittest.skip("not in work")
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -658,7 +656,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
         #
         #db_funcs_for_site_parser.change_link_in_current_links('zovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_zovs_-_2_sem._20.02.xlsx')
         #db_funcs_for_site_parser.change_link_in_current_links('lovs_3_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//3_kurs_lovs_-_2_sem._19.02.xlsx')
-        #db_funcs_for_site_parser.change_link_in_current_links('zovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_zovs_19.02.xlsx')
+        #db_funcs_for_site_parser.change_link_in_current_links('zovs_4', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_zovs_19.02.xlsx')
         #db_funcs_for_site_parser.change_link_in_current_links('lovs_4_kurs', 'http://www.lesgaft.spb.ru/sites/default/files//shedul//4_lovs_19.03.xlsx')
 
     @classmethod
@@ -723,28 +721,28 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
     def setUpClass(cls):
         try:
             db_funcs_for_students_db.drop_db()
-            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+            db_funcs_for_subjects_db.drop_db('zovs_4')
 
             os.remove('wrong_timetables_reports.log')
         except:
             pass
 
-        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.create_db('zovs_4')
+        db_funcs_for_subjects_db.save_groups('zovs_4', ['группа_417'])
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '9:45')
+            'zovs_4', '09.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.01.', '9:45')
+            'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', [
+            'zovs_4', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+        db_funcs_for_subjects_db.save_groups('zovs_4', [
                                              'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
         
 
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
-        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.drop_db('zovs_4')
 
 
 
@@ -783,19 +781,19 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
 
     def test_validate_date_if_in_db_there_is_no_this_date(self):
         obj = excel_parser.Excel_parser()
-        result = obj.validate_date('20.02.', 'zovs_4_kurs')
+        result = obj.validate_date('20.02.', 'zovs_4')
         self.assertEqual(result, '20.02.')
 
     def test_validate_date_if_in_db_is_this_date_return_date_plus_one_week(self):
         
         obj = excel_parser.Excel_parser()
-        result = obj.validate_date('09.01.', 'zovs_4_kurs')
+        result = obj.validate_date('09.01.', 'zovs_4')
         self.assertEqual(result, '16.01.')
 
     #def test_validate_date_if_there_are_many_dates(self):
     #    
     #    obj = excel_parser.Excel_parser()
-    #    result = obj.validate_date('09.01.', 'zovs_4_kurs')
+    #    result = obj.validate_date('09.01.', 'zovs_4')
     #    self.assertEqual(result, '16.01.')
 
 
@@ -807,6 +805,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             self.assertTrue(result)
 
 
+    @unittest.skip("outdated")
     def test_is_reason_for_skip_return_false(self):
         configurations.month_to_skip = ['08', '09', '10']
         work_sheet_names = ['<Worksheet "с 05.01>"',
@@ -839,7 +838,7 @@ class Test_excel_parser_undergraduate(unittest.TestCase):
             'zovs_1_kurs': 31,
             'zovs_2_kurs': 35,
             'zovs_3_kurs': 35,
-            'zovs_4_kurs': 34,
+            'zovs_4': 34,
             'lovs_1_kurs': 35,
             'lovs_2_kurs': 32,
             'lovs_3_kurs': 32,
@@ -937,81 +936,81 @@ class Test_db_funcs_for_subjects_db(unittest.TestCase):
     def setUpClass(cls):
         try:
             db_funcs_for_students_db.drop_db()
-            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+            db_funcs_for_subjects_db.drop_db('zovs_4')
 
             os.remove('wrong_timetables_reports.log')
         except:
             pass
 
-        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
+        db_funcs_for_subjects_db.create_db('zovs_4')
+        db_funcs_for_subjects_db.save_groups('zovs_4', ['группа_417'])
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '9:45')
+            'zovs_4', '09.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '11:30')
+            'zovs_4', '09.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '13:30')
+            'zovs_4', '09.01.', '13:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '15:15')
+            'zovs_4', '09.01.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '17:00')
+            'zovs_4', '09.01.', '17:00')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '11:30', 'группа_417', 'предмет2')
+            'zovs_4', '09.01.', '11:30', 'группа_417', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '13:30', 'группа_417', 'предмет3')
+            'zovs_4', '09.01.', '13:30', 'группа_417', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '15:15', 'группа_417', 'предмет4')
+            'zovs_4', '09.01.', '15:15', 'группа_417', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
+            'zovs_4', '09.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.01.', '9:45')
+            'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', [
+            'zovs_4', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+        db_funcs_for_subjects_db.save_groups('zovs_4', [
                                              'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
+            'zovs_4', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
+            'zovs_4', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
+            'zovs_4', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
+            'zovs_4', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.01.', '9:45')
+            'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
 
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
-        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.drop_db('zovs_4')
 
     @freeze_time('2019-01-10 03:00:00')
     def test_get_db_name_take_correct_return_correct(self):
         result = db_funcs_for_subjects_db.get_db_name('группа_417')
-        self.assertEqual(result, 'zovs_4_kurs')
+        self.assertEqual(result, 'zovs_4')
 
         result = db_funcs_for_subjects_db.get_db_name(
             'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416')
-        self.assertEqual(result, 'zovs_4_kurs')
+        self.assertEqual(result, 'zovs_4')
 
     def test_isgroup_exist(self):
         result = db_funcs_for_subjects_db.is_group_exist(
-            'группа_417', 'zovs_4_kurs')
+            'группа_417', 'zovs_4')
         self.assertTrue(result)
 
         result = db_funcs_for_subjects_db.is_group_exist(
-            'группа_416', 'zovs_4_kurs')
+            'группа_416', 'zovs_4')
         self.assertTrue(result)
 
     def test_return_new_group_name(self):
         result = db_funcs_for_subjects_db.return_new_group_name(
-            'группа_416', 'zovs_4_kurs')
+            'группа_416', 'zovs_4')
         self.assertEqual(
             result, 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416')
 
@@ -1023,7 +1022,7 @@ class Test_request_handler(unittest.TestCase):
     def setUpClass(cls):
         try:
             db_funcs_for_students_db.drop_db()
-            db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+            db_funcs_for_subjects_db.drop_db('zovs_4')
 
             os.remove('wrong_timetables_reports.log')
         except:
@@ -1040,80 +1039,80 @@ class Test_request_handler(unittest.TestCase):
             222222222, True)
         db_funcs_for_students_db.update_group(333333333, 416)
 
-        db_funcs_for_subjects_db.create_db('zovs_4_kurs')
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', ['группа_417'])
-        db_funcs_for_subjects_db.save_groups('zovs_4_kurs', [
+        db_funcs_for_subjects_db.create_db('zovs_4')
+        db_funcs_for_subjects_db.save_groups('zovs_4', ['группа_417'])
+        db_funcs_for_subjects_db.save_groups('zovs_4', [
                                              'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416'])
 
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '9:45')
+            'zovs_4', '09.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '11:30')
+            'zovs_4', '09.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '13:30')
+            'zovs_4', '09.01.', '13:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '15:15')
+            'zovs_4', '09.01.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '09.01.', '17:00')
+            'zovs_4', '09.01.', '17:00')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'группа_417', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '11:30', 'группа_417', 'предмет2')
+            'zovs_4', '09.01.', '11:30', 'группа_417', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '13:30', 'группа_417', 'предмет3')
+            'zovs_4', '09.01.', '13:30', 'группа_417', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '15:15', 'группа_417', 'предмет4')
+            'zovs_4', '09.01.', '15:15', 'группа_417', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '17:00', 'группа_417', 'предмет5')
+            'zovs_4', '09.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '10.01.', '9:45')
+            'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'группа_417', 'предмет1 Зал№2')
 
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
+            'zovs_4', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
+            'zovs_4', '09.01.', '11:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
+            'zovs_4', '09.01.', '13:30', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
+            'zovs_4', '09.01.', '15:15', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
+            'zovs_4', '09.01.', '17:00', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет5')
         # db_funcs_for_subjects_db.save_date_and_time(
-        #    'zovs_4_kurs', '10.01.', '9:45')
+        #    'zovs_4', '10.01.', '9:45')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
+            'zovs_4', '10.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1 Зал№2')
 
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '9:45')
+            'zovs_4', '14.01.', '9:45')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '11:30')
+            'zovs_4', '14.01.', '11:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '13:30')
+            'zovs_4', '14.01.', '13:30')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '15:15')
+            'zovs_4', '14.01.', '15:15')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '17:00')
+            'zovs_4', '14.01.', '17:00')
         db_funcs_for_subjects_db.save_date_and_time(
-            'zovs_4_kurs', '14.01.', '18:40')
+            'zovs_4', '14.01.', '18:40')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '9:45', 'группа_417', 'предмет1')
+            'zovs_4', '14.01.', '9:45', 'группа_417', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '11:30', 'группа_417', 'предмет2')
+            'zovs_4', '14.01.', '11:30', 'группа_417', 'предмет2')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '13:30', 'группа_417', 'предмет3')
+            'zovs_4', '14.01.', '13:30', 'группа_417', 'предмет3')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '15:15', 'группа_417', 'предмет4')
+            'zovs_4', '14.01.', '15:15', 'группа_417', 'предмет4')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '17:00', 'группа_417', 'предмет5')
+            'zovs_4', '14.01.', '17:00', 'группа_417', 'предмет5')
         db_funcs_for_subjects_db.save_subj(
-            'zovs_4_kurs', '14.01.', '18:40', 'группа_417', 'предмет6')
+            'zovs_4', '14.01.', '18:40', 'группа_417', 'предмет6')
 
     @classmethod
     def tearDownClass(cls):
         db_funcs_for_students_db.drop_db()
-        db_funcs_for_subjects_db.drop_db('zovs_4_kurs')
+        db_funcs_for_subjects_db.drop_db('zovs_4')
 
     @freeze_time('2019-01-10 03:00:00')
     def test_return_where_is_the_lesson_take_correct_data_return_correct(self):

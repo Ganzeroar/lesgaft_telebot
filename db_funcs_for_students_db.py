@@ -78,13 +78,28 @@ def get_state_of_registragion_process(chat_id):
     return bool_state
 
 
-def save_timetable_name(chat_id, timetable_name):
+def save_timetable_name(chat_id, timetable_name, group_number):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    string_sql = f"UPDATE users SET timetable_name = {timetable_name} WHERE chat_id = {chat_id}"
+    string_sql = f"UPDATE users SET timetables_name = '{timetable_name}' WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
+    string_sql = f"UPDATE users SET number_of_group  = {group_number} WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    conn.commit()
+    text = f'Твоя группа {group_number} записана!' + \
+        texts_for_lesgaft_bot.group_saved
+    return text
+
+def get_db_name(chat_id):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    string_sql =  f"SELECT timetables_name FROM users WHERE chat_id = {chat_id}"
+    cursor.execute(string_sql)
+    db_name = cursor.fetchall()[0][0]
+    return db_name
+
 
 
 def save_number_of_course(chat_id, name_of_course):
@@ -198,7 +213,7 @@ def update_group(chat_id, group_number):
 def overwrite_group(message_text, chat_id):
     number_of_group = int(message_text)
     update_group(chat_id, number_of_group)
-    text = f'Ваша группа {number_of_group} записана!' + \
+    text = f'Твоя группа {number_of_group} записана!' + \
         texts_for_lesgaft_bot.group_saved
     print(f'User: {str(chat_id)} changed his group to {str(number_of_group)}')
     return text
