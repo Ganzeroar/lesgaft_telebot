@@ -123,12 +123,16 @@ def get_number_of_course(chat_id):
 
 
 def save_education_form(chat_id, education_form):
+    # используется только для 327 группы
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
     string_sql = f"UPDATE users SET education_form = '{education_form}' WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
 
+def return_new_group_name_327(user_id):
+    group_name = get_education_form(user_id)
+    return group_name
 
 def get_education_form(chat_id):
     conn = sqlite3.connect("students.db")

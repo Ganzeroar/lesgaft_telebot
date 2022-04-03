@@ -18,15 +18,18 @@ def return_lessons_at_date(user_id, date):
     if number_of_group == False:
         return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
     name_of_group = 'группа_' + str(number_of_group)
-    if name_of_group == 'группа_405' or name_of_group == 'группа_412' or name_of_group == 'группа_413':
+    if name_of_group == 'группа_405' or name_of_group == 'группа_412' or name_of_group == 'группа_413' or name_of_group == 'группа_327' or name_of_group == 'группа_328':
         db_name = db_funcs_for_students_db.get_db_name(user_id)
     else:
         db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
     if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
         return 'Твоей группы не существует. Измени номер группы.'
 
-    name_of_group = db_funcs_for_subjects_db.return_new_group_name(
-        name_of_group, db_name)
+    if name_of_group == 'группа_327':
+        name_of_group = db_funcs_for_students_db.return_new_group_name_327(user_id)
+    else:
+        name_of_group = db_funcs_for_subjects_db.return_new_group_name(
+            name_of_group, db_name)
 
     subjects = db_funcs_for_subjects_db.get_subjects_today(
         name_of_group, db_name, date)

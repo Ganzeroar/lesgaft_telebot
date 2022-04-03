@@ -28,7 +28,7 @@ def change_group_old(user_id, message_text):
     text = db_funcs_for_students_db.overwrite_group(message_text, user_id)
     return text, main_keyboard
 
-def start_change_group_nonstandart(user_id, message_text):
+def start_change_group_nonstandart(message_text):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
 
@@ -41,6 +41,38 @@ def start_change_group_nonstandart(user_id, message_text):
     elif message_text == '413':
         item1 = telebot.types.KeyboardButton('Борьба, Дзюдо, Фехтование')
         item2 = telebot.types.KeyboardButton('Менеджмент ФКиС, Худ. Гимн, Водные виды спорта, Водное поло Баскетбол')
+    elif message_text == '328':
+        item1 = telebot.types.KeyboardButton('Спорт. аэробика, л/а, теннис, плавание, футбол (антидопинг)')
+        item2 = telebot.types.KeyboardButton('Антидопинг (Комп. спорт., тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурн. кат., коньк. спорт, пауэрлифтинг, гиревой спорт)')
+
+    
+    main_keyboard.add(item1, item2)
+
+    text = 'Выбери свою специализацию'
+    return text, main_keyboard
+
+def start_change_group_327_step_1():
+    main_keyboard = telebot.types.ReplyKeyboardMarkup(
+        resize_keyboard=True, row_width=1)
+    
+    item1 = telebot.types.KeyboardButton('ЛОВС')
+    item2 = telebot.types.KeyboardButton('ЗОВС')
+    
+    main_keyboard.add(item1, item2)
+
+    text = 'Выбери свой факультет'
+    return text, main_keyboard
+
+def start_change_group_327_step_2(message_text):
+    main_keyboard = telebot.types.ReplyKeyboardMarkup(
+        resize_keyboard=True, row_width=1)
+    if message_text == 'ловс':
+        item1 = telebot.types.KeyboardButton('Направленность (профиль): Менеджмент ФКиС, Футбол, волейбол, л/а, плавание (менеджмент ФКиС)')
+        item2 = telebot.types.KeyboardButton('Направленность (профиль): ССиИ, Плавание (ССиИ)')
+    elif message_text == 'зовс':
+        item1 = telebot.types.KeyboardButton('Направленность (профиль): Менеджмент ФКиС, Менеджмент (тхэквондо, дзюдо, кикбиксинг, скалолазание, керлинг, полиатлон, хоккей, дартс, фехтование)')
+        item2 = telebot.types.KeyboardButton('Направленность (профиль): ССиИ, ССиИ (тхэквондо, дартс)')
+    
     main_keyboard.add(item1, item2)
 
     text = 'Выбери свою специализацию'
@@ -75,10 +107,45 @@ def change_group_nonstandart(user_id, message_text):
     elif message_text == 'менеджмент фкис, худ. гимн, водные виды спорта, водное поло баскетбол':
         db_name = 'lovs_4'
         group_number = '413'
+    elif message_text == 'спорт. аэробика, л/а, теннис, плавание, футбол (антидопинг)':
+        db_name = 'lovs_3'
+        group_number = '328'
+    elif message_text == 'антидопинг (комп. спорт., тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурн. кат., коньк. спорт, пауэрлифтинг, гиревой спорт)':
+        db_name = 'zovs_3'
+        group_number = '328'
 
     text = db_funcs_for_students_db.save_timetable_name(user_id, db_name, group_number)
     return text, main_keyboard
 
+def change_group_327(user_id, message_text):
+    main_keyboard = telebot.types.ReplyKeyboardMarkup(
+        resize_keyboard=True, row_width=1)
+
+    item1 = telebot.types.KeyboardButton('Где пара?')
+    item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
+    item3 = telebot.types.KeyboardButton('Какие завтра пары?')
+    item4 = telebot.types.KeyboardButton('Вернуться в меню')
+
+    main_keyboard.add(item1, item2, item3, item4)
+
+    if message_text == 'направленность (профиль): менеджмент фкис, футбол, волейбол, л/а, плавание (менеджмент фкис)':
+        db_name = 'lovs_3'
+        group_name = 'направленность_профиль_менеджмент_фкис_футбол_волейбол_л_а_плавание_менеджмент_фкис_группа_327'
+    elif message_text == 'направленность (профиль): ссии, плавание (ссии)':
+        db_name = 'lovs_3'
+        group_name = 'направленность_профиль_ссии_плавание_ссии_группа_327'
+    elif message_text == 'направленность (профиль): менеджмент фкис, менеджмент (тхэквондо, дзюдо, кикбиксинг, скалолазание, керлинг, полиатлон, хоккей, дартс…':
+        db_name = 'zovs_3'
+        group_name = 'направленность_профиль_менеджмент_фкис_менеджмент_тхэквондо_дзюдо_кикбиксинг_скалолазание_керлинг_полиатлон_хоккей_дартс_фехтование_группа_327'
+    elif message_text == 'направленность (профиль): ссии, ссии (тхэквондо, дартс)':
+        db_name = 'zovs_3'
+        group_name = 'направленность_профиль_ссии_ссии_тхэквондо_дартс_группа_327'
+    
+    group_number = '327'
+
+    text = db_funcs_for_students_db.save_timetable_name(user_id, db_name, group_number)
+    db_funcs_for_students_db.save_education_form(user_id, group_name)
+    return text, main_keyboard
 
 
 def return_where_is_the_lesson(chat_id):
@@ -348,10 +415,14 @@ def main_request_handler(message_text, user_id):
     time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
     text, keyboard = '', ''
     if len(message_text) == 3 and message_text.isdigit():
-        if message_text == '405' or message_text == '412' or message_text == '413' or message_text == '327' or message_text == '328':
-            text, keyboard = start_change_group_nonstandart(user_id, message_text)
+        if message_text == '405' or message_text == '412' or message_text == '413' or message_text == '328':
+            text, keyboard = start_change_group_nonstandart(message_text)
+        elif message_text == '327':
+            text, keyboard = start_change_group_327_step_1()
         else:
             text, keyboard = change_group_old(user_id, message_text)
+    elif message_text == 'ловс' or message_text == 'зовс':
+        text, keyboard = start_change_group_327_step_2(message_text)
     elif message_text == 'где пара?':
         text, keyboard = return_where_is_the_lesson(user_id)
     elif message_text == 'какие сегодня пары?':
@@ -390,6 +461,8 @@ def main_request_handler(message_text, user_id):
         text, keyboard = go_to_timetables_stage()
     elif message_text in configurations.non_standart_group:
         text, keyboard = change_group_nonstandart(user_id, message_text)
+    elif message_text in configurations.non_standart_group_327:
+        text, keyboard = change_group_327(user_id, message_text)
     #elif message_text == 'фод, водные виды спорта' or message_text == 'плавание ii':
     #    text, keyboard = change_group_nonstandart(user_id, message_text)
     #elif message_text == 'плавание ii':
