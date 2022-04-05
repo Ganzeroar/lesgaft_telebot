@@ -10,7 +10,7 @@ def create_db():
                     (chat_id integer, first_name text, last_name text,
                     registration_date integer, number_of_group integer,
                     academic_degree text, education_form text, 
-                    number_of_course integer, timetables_name text,
+                    number_of_course integer, timetable_name text,
                     in_registration_process text, is_subscribe_to_newsletter integer)
                     """)
 
@@ -82,7 +82,7 @@ def save_timetable_name(chat_id, timetable_name, group_number):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
 
-    string_sql = f"UPDATE users SET timetables_name = '{timetable_name}' WHERE chat_id = {chat_id}"
+    string_sql = f"UPDATE users SET timetable_name = '{timetable_name}' WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
     string_sql = f"UPDATE users SET number_of_group  = {group_number} WHERE chat_id = {chat_id}"
@@ -95,7 +95,7 @@ def save_timetable_name(chat_id, timetable_name, group_number):
 def get_db_name(chat_id):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
-    string_sql =  f"SELECT timetables_name FROM users WHERE chat_id = {chat_id}"
+    string_sql =  f"SELECT timetable_name FROM users WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     db_name = cursor.fetchall()[0][0]
     return db_name
