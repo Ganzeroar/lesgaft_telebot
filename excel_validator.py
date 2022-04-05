@@ -356,6 +356,9 @@ class Excel_validator():
                 viewed_time_value = self.get_merged_cell_value(worksheet, viewed_time_cell)
                 if viewed_time_value in configurations.string_for_stop_vertical_parsing:
                     break
+                else:
+                    message += f'Ошибка пустая строка в {viewed_time_cell.coordinate}\n'
+                    return message
             else:
                 viewed_time_value = viewed_time_cell.value
             if viewed_time_value == None:
@@ -366,8 +369,84 @@ class Excel_validator():
                 return message
             result = re.fullmatch(r'\d{1,2}[:]\d{2}', viewed_time_value)
             if result == None:
-                message += f'Ошибка в времени в {viewed_time_cell.coordinate}\n'
+                message += f'Ошибка во времени в {viewed_time_cell.coordinate}\n'
+
+        for row in range(0, 50):
+            viewed_time_row = const_first_time_row + row
+            viewed_time_cell = worksheet.cell(row = viewed_time_row, column = const_time_column)
+            if self.is_merged(worksheet, viewed_time_cell):
+                viewed_time_value = self.get_merged_cell_value(worksheet, viewed_time_cell)
+                if viewed_time_value in configurations.string_for_stop_vertical_parsing:
+                    break
+                else:
+                    message += f'Ошибка пустая строка в {viewed_time_cell.coordinate}\n'
+                    return message
+            else:
+                viewed_time_value = viewed_time_cell.value
+
+            next_viewed_time_cell = worksheet.cell(row = viewed_time_row+1, column = const_time_column)
+            if self.is_merged(worksheet, next_viewed_time_cell):
+                next_viewed_time_value = self.get_merged_cell_value(worksheet, next_viewed_time_cell)
+                if next_viewed_time_value in configurations.string_for_stop_vertical_parsing:
+                    break
+                else:
+                    message += f'Ошибка пустая строка в {next_viewed_time_cell.coordinate}\n'
+                    return message
+            else:
+                next_viewed_time_value = next_viewed_time_cell.value
+            if viewed_time_value == '9:45':
+                if next_viewed_time_value == '11:30':
+                    continue
+                else:
+                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    return message
+            elif viewed_time_value == '11:30':
+                if next_viewed_time_value == '13:30':
+                    continue
+                else:
+                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    return message
+            elif viewed_time_value == '13:30':
+                if next_viewed_time_value == '15:15':
+                    continue
+                else:
+                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    return message
+            elif viewed_time_value == '15:15':
+                if next_viewed_time_value == '17:00':
+                    continue
+                else:
+                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    return message
+            elif viewed_time_value == '17:00':
+                if next_viewed_time_value == '9:45':
+                    continue
+                elif next_viewed_time_value == '18:40':
+                    continue
+                else:
+                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    return message
+            elif viewed_time_value == '18:40':
+                if next_viewed_time_value == '9:45':
+                    continue
+                else:
+                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    return message
+
+        
         return message
+
+    def get_value_of_cell(self, worksheet, row, column):
+        #пока не используется
+        viewed_cell = worksheet.cell(row = row, column = column)
+        if self.is_merged(worksheet, viewed_cell):
+            viewed_cell_value = self.get_merged_cell_value(worksheet, viewed_cell)
+            #if viewed_time_value in configurations.string_for_stop_vertical_parsing:
+            #    break
+        else:
+            viewed_cell_value = viewed_cell.value
+        return viewed_cell_value
+        
 
     def check_day_struct(self, worksheet, file_name):
         message = ''
