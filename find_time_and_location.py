@@ -78,7 +78,6 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
     else:
         name_of_group = db_funcs_for_subjects_db.return_new_group_name(
             name_of_group, db_name)
-            
     today_subjects = db_funcs_for_subjects_db.get_subjects_today(
         name_of_group, db_name, date)
     if len(today_subjects) == 5:
