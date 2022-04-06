@@ -1,5 +1,4 @@
-#from email import message
-#from fileinput import filename
+
 from openpyxl import Workbook, load_workbook, utils
 import glob
 import re
@@ -203,6 +202,10 @@ class Excel_validator():
             if 'Ошибка' in status:
                 message += f'Лист {worksheet_name}\n' + status
                 return message
+            status = self.check_group_specializations(worksheet, file_name)
+            if 'Ошибка' in status:
+                message += f'Лист {worksheet_name}\n' + status
+                return message
             status = self.check_date_column(worksheet, file_name)
             if 'Ошибка' in status:
                 message += f'Лист {worksheet_name}\n' + status
@@ -306,6 +309,23 @@ class Excel_validator():
                 viewed_group_value = viewed_group_cell.value
             if const_group_numbers[i] != viewed_group_value:
                 message += f'Ошибка в имени группы в {viewed_group_cell.coordinate}\n'
+        return message
+
+    def check_group_specializations(self, worksheet, file_name):
+        message = ''
+        constants = self.return_current_file_constants(file_name)
+        const_group_specialization_row = constants['group_specialization_row']
+        const_group_specializations = constants['specialization']
+        const_first_group_column = constants['first_group_column']
+        const_last_group_column = constants['last_group_column']
+        group_range = const_last_group_column - const_first_group_column
+        for i in range(0, group_range + 1):
+            group_column = const_first_group_column + i
+            viewed_group_cell = worksheet.cell(row = const_group_specialization_row, column = group_column)
+            #print(viewed_group_cell.value)
+            #print(const_group_specializations[i])
+            if const_group_specializations[i] != viewed_group_cell.value:
+                message += f'Ошибка в специализации в {viewed_group_cell.coordinate}\n'
         return message
 
     def check_structure(self, work_book, file_name):

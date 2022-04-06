@@ -8,6 +8,11 @@ import pytz
 import sqlite3
 import os
 
+import sys
+sys_path = sys.path[0]
+path_to_upper_folder = sys_path[:-10]
+sys.path.append(path_to_upper_folder)
+
 import find_time_and_location
 import find_lessons_at_date
 import find_class_location
@@ -47,7 +52,7 @@ class Test_find_time_and_location_return_location_of_class(unittest.TestCase):
     def test_take_correct_text_return_real_answer(self):
         result = find_time_and_location.return_location_of_class(
             123456789, 'где 10')
-        self.assertEqual(result, 'ИЭиСТ, первый этаж')
+        self.assertEqual(result, 'ИМиСТ, первый этаж')
 
     def test_take_correct_faculty_return_real_answer(self):
         result = find_time_and_location.return_location_of_class(
@@ -439,7 +444,7 @@ class Test_main(unittest.TestCase):
     #
     # def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
     #    result = main.return_where_is_the_classroom(111111111, 'где 10')
-    #    self.assertEqual(result, ('ИЭиСТ, первый этаж', 'main_keyboard'))
+    #    self.assertEqual(result, ('ИМиСТ, первый этаж', 'main_keyboard'))
 #
     # def test_change_group_step_1_take_correct_data_return_correct(self):
     #    first_step_keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard = True, row_width=1)
@@ -1167,13 +1172,13 @@ class Test_request_handler(unittest.TestCase):
     def test_return_where_is_the_classroom_take_correct_data_return_correct(self):
         result = request_handler.return_where_is_the_classroom(
             111111111, 'где 10')
-        self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
+        self.assertEqual(result[0], 'ИМиСТ, первый этаж')
         self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [
                          {'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
     def test_main_request_handler_take_where_is_the_classroom_request_return_correct(self):
         result = request_handler.main_request_handler('где 10', 111111111)
-        self.assertEqual(result[0], 'ИЭиСТ, первый этаж')
+        self.assertEqual(result[0], 'ИМиСТ, первый этаж')
         self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [
                          {'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
 
