@@ -1,9 +1,15 @@
 import sqlite3
 import texts_for_lesgaft_bot
+import os
 
 
-def create_db():
-    conn = sqlite3.connect("students.db")
+def create_db(path = None):
+    if path == None:
+        conn = sqlite3.connect("students.db")
+    else:
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        new_path = os.path.join(current_path, f'{path}\students.db')
+        conn = sqlite3.connect(new_path)
     cursor = conn.cursor()
 
     cursor.execute("""CREATE TABLE users
@@ -22,8 +28,14 @@ def add_columns_for_update():
         f"ALTER TABLE users ADD COLUMN is_subscribe_to_newsletter integer")
 
 
-def drop_db():
-    conn = sqlite3.connect('students.db')
+def drop_db(path = None):
+    if path == None:
+        conn = sqlite3.connect("students.db")
+    else:
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        new_path = os.path.join(current_path, f'{path}\students.db')
+        conn = sqlite3.connect(new_path)
+
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS users")
 
