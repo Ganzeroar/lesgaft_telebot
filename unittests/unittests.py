@@ -13,7 +13,6 @@ sys_path = sys.path[0]
 path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 
-import find_time_and_location
 import find_lessons_at_date
 import find_class_location
 import main
