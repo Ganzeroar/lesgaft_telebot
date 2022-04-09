@@ -322,9 +322,9 @@ class Excel_validator():
         for i in range(0, group_range + 1):
             group_column = const_first_group_column + i
             viewed_group_cell = worksheet.cell(row = const_group_specialization_row, column = group_column)
-            #print(viewed_group_cell.value)
-            #print(const_group_specializations[i])
             if const_group_specializations[i] != viewed_group_cell.value:
+                print(viewed_group_cell.value)
+                print(const_group_specializations[i])
                 message += f'Ошибка в специализации в {viewed_group_cell.coordinate}\n'
         return message
 
