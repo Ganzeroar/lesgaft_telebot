@@ -75,7 +75,7 @@ class Site_parser_undergraduate(Site_parser):
             print('Изменения в ' + str(changed_files))
             self.create_new_excel_files('full_time_undergraduate', changed_files)
             
-            self.run_excel_parser(changed_files)
+            self.run_excel_parser()
             self.save_new_links_in_db(changed_files)
         else:
             main.send_custom_message_to_user(
@@ -93,7 +93,7 @@ class Site_parser_undergraduate(Site_parser):
         all_files = self.get_all_files()
         print(all_files)
         self.create_new_excel_files('full_time_undergraduate', all_files)
-        self.run_excel_parser(all_files)
+        self.run_excel_parser()
 
     def get_all_files(self):
         html_text = self.get_html_text()
@@ -162,12 +162,12 @@ class Site_parser_undergraduate(Site_parser):
         name_of_course = second_part + '_' + first_part + '_kurs'
         return name_of_course
 
-    def run_excel_parser(self, changed_files):
-        for new_file_link in changed_files:
-            name_of_course = self.get_name_of_course(new_file_link)
-            parser = excel_parser.Excel_parser()
-            parser.parse_work_file_using_name(
-                name_of_course, 'full_time_undergraduate')
+    def run_excel_parser(self):
+        parser = excel_parser.Excel_parser()
+        text = parser.run_parser('full_time_undergraduate')
+        if text:
+            main.send_custom_message_to_user(
+                206171081, text)
 
 
 class Site_parser_undergraduate_imst(Site_parser):

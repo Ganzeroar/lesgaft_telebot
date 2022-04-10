@@ -11,6 +11,30 @@ class Excel_validator():
 
     #TODO Если нужна такая фича, могу запилить что-то типа кнопки "свободные аудитории", по которой бот отвечает что сейчас никем по расписанию не занято
 
+    def run_validator_for_excel_parser(self, route):
+        result_message = ''
+        #перебирать листы
+        work_files = glob.glob(f'time_tables/{route}/*.xlsx')
+        #если в имени файла ошибка - выбрасывать
+        for work_file in work_files:
+            result_message += f'{work_file}\n'
+            result_message += self.check_file_name(work_file)
+            if 'Ошибка' in result_message:
+                return result_message
+            work_book = load_workbook(work_file)
+            result_message += self.check_worksheet_names(work_book.sheetnames)
+            if 'Ошибка' in result_message:
+                return result_message
+            #если неверная структура - выбрасывать
+            result_message += self.check_structure(work_book, work_file)
+            if 'Ошибка' in result_message:
+                return result_message
+            result_message += self.check_content_of_servise_cells(work_book, work_file)
+            #result_message += self.check_class_schedule(work_book, work_file)
+        
+        return result_message
+
+
     def run_validator(self, route):
         result_message = ''
         #перебирать листы
@@ -323,8 +347,6 @@ class Excel_validator():
             group_column = const_first_group_column + i
             viewed_group_cell = worksheet.cell(row = const_group_specialization_row, column = group_column)
             if const_group_specializations[i] != viewed_group_cell.value:
-                print(viewed_group_cell.value)
-                print(const_group_specializations[i])
                 message += f'Ошибка в специализации в {viewed_group_cell.coordinate}\n'
         return message
 

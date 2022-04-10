@@ -6,6 +6,7 @@ import datetime
 
 import db_funcs_for_subjects_db
 import configurations
+import excel_validator
 
 
 class Excel_parser():
@@ -18,9 +19,13 @@ class Excel_parser():
     def run_parser(self, route):
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         print(work_files)
+        validator = excel_validator.Excel_validator()
+        result_message = validator.run_validator_for_excel_parser(route)
+        if 'Ошибка' in result_message:
+            return result_message
+
         for work_file in work_files:
             print('file = ' + work_file)
-            
             self.parse_work_file(work_file)
 
     def parse_work_file_using_name(self, name, route):
@@ -207,7 +212,6 @@ class Excel_parser():
             work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
-            #print(self.format_group_name('Худ.  гимн.'))
             group_cell = work_sheet.cell(row=row_number, column=column).value
             if type(group_cell) == str:
                 group_cell = self.format_group_name(group_cell)
