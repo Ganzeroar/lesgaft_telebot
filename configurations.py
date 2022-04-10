@@ -29,6 +29,7 @@ day_and_month_to_parse = [
     '09.04.',
     '16.04.',
     '23.04.',
+    '30.04.',
 ]
 
 non_standart_group = [

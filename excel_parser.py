@@ -292,7 +292,7 @@ class Excel_parser():
         words_to_skip = configurations.words_to_skip
         lower_ws_name = worksheet_name.lower()
         for word in words_to_skip:
-            if word in lower_ws_name:
+            if word == lower_ws_name:
                 return True
         return False
 

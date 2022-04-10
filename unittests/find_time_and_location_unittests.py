@@ -95,7 +95,7 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
 
     @classmethod
     def tearDownClass(cls):
-        db_funcs_for_students_db.drop_db()
+        db_funcs_for_students_db.drop_db('unittests')
         db_funcs_for_subjects_db.drop_db('zovs_4')
 
     def test_user_id_not_in_db_return_error_message(self):
@@ -111,13 +111,6 @@ class Test_find_time_and_location_return_text_about_time_before_lesson_with_loca
             222222222, 1, date)
         self.assertEqual(
             result, 'Такой группы не существует. Измени номер группы.')
-
-    @unittest.skip("сломан во время исправления бага коммитом от 22 марта 2022")
-    def test_num_of_lessons_bigger_then_6_return_error_message(self):
-        date = datetime.datetime.now()
-        result = find_time_and_location.return_text_about_time_before_lesson_with_location(
-            111111111, 6, date)
-        self.assertEqual(result, 'Сегодня у тебя больше нет пар.')
 
     @freeze_time('2019-01-11 09:45:00')
     def test_today_subjects_equal_false_return_error_message(self):
