@@ -502,7 +502,7 @@ class Excel_parser():
             first_group_name = 'самбо_атлетизм'
             #first_group_name = 'группа_411'
         elif db_name == 'lovs_1':
-            first_group_name = 'художественная_гимнастика_художественная_гимнастика_антидопинг'
+            first_group_name = 'худ_гимн_худ_гимн_антидопинг'
             #first_group_name = 'группа_101'
         elif db_name == 'lovs_2':
             first_group_name = 'худ_гимн_худ_гимн_антидопинг'
