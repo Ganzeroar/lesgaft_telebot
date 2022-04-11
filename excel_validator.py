@@ -30,7 +30,10 @@ class Excel_validator():
             if 'Ошибка' in result_message:
                 return result_message
             result_message += self.check_content_of_servise_cells(work_book, work_file)
+            if 'Ошибка' in result_message:
+                return result_message
             #result_message += self.check_class_schedule(work_book, work_file)
+            print(f'{work_file} валиден')
         
         return result_message
 
