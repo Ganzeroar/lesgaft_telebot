@@ -443,25 +443,25 @@ class Excel_validator():
                 if next_viewed_time_value == '11:30':
                     continue
                 else:
-                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    message += f'Ошибка неверная следующая ячейка в {viewed_time_cell.coordinate}\n'
                     return message
             elif viewed_time_value == '11:30':
                 if next_viewed_time_value == '13:30':
                     continue
                 else:
-                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    message += f'Ошибка неверная следующая ячейка в {viewed_time_cell.coordinate}\n'
                     return message
             elif viewed_time_value == '13:30':
                 if next_viewed_time_value == '15:15':
                     continue
                 else:
-                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    message += f'Ошибка неверная следующая ячейка в {viewed_time_cell.coordinate}\n'
                     return message
             elif viewed_time_value == '15:15':
                 if next_viewed_time_value == '17:00':
                     continue
                 else:
-                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    message += f'Ошибка неверная следующая ячейка в {viewed_time_cell.coordinate}\n'
                     return message
             elif viewed_time_value == '17:00':
                 if next_viewed_time_value == '9:45':
@@ -469,13 +469,13 @@ class Excel_validator():
                 elif next_viewed_time_value == '18:40':
                     continue
                 else:
-                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    message += f'Ошибка неверная следующая ячейка в {viewed_time_cell.coordinate}\n'
                     return message
             elif viewed_time_value == '18:40':
                 if next_viewed_time_value == '9:45':
                     continue
                 else:
-                    message += f'Ошибка в {viewed_time_cell.coordinate}\n'
+                    message += f'Ошибка неверная следующая ячейка в {viewed_time_cell.coordinate}\n'
                     return message
 
         
