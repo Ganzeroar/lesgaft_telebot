@@ -3,6 +3,7 @@
 import telebot
 import time
 import logging
+import os
 
 import config
 import db_funcs_for_students_db
@@ -87,24 +88,19 @@ def handle_request_and_send_answer(message):
 @bot.message_handler(content_types=['document'])
 def handle_docs_photo(message):
     try:
-        chat_id = message.chat.id
-
         file_info = bot.get_file(message.document.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
-        #print(file_info)
-        #print(downloaded_file)
-        print(f'User {str(message.from_user.id)} tryed')        
-        print(message.document.file_name)
-
-        src = r"C:\Users\ganze\Desktop\lesgaftbot_2\lesgaft_telebot\time_tables\documents_for_validate\\" + message.document.file_name;
-        print(src)
-        with open(src, 'wb') as new_file:
+        
+        path = os.path.abspath(os.path.dirname(__file__))
+        path_2 = os.path.join(path, 'time_tables')
+        path_3 = os.path.join(path_2, 'documents_for_validate')
+        path_4 = os.path.join(path_3, message.document.file_name)
+        with open(path_4, 'wb') as new_file:
             new_file.write(downloaded_file)
 
         bot.reply_to(message, "Сканирование запущено")
         obj = excel_validator.Excel_validator()
         result = obj.run_validator('documents_for_validate')
-        #result = excel_validator.Excel_validator.run_validator('documents_for_validate')
         bot.reply_to(message, result)
     except Exception as e:
         bot.reply_to(message, e)
