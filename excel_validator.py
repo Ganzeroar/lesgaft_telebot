@@ -17,7 +17,7 @@ class Excel_validator():
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         #если в имени файла ошибка - выбрасывать
         for work_file in work_files:
-            result_message += f'{work_file}\n'
+            result_message += f'{work_file[36:]}\n'
             result_message += self.check_file_name(work_file)
             if 'Ошибка' in result_message:
                 return result_message
