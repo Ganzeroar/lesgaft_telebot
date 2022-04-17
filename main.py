@@ -107,7 +107,7 @@ def handle_docs_photo(message):
 
 def main_run():
     try:
-        bot.polling(none_stop=False)
+        bot.infinity_polling()
     except:
         time.sleep(60)
         logging.basicConfig(filename="sample.log", level=logging.INFO)
