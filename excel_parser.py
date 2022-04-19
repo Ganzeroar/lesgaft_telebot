@@ -294,13 +294,10 @@ class Excel_parser():
                     return True
                 else:
                     break
-        last_day_and_month = worksheet_name[-8:-2]
-        if last_day_and_month not in configurations.day_and_month_to_parse:
-            return True
         words_to_skip = configurations.words_to_skip
         lower_ws_name = worksheet_name.lower()
         for word in words_to_skip:
-            if word == lower_ws_name:
+            if word in lower_ws_name:
                 return True
         return False
 
