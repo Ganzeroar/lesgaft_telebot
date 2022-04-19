@@ -1,6 +1,4 @@
 import sqlite3
-from unicodedata import name
-
 
 def create_db(db_name):
 
@@ -15,6 +13,23 @@ def drop_db(db_name):
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS " + db_name)
 
+
+def check_is_null_in_db():
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    db_names = ['lovs_1', 'lovs_2', 'lovs_3', 'lovs_4', 'zovs_1', 'zovs_2', 'zovs_3', 'zovs_4']
+    for db_name in db_names:
+        columns_names_in_db = f"PRAGMA table_info({db_name})"
+        cursor.execute(columns_names_in_db)
+        columns_names = cursor.fetchall()
+        for column_name in columns_names:
+            req = f"SELECT * FROM {db_name} WHERE {column_name[1]} IS NULL"
+            cursor.execute(req)
+            db_response = cursor.fetchall()
+            if bool(db_response) is not False:
+                message = f'null in {db_name} in {column_name}'
+                return message
+    return 'OK'
 
 def save_groups(db_name, list_of_groups):
     conn = sqlite3.connect('subjects.db')
@@ -117,8 +132,6 @@ def get_dates(db_name):
     req = f"SELECT date FROM {db_name}"
     cursor.execute(req)
     return cursor.fetchall()
-
-
 
 def get_db_name(name_of_group):
     #name_of_group = 'группа_' + str(name_of_group)

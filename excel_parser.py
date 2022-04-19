@@ -1,5 +1,3 @@
-import time
-from unittest import result
 from openpyxl import Workbook, load_workbook, utils
 import glob
 import datetime
@@ -7,6 +5,7 @@ import datetime
 import db_funcs_for_subjects_db
 import configurations
 import excel_validator
+import main
 
 
 class Excel_parser():
@@ -28,7 +27,12 @@ class Excel_parser():
             print('file = ' + work_file)
             self.parse_work_file(work_file)
 
-        #TODO добавить проверку на null в базе после парсинга
+        response_is_null_in_db = db_funcs_for_subjects_db.check_is_null_in_db()
+        if response_is_null_in_db != 'OK':
+            main.send_custom_message_to_user(
+            206171081, f'null в БД {response_is_null_in_db}')
+        else:
+            print('DB HAS NOT NULL')
 
     def parse_work_file_using_name(self, name, route):
         print('Парсер запущен на ' + name)
