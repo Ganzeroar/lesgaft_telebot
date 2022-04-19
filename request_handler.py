@@ -42,8 +42,8 @@ def start_change_group_nonstandart(message_text):
         item1 = telebot.types.KeyboardButton('Борьба, Дзюдо, Фехтование')
         item2 = telebot.types.KeyboardButton('Менеджмент ФКиС, Худ. Гимн, Водные виды спорта, Водное поло Баскетбол')
     elif message_text == '328':
-        item1 = telebot.types.KeyboardButton('Спорт. аэробика, л/а, теннис, плавание, футбол (антидопинг)')
-        item2 = telebot.types.KeyboardButton('Антидопинг (Комп. спорт., тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурн. кат., коньк. спорт, пауэрлифтинг, гиревой спорт)')
+        item1 = telebot.types.KeyboardButton('Спорт. аэробика Лёгк. атл. Теннис Плавание Футбол (антидопинг)')
+        item2 = telebot.types.KeyboardButton('Антидопинг (комп. спорт, тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурное катание, конькобежный спорт, пауэрлифтинг, гиревой спорт)')
 
     
     main_keyboard.add(item1, item2)
@@ -88,7 +88,6 @@ def change_group_nonstandart(user_id, message_text):
     item4 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item4)
-
     if message_text == 'фод, водные виды спорта':
         db_name = 'zovs_4'
         group_number = '405'
@@ -107,10 +106,10 @@ def change_group_nonstandart(user_id, message_text):
     elif message_text == 'менеджмент фкис, худ. гимн, водные виды спорта, водное поло баскетбол':
         db_name = 'lovs_4'
         group_number = '413'
-    elif message_text == 'спорт. аэробика, л/а, теннис, плавание, футбол (антидопинг)':
+    elif message_text == 'спорт. аэробика лёгк. атл. теннис плавание футбол (антидопинг)':
         db_name = 'lovs_3'
         group_number = '328'
-    elif message_text == 'антидопинг (комп. спорт., тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурн. кат., коньк. спорт, пауэрлифтинг, гиревой спорт)':
+    elif message_text == 'антидопинг (комп. спорт, тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурное катание, конькобежный спорт, пауэрлифтинг, гиревой…':
         db_name = 'zovs_3'
         group_number = '328'
 
