@@ -30,6 +30,8 @@ def final_job():
             1035761325, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {exception}')
         main.send_custom_message_to_user(
             1197606586, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {exception}')
+        main.send_custom_message_to_user(
+            5290593854, f'ЭКСЕЛЬ ПАРСЕР не проходит потому что {exception}')
 
 schedule.every().day.at("11:00").do(job)
 schedule.every().day.at("12:00").do(job)
