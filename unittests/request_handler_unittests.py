@@ -74,7 +74,9 @@ class Test_request_handler(unittest.TestCase):
         db_funcs_for_subjects_db.save_subj(
             'zovs_4', '11.01.', '9:45', 'группа_417', 'ауд. 28\nИстория ФКиС\nСеминар\nРыбакова О.Б.')
         #FOR TESTER
-
+        db_funcs_for_subjects_db.save_date_and_time(
+            'zovs_4', '12.01.', '9:45')
+        
         db_funcs_for_subjects_db.save_subj(
             'zovs_4', '09.01.', '9:45', 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416', 'предмет1')
         db_funcs_for_subjects_db.save_subj(
@@ -289,6 +291,21 @@ class Test_request_handler(unittest.TestCase):
             result[0], 'Через 3:45 начнётся\nауд. 28\nИстория ФКиС\nСеминар\nРыбакова О.Б.\n\nМойка, второй этаж, налево от охранника, по левую сторону')
         self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [
                          {'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
+
+    @freeze_time('2019-01-12 03:00:00')
+    def test_take_imist_location_return_correct_way(self):
+        location = 'ауд. 7 ИМиСТ'
+        path_to_location = 'Мойка, третий этаж, от лестницы налево'
+
+        db_funcs_for_subjects_db.save_date_and_time(
+            'zovs_4', '12.01.', '9:45')
+        db_funcs_for_subjects_db.save_subj(
+            'zovs_4', '12.01.', '9:45', 'группа_417', f'{location}\nX')
+
+        result = request_handler.return_where_is_the_lesson(111111111)      
+        self.assertEqual(
+            result[0], f'Через 3:45 начнётся\n{location}\nX\n\n{path_to_location}'
+        )
 
 if __name__ == '__main__':
     unittest.main()
