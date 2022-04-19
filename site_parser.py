@@ -62,89 +62,66 @@ class Site_parser():
 class Site_parser_undergraduate(Site_parser):
 
     def run_full_time_undergraduate_parser(self):
-        html_text = self.get_html_text()
-        soup_obj = self.get_soup_obj(html_text)
-
-        changed_files = self.find_changed_files(soup_obj)
-        if len(changed_files) > 0:
-            main.send_custom_message_to_user(
-                206171081, f'Новые расписания: {changed_files}')
-
-            date_and_time_now = self.get_date_and_time_now()
-            print(f'Дата = {date_and_time_now}')
-            print('Изменения в ' + str(changed_files))
-            self.create_new_excel_files('full_time_undergraduate', changed_files)
-            
-            self.run_excel_parser()
-            self.save_new_links_in_db(changed_files)
-        else:
-            main.send_custom_message_to_user(
-                206171081, 'Изменений расписаний не обнаружено')
-
-    def save_new_links_in_db(self, changed_files):
-        for new_file_link in changed_files:
-            date_and_time_now = self.get_date_and_time_now()
-            name_of_course = self.get_name_of_course(new_file_link)
-            db.insert_link_to_all_links(
-                name_of_course, str(new_file_link), date_and_time_now)
-            db.change_link_in_current_links(name_of_course, str(new_file_link))
-
-    def run_full_time_undergraduate_parser_without_checking_changed_files(self):
-        all_files = self.get_all_files()
-        print(all_files)
-        self.create_new_excel_files('full_time_undergraduate', all_files)
+        files_from_site = self.get_all_files()
+        self.create_new_excel_files('full_time_undergraduate', files_from_site)
         self.run_excel_parser()
 
     def get_all_files(self):
+        file_links = []
         html_text = self.get_html_text()
         soup_obj = self.get_soup_obj(html_text)
 
-        all_files = []
-        for number in range(8):
-            # необходимо что бы правильно определить HTML код нужного расписания
-            # ввиду плохого нейминга элементов на сайте
-            number_of_row = number + 2
-            file_link = self.get_file_link_from_site_full_time_undergraduate(
-                number_of_row, soup_obj)
-            all_files.append(file_link)
-        return all_files
+        lovs_links = self.get_lovs_links(soup_obj)
+        zovs_links = self.get_zovs_links(soup_obj)
+        file_links += lovs_links
+        file_links += zovs_links
+        return file_links
 
-    def find_changed_files(self, soup_obj):
-        changed_files = []
 
-        for number in range(8):
-            # необходимо что бы правильно определить HTML код нужного расписания
-            # ввиду плохого нейминга элементов на сайте
-            number_of_row = number + 2
+    def get_lovs_links(self, soup_obj):
+        lovs_links = []
+        element_1 = soup_obj.find_all('div', class_='views-row views-row-2 views-row-even')[0]
+        element_2 = element_1.find_all(
+            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
+        element_3 = element_2.find_all('span', class_ = 'file')
+        lovs_1_span = element_3[0]
+        lovs_2_span = element_3[1]
+        lovs_3_span = element_3[2]
+        lovs_4_span = element_3[3]
+        
+        lovs_1_link = lovs_1_span.find_all('a', href=True)[0]['href']
+        lovs_2_link = lovs_2_span.find_all('a', href=True)[0]['href']
+        lovs_3_link = lovs_3_span.find_all('a', href=True)[0]['href']
+        lovs_4_link = lovs_4_span.find_all('a', href=True)[0]['href']
 
-            new_file_link = self.get_file_link_from_site_full_time_undergraduate(
-                number_of_row, soup_obj)
-            if self.is_changed(new_file_link) and self.is_file_exist(new_file_link):
-                changed_files.append(new_file_link)
-        return changed_files
+        lovs_links.append(lovs_1_link)
+        lovs_links.append(lovs_2_link)
+        lovs_links.append(lovs_3_link)
+        lovs_links.append(lovs_4_link)
+        
+        return lovs_links
 
-    def get_file_link_from_site_full_time_undergraduate(self, number_of_row, soup_obj):
-        new_file_link = self.find_file_link(number_of_row, soup_obj)
-        return new_file_link
+    def get_zovs_links(self, soup_obj):
+        zovs_links = []
+        element_1 = soup_obj.find_all('div', class_='views-row views-row-3 views-row-odd')[0]
+        element_2 = element_1.find_all(
+            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
+        element_3 = element_2.find_all('span', class_ = 'file')
+        zovs_1_span = element_3[0]
+        zovs_2_span = element_3[1]
+        zovs_3_span = element_3[2]
+        zovs_4_span = element_3[3]
+        
+        zovs_1_link = zovs_1_span.find_all('a', href=True)[0]['href']
+        zovs_2_link = zovs_2_span.find_all('a', href=True)[0]['href']
+        zovs_3_link = zovs_3_span.find_all('a', href=True)[0]['href']
+        zovs_4_link = zovs_4_span.find_all('a', href=True)[0]['href']
 
-    def find_file_link(self, number_of_row, soup_obj):
-        html_string = self.create_html_string(number_of_row)
-        element = soup_obj.find_all('div', class_=html_string)
-        element_2 = element[0].find_all(
-            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')
-        new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-        return new_file_link
-
-    def create_html_string(self, number_of_row):
-        even_or_odd = self.return_even_or_odd(number_of_row)
-        html_string = f'views-row views-row-{number_of_row} views-row-{even_or_odd}'
-        return html_string
-
-    def return_even_or_odd(self, number_of_row):
-        if number_of_row % 2 == 0:
-            return 'even'
-        else:
-            return 'odd'
+        zovs_links.append(zovs_1_link)
+        zovs_links.append(zovs_2_link)
+        zovs_links.append(zovs_3_link)
+        zovs_links.append(zovs_4_link)
+        return zovs_links
 
     def get_name_of_course(self, file_link):
         course_names = ['1_lovs', '1_zovs', '2_lovs', '2_zovs',
@@ -152,15 +129,6 @@ class Site_parser_undergraduate(Site_parser):
         for name in course_names:
             if name in file_link:
                 return name
-                #name_of_course = self.formate_name(name)
-                #return name_of_course
-        #return None
-
-    def formate_name(self, name):
-        first_part = name[0]
-        second_part = name[2:]
-        name_of_course = second_part + '_' + first_part + '_kurs'
-        return name_of_course
 
     def run_excel_parser(self):
         parser = excel_parser.Excel_parser()
@@ -168,7 +136,6 @@ class Site_parser_undergraduate(Site_parser):
         if text:
             main.send_custom_message_to_user(
                 206171081, text)
-
 
 class Site_parser_undergraduate_imst(Site_parser):
 
