@@ -28,6 +28,8 @@ class Excel_parser():
             print('file = ' + work_file)
             self.parse_work_file(work_file)
 
+        #TODO добавить проверку на null в базе после парсинга
+
     def parse_work_file_using_name(self, name, route):
         print('Парсер запущен на ' + name)
 
