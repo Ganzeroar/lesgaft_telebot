@@ -256,6 +256,7 @@ class Excel_parser():
         return False
 
     def is_time(self, time):
+        #TODO убрать так как это делает валидатор
         times = ['9:45', '09:45', '9.45', '09.45', '11:30', '11.30', '13:30',
                  '13.30', '15:15', '15.15', '17:00', '17.00', '18:40', '18.40', '9:45:00',
                  '09:45:00', '9.45:00', '09.45:00', '11:30:00', '11.30:00', '13:30:00',
@@ -267,6 +268,7 @@ class Excel_parser():
 
     def format_time(self, time):
         time = str(time)
+        #TODO убрать так как это делает валидатор
         # в расписании чаще всего косячат тут
         first_times = ['9:45', '09:45', '9.45', '09.45',
                        '9:45:00', '09:45:00', '9.45:00', '09.45:00']
@@ -310,6 +312,8 @@ class Excel_parser():
                     db_name, date, time)
 
     def format_dates(self, dates):
+        #TODO убрать так как это делает валидатор
+
         dates = dates.replace(' ', '\n')
         list_of_dates = [element.replace(' ', '')
                          for element in dates.rstrip().split('\n')]
@@ -356,6 +360,8 @@ class Excel_parser():
 
     def find_row_of_first_lesson(self, work_sheet):
         time_column = self.const_time_column
+        #TODO убрать так как это делает валидатор
+
         times = ['9:45', '09:45', '9.45', '09.45',
                  '9:45:00', '09:45:00', '9.45:00', '09.45:00']
         for row in range(1, 10):

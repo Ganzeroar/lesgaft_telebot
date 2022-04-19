@@ -149,7 +149,7 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         date = datetime.datetime.now()
         result = find_lessons_at_date.return_lessons_at_date(222222222, date)
         self.assertEqual(
-            result, 'Твоей группы не существует. Измени номер группы.')
+            result, 'Такой группы не существует. Измени номер группы.')
 
     @freeze_time('2019-01-09 03:00:00')
     def test_5_subject_all_correct_return_correct_message(self):

@@ -60,7 +60,7 @@ def return_subscribed_to_news_users():
 def start_message(message):
     text, keyboard = request_handler.create_start_stage()
     if db_funcs_for_students_db.user_already_in_db(message.from_user.id):
-        text = 'С возвращением!'
+        text = texts_for_lesgaft_bot.after_returning
     else:
         db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(
             message.from_user.first_name), str(message.from_user.last_name), int(message.date))

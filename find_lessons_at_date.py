@@ -13,17 +13,17 @@ def return_lessons_at_date(user_id, date):
         str(date.strftime('%a')))
     if day_of_week == 'воскресенье':
         print('User: ' + str(user_id) + ' from ask about tomorrow sunday')
-        return 'Воскресенье, не учимся!'
+        return texts_for_lesgaft_bot.sunday_text
     number_of_group = db_funcs_for_students_db.get_group_number(user_id)
     if number_of_group == False:
-        return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
+        return texts_for_lesgaft_bot.user_not_in_db
     name_of_group = 'группа_' + str(number_of_group)
     if name_of_group == 'группа_405' or name_of_group == 'группа_412' or name_of_group == 'группа_413' or name_of_group == 'группа_327' or name_of_group == 'группа_328':
         db_name = db_funcs_for_students_db.get_db_name(user_id)
     else:
         db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
     if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
-        return 'Твоей группы не существует. Измени номер группы.'
+        return texts_for_lesgaft_bot.group_is_not_exist
 
     if name_of_group == 'группа_327':
         name_of_group = db_funcs_for_students_db.return_new_group_name_327(user_id)

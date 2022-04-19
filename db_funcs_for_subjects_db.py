@@ -151,6 +151,7 @@ def get_db_name(name_of_group):
             if name_of_group in column_name:
                 return db_name
         if name_of_group in column_names:
+            #TODO возможно убрать
             # костыль к изменению, где учебный отдел нашёл вторую 414 группу в университете
             if name_of_group == 'группа_414' and db_name == 'lovs_4_kurs':
                 return 'zovs_4_kurs'

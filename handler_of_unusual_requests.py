@@ -105,7 +105,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, next_monday)
         if text != 'понедельник':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "понедельник"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_monday
             message = message + additional_text
         return message
     elif text in tuesday_lessons_requests:
@@ -113,7 +113,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, next_monday)
         if text != 'вторник':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "вторник"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_tuesday
             message = message + additional_text
         return message
     elif text in wednesday_lessons_requests:
@@ -121,7 +121,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, next_monday)
         if text != 'среда':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "среда"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_wednesday
             message = message + additional_text
         return message
     elif text in thursday_lessons_requests:
@@ -129,7 +129,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, next_monday)
         if text != 'четверг':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "четверг"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_thursday
             message = message + additional_text
         return message
     elif text in friday_lessons_requests:
@@ -137,7 +137,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, next_monday)
         if text != 'пятница':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "пятница"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_friday
             message = message + additional_text
         return message
     elif text in saturday_lessons_requests:
@@ -145,7 +145,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, next_monday)
         if text != 'суббота':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "суббота"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_saturday
             message = message + additional_text
         return message
     elif text in today_lessons_requests:
@@ -153,7 +153,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, time_now)
         if text != 'сегодня':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "сегодня"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_today
         return message
     elif text in tomorrow_lessons_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
@@ -161,7 +161,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, tomorrow)
         if text != 'завтра':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "завтра"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_tomorrow
         return message
     elif text in day_after_tomorrow_lessond_requests:
         time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
@@ -169,7 +169,7 @@ def find_message_value(text, user_id):
         message = find_lessons_at_date.return_lessons_at_date(
             user_id, after_tomorrow)
         if text != 'послезавтра':
-            additional_text = '\nВместо длинного запроса ты можешь писать просто "послезавтра"'
+            additional_text = texts_for_lesgaft_bot.instead_of_asking_after_tomorrow
         return message
     else:
         return False

@@ -64,14 +64,14 @@ def is_time_between(begin_time, end_time, check_time=None):
 def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson, date, before_or_during='before'):
     number_of_group = db_funcs_for_students_db.get_group_number(chat_id)
     if number_of_group == False:
-        return 'Тебя ещё нет в моей базе данных. Сначала зарегистрируйся.'
+        return texts_for_lesgaft_bot.user_not_in_db
     name_of_group = 'группа_' + str(number_of_group)
     if name_of_group == 'группа_405' or name_of_group == 'группа_412' or name_of_group == 'группа_413' or name_of_group == 'группа_327' or name_of_group == 'группа_328':
         db_name = db_funcs_for_students_db.get_db_name(chat_id)
     else:
         db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
     if db_name == None:
-        return 'Такой группы не существует. Измени номер группы.'
+        return texts_for_lesgaft_bot.group_is_not_exist
 
     if name_of_group == 'группа_327':
         name_of_group = db_funcs_for_students_db.return_new_group_name_327(chat_id)
@@ -82,10 +82,10 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
         name_of_group, db_name, date)
     if len(today_subjects) == 5:
         if number_of_lesson == 5:
-            return 'Сегодня у тебя больше нет пар'
+            return texts_for_lesgaft_bot.today_already_no_lessons
     elif (len(today_subjects)) == 6:
         if number_of_lesson == 6:
-            return 'Сегодня у тебя больше нет пар'
+            return texts_for_lesgaft_bot.today_already_no_lessons
     if bool(today_subjects) == False or today_subjects == None:
         return texts_for_lesgaft_bot.error
     list_of_times = ['9:45', '11:30', '13:30', '15:15', '17:00']
@@ -108,7 +108,7 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
                 current_subject = today_subjects[number_of_lesson][0]
                 class_location = find_class_location.find_class_location(
                     current_subject)
-                text = f'Сейчас у вас {current_subject}\n\n{class_location}'
+                text = f'Сейчас у тебя {current_subject}\n\n{class_location}'
                 return text
         if today_subjects[number_of_lesson][0] == 'нет предмета':
             return return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson + 1, date)
@@ -125,7 +125,7 @@ def return_time_before_class_and_location(chat_id):
     day_of_week = return_russian_day_of_week(str(date.strftime('%a')))
 
     if day_of_week == 'воскресенье':
-        return 'Сегодня воскресенье, не учимся!'
+        return texts_for_lesgaft_bot.sunday_text
 
     text = False
 

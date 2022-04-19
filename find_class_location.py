@@ -117,7 +117,7 @@ def find_class_location_used_number(number_of_class):
         location = locations[number_of_class]
         return location
     except:
-        return 'Такой аудитории я не знаю'
+        return texts_for_lesgaft_bot.havent_way_to_place
 
 
 def find_department_location(name_of_department):
@@ -171,7 +171,7 @@ def find_department_location(name_of_department):
         location = locations[name_of_department]
         return location
     except:
-        return 'Такой аудитории я не знаю'
+        return texts_for_lesgaft_bot.havent_way_to_place
 
 
 def find_faculty_location(name_of_faculty):
@@ -190,7 +190,7 @@ def find_faculty_location(name_of_faculty):
         location = locations[name_of_faculty]
         return location
     except:
-        return 'Такой аудитории я не знаю'
+        return texts_for_lesgaft_bot.havent_way_to_place
 
 
 def find_class_location(subject):

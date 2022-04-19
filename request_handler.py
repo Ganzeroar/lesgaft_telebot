@@ -127,7 +127,6 @@ def change_group_327(user_id, message_text):
 
     main_keyboard.add(item1, item2, item3, item4)
 
-    print(message_text)
     if message_text == 'направленность (профиль): менеджмент фкис футбол волейбол лёгк. атл. плавание (менеджмент фкис)':
         db_name = 'lovs_3'
         group_name = 'направленность_профиль_менеджмент_фкис_футбол_волейбол_лёгк_атл_плавание_менеджмент_фкис_группа_327'
@@ -155,7 +154,6 @@ def return_where_is_the_lesson(chat_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
@@ -171,7 +169,6 @@ def return_today_lessons(chat_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
@@ -188,7 +185,6 @@ def return_tomorrow_lessons(chat_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
@@ -206,7 +202,6 @@ def return_where_is_the_classroom(chat_id, message_text):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
@@ -223,7 +218,6 @@ def go_to_timetables_stage():
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
@@ -375,7 +369,6 @@ def save_info_about_wrong_timetables(user_id):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
@@ -429,8 +422,6 @@ def main_request_handler(message_text, user_id):
         text, keyboard = return_today_lessons(user_id)
     elif message_text == 'какие завтра пары?':
         text, keyboard = return_tomorrow_lessons(user_id)
-    # elif message_text == 'расписание неправильное':
-    #    text, keyboard = save_info_about_wrong_timetables(user_id)
     elif str(message_text[:3]).lower() == 'где' and message_text != 'где пара?':
         text, keyboard = return_where_is_the_classroom(user_id, message_text)
     elif message_text == 'вернуться в меню':
@@ -463,10 +454,6 @@ def main_request_handler(message_text, user_id):
         text, keyboard = change_group_nonstandart(user_id, message_text)
     elif message_text in configurations.non_standart_group_327:
         text, keyboard = change_group_327(user_id, message_text)
-    #elif message_text == 'фод, водные виды спорта' or message_text == 'плавание ii':
-    #    text, keyboard = change_group_nonstandart(user_id, message_text)
-    #elif message_text == 'плавание ii':
-
     else:
         request = message_text.lower()
         text = handler.find_message_value(request, user_id)
