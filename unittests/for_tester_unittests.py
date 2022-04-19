@@ -12,9 +12,6 @@ import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import request_handler
 
-location = 'ауд. 7 ИМиСТ'
-path_to = 'Мойка, первый этаж, после входа направо'
-
 class Test_request_handler(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -105,13 +102,13 @@ class Test_request_handler(unittest.TestCase):
         self.assertEqual(
             result[0], f'Через 3:45 начнётся\n{location}\nX\n\n{path_to_location}'
         )
-    
+
     @freeze_time('2019-01-11 03:00:00')
     def test_test_4(self):
         # Если ввести ТиМ ИВС, аудитория не отображается
     
         location = 'ТиМ ИВС'
-        path_to_location = 'Мойка, третий этаж, от лестницы налево'
+        path_to_location = 'На кафедре?'
 
         db_funcs_for_subjects_db.save_date_and_time(
             'zovs_4', '11.01.', '9:45')
@@ -131,7 +128,7 @@ class Test_request_handler(unittest.TestCase):
         # Если ввести Анатомия, аудитория не отображается
     
         location = 'Анатомия'
-        path_to_location = 'Мойка, третий этаж, от лестницы налево'
+        path_to_location = '*местонахождение анатомии*'
 
         db_funcs_for_subjects_db.save_date_and_time(
             'zovs_4', '11.01.', '9:45')
@@ -148,10 +145,10 @@ class Test_request_handler(unittest.TestCase):
 
     @freeze_time('2019-01-11 03:00:00')
     def test_test_6(self):
-        # Если ввести Анатомия, аудитория не отображается
+        # Если ввести ауд. 55, 71, отображается Такой аудитории я не знаю
     
         location = 'ауд. 55, 71'
-        path_to_location = 'Мойка, третий этаж, от лестницы налево'
+        path_to_location = 'Кафедра англяза и путь туда?'
 
         db_funcs_for_subjects_db.save_date_and_time(
             'zovs_4', '11.01.', '9:45')
@@ -165,21 +162,6 @@ class Test_request_handler(unittest.TestCase):
         self.assertEqual(
             result[0], f'Через 3:45 начнётся\n{location}\nX\n\n{path_to_location}'
         )
-    
-
-    # Если ввести ауд. 7 ИМиСТ,  отображается Такой адитории я не знаю, предположительно из-за наличия ИМиСТ в строке с аудитоией
-    # Если ввести Элективные дисциплины по ФКиС, местоположение аудитории не отображается
-
-    # Если нет точки после ауд, местоположение аудитории не отображается
-    #@freeze_time('2019-01-11 03:00:00')
-    #def test_take_non_format_location_return_correct_path(self):
-    #    result = request_handler.return_where_is_the_lesson(111111111)
-    #    location = 'Мойка, третий этаж, от лестницы налево'
-    #    self.assertEqual(
-    #        result[0], f'Через 3:45 начнётся\nауд 1\nX\n\n{location}')
-    #    self.assertEqual(result[1].keyboard, [[{'text': 'Где пара?'}], [{'text': 'Какие сегодня пары?'}], [
-    #                     {'text': 'Какие завтра пары?'}], [{'text': 'Вернуться в меню'}]])
-
 
 if __name__ == '__main__':
     unittest.main()
