@@ -33,6 +33,8 @@ def return_lessons_at_date(user_id, date):
 
     subjects = db_funcs_for_subjects_db.get_subjects_today(
         name_of_group, db_name, date)
+    if bool(subjects) == False:
+        return texts_for_lesgaft_bot.error
 
     number_of_date = date.strftime("%d.%m.%Y.")
     if set(subjects) == {('нет предмета',)}:

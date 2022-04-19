@@ -11,6 +11,7 @@ sys.path.append(path_to_upper_folder)
 import db_funcs_for_students_db
 import db_funcs_for_subjects_db
 import find_lessons_at_date
+import texts_for_lesgaft_bot
 
 
 
@@ -214,6 +215,14 @@ class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):
         result = find_lessons_at_date.return_lessons_at_date(111111111, date)
         expected_string = 'В субботу (14.12.2019.) у тебя нет пар'
         self.assertEqual(result, expected_string)
+
+    @freeze_time('2019-12-16 03:00:00')
+    def test_date_is_not_exist_in_db_return_error_message(self):
+        date = datetime.datetime.now()
+        result = find_lessons_at_date.return_lessons_at_date(111111111, date)
+        expected_string = texts_for_lesgaft_bot.error
+        self.assertEqual(result, expected_string)
+
 
 if __name__ == '__main__':
     unittest.main()
