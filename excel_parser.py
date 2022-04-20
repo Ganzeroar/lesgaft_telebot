@@ -288,16 +288,24 @@ class Excel_parser():
     def is_reason_to_skip(self, worksheet_name):
         month_to_skip = configurations.month_to_skip
 
-        for num in range(0, -15, -1):
-            if worksheet_name[num-2:num].isdigit():
-                if worksheet_name[num-2:num] in month_to_skip:
-                    return True
-                else:
-                    break
+        #for num in range(0, -15, -1):
+        #    if worksheet_name[num-2:num].isdigit():
+        #        if worksheet_name[num-2:num] in month_to_skip:
+        #            return True
+        #        else:
+        #            break
+        month = worksheet_name[-5:-3]
+        if month in month_to_skip:
+            return True
         words_to_skip = configurations.words_to_skip
         lower_ws_name = worksheet_name.lower()
         for word in words_to_skip:
             if word in lower_ws_name:
+                if word == '18.04':
+                    if word == lower_ws_name:
+                        return True
+                    else:
+                        return False
                 return True
         return False
 
