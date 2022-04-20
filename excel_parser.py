@@ -17,7 +17,6 @@ class Excel_parser():
 
     def run_parser(self, route):
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
-        print(work_files)
         validator = excel_validator.Excel_validator()
         result_message = validator.run_validator_for_excel_parser(route)
         if 'Ошибка' in result_message:
