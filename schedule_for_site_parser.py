@@ -11,7 +11,7 @@ def job():
         if 'Ошибка' in text:
             raise
         main.send_custom_message_to_user(
-            206171081, 'Парсиг прошёл успешно')
+            206171081, 'Парсинг прошёл успешно')
     except Exception as exception:
         main.send_custom_message_to_user(
             206171081, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {text}')
@@ -26,7 +26,9 @@ def final_job():
     try:
         text = site_parser.run_undergraduate_parser()
         main.send_custom_message_to_user(
-            206171081, 'Парсиг прошёл успешно')
+            206171081, 'Парсинг прошёл успешно')
+        main.send_custom_message_to_user(
+            5290593854, 'Парсинг прошёл успешно')
     except Exception as exception:
         main.send_custom_message_to_user(
             206171081, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {text}')
