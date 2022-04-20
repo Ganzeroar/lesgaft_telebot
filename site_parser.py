@@ -463,4 +463,4 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    run_undergraduate_imist_parser()
+    run_undergraduate_parser()

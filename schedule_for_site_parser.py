@@ -43,7 +43,6 @@ schedule.every().day.at("11:00").do(job)
 schedule.every().day.at("12:00").do(job)
 schedule.every().day.at("13:00").do(job)
 schedule.every().day.at("14:00").do(job)
-schedule.every().day.at("14:27").do(job)
 schedule.every().day.at("15:00").do(final_job)
 
 while True:
