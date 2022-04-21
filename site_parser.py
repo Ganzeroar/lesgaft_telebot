@@ -133,7 +133,7 @@ class Site_parser_undergraduate(Site_parser):
     def run_excel_parser(self):
         parser = excel_parser.Excel_parser()
         text = parser.run_parser('full_time_undergraduate')
-        if text:
+        if bool(text):
             main.send_custom_message_to_user(
                 206171081, text)
             return text
@@ -463,4 +463,4 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    run_undergraduate_parser()
+    run_undergraduate_imist_parser()
