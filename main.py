@@ -11,6 +11,7 @@ import texts_for_lesgaft_bot
 import request_handler
 import excel_validator
 import excel_validator_imist
+import excel_validator_lovs_zovs
 
 bot = telebot.TeleBot(config.token)
 
@@ -106,12 +107,12 @@ def handle_docs_photo(message):
             bot.reply_to(message, result)
         elif 'lovs' in message.document.file_name:
             bot.reply_to(message, "Сканирование запущено")
-            obj = excel_validator.Excel_validator()
+            obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
             result = obj.run_validator('documents_for_validate')
             bot.reply_to(message, result)
         elif 'zovs' in message.document.file_name:
             bot.reply_to(message, "Сканирование запущено")
-            obj = excel_validator.Excel_validator()
+            obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
             result = obj.run_validator('documents_for_validate')
             bot.reply_to(message, result)
     except Exception as e:

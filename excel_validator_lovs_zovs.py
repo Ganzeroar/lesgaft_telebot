@@ -11,20 +11,16 @@ from excel_validator_main import Excel_validator
 
 class Excel_validator_lovs_zovs(Excel_validator):
 
-    def run_validator_for_excel_parser(self, route):
+    def run_validator(self, route):
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         for work_file_name in work_files:
             try:
                 self.check_file_name(work_file_name)
                 work_book = load_workbook(work_file_name)
                 self.check_worksheet_names(work_book.sheetnames)
-
-                result_message += self.check_structure(work_book, work_file_name)
-                if 'Ошибка' in result_message:
-                    return result_message
-                result_message += self.check_content_of_servise_cells(work_book, work_file_name)
-                if 'Ошибка' in result_message:
-                    return result_message
+                self.check_structure(work_book, work_file_name)
+                
+                #result_message += self.check_content_of_servise_cells(work_book, work_file_name)
                 #result_message += self.check_class_schedule(work_book, work_file_name)
                 print(f'{work_file_name} валиден')
             finally:
