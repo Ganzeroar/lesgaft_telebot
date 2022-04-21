@@ -9,8 +9,6 @@ class Excel_validator():
     const_group_column = 4
     const_group_row = 4
 
-    #TODO Если нужна такая фича, могу запилить что-то типа кнопки "свободные аудитории", по которой бот отвечает что сейчас никем по расписанию не занято
-
     def run_validator_for_excel_parser(self, route):
         result_message = ''
         #перебирать листы

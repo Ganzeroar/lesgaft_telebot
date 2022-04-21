@@ -53,10 +53,13 @@ group_constants = {
         'last_group_number': 'Группа 113',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 101',
             'Группа 102',
@@ -97,10 +100,13 @@ group_constants = {
         'last_group_number': 'Группа 212',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 201',
             'Группа 202',
@@ -139,10 +145,13 @@ group_constants = {
         'last_group_number': 'Группа 328',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 301',
             'Группа 302',
@@ -186,10 +195,13 @@ group_constants = {
         'last_group_number': 'Группа 411',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 401',
             'Группа 402',
@@ -230,10 +242,13 @@ group_constants = {
         'last_group_number': 'Группа 125',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 114',
             'Группа 115',
@@ -272,10 +287,13 @@ group_constants = {
         'last_group_number': 'Группа 223',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 213',
             'Группа 214',
@@ -313,10 +331,13 @@ group_constants = {
         'merged_group': 'Группа 327',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 312',
             'Группа 313',
@@ -363,10 +384,13 @@ group_constants = {
         'last_group_number': 'Группа 425',
         'date_column': 1,
         'first_date_row': 6,
+        'last_date_row': 35,
         'day_column': 2,
         'first_day_row': 6,
+        'last_day_row': 35,
         'time_column': 3,
         'first_time_row': 6,
+        'last_time_row': 35,
         'group_numbers': [
             'Группа 412',
             'Группа 413',
@@ -398,6 +422,46 @@ group_constants = {
             'Менеджмент\nГреко - римская борьба\nЛыжный спорт\nСпорт. туризм\nХоккей\nГорн. спорт\nКерлинг\nБиатлон',
         ],
     }
+}
+
+timetable_constants = {
+    'imist_1': {
+        'group_row': 4,
+        'group_specialization_row': 3,
+        'first_group_first_column': 4, 
+        'first_group_last_column': 6, 
+        'first_group_number': 'Группа 128-М', 
+        'second_group_first_column': 7, 
+        'second_group_last_column': 9, 
+        'second_group_number': 'Группа 129-МО', 
+        'third_group_first_column': 10, 
+        'third_group_last_column': 12, 
+        'third_group_number': 'Группа 130-Жур', 
+        'date_column': 1,
+        'first_date_row': 6,
+        'last_date_row': 35,
+        'day_column': 2,
+        'first_day_row': 6,
+        'last_day_row': 35,
+        'time_column': 3,
+        'first_time_row': 6,
+        'last_time_row': 35,
+        'specialization' : [
+            'Менеджмент 38.03.02',
+            'Международные отношения 41.03.05',
+            'Журналистика 42.03.02',
+        ],
+    },
+    'imist_2': {
+
+    },
+    'imist_3': {
+
+    },
+    'imist_4': {
+
+    },
+    
 }
 
 string_for_stop_vertical_parsing = ['Начальник УМУ Паульс А.А.', 'Начальник УМУ Овсюк Т.М.']

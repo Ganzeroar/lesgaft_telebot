@@ -6,6 +6,8 @@ import find_class_location_unittests
 import find_lessons_at_date_unittests
 import find_time_and_location_unittests
 import request_handler_unittests
+import excel_validator_imist_unittests
+import excel_validator_lovs_zovs_unittests
 
 calcTestSuite = unittest.TestSuite()
 calcTestSuite.addTest(unittest.makeSuite(db_funcs_for_subject_db_unittests.Test_db_funcs_for_subjects_db))
@@ -14,6 +16,20 @@ calcTestSuite.addTest(unittest.makeSuite(find_lessons_at_date_unittests.Test_fin
 calcTestSuite.addTest(unittest.makeSuite(find_time_and_location_unittests.Test_return_location_of_class))
 calcTestSuite.addTest(unittest.makeSuite(find_time_and_location_unittests.Test_find_time_and_location_return_text_about_time_before_lesson_with_location))
 calcTestSuite.addTest(unittest.makeSuite(request_handler_unittests.Test_request_handler))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_file_name))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_worksheet_names))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_group_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_date_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_day_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_time_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_imist_unittests.Test_check_structure))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_file_name))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_worksheet_names))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_group_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_date_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_day_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_time_struct))
+calcTestSuite.addTest(unittest.makeSuite(excel_validator_lovs_zovs_unittests.Test_check_structure))
 
 runner = unittest.TextTestRunner(verbosity=1)
 
