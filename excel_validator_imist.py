@@ -20,7 +20,7 @@ class Excel_validator_imist(Excel_validator):
             finally:
                 path = os.path.join(os.path.abspath(os.path.dirname(__file__)), work_file_name)
                 os.remove(path)
-        return f'{work_file_name} валиден'
+        return f'{work_file_name[35:]} валиден'
 
     def check_structure(self, work_book, work_file_name):
         for worksheet_name in work_book.sheetnames:
@@ -36,6 +36,7 @@ class Excel_validator_imist(Excel_validator):
     def check_group_struct(self, worksheet, work_file_name, worksheet_name):
         constants = self.return_current_file_constants(work_file_name)
         const_group_row = constants['group_row']
+        number_of_groups = constants['number_of_groups']
         const_first_group_first_column = constants['first_group_first_column']
         const_first_group_last_column = constants['first_group_last_column']
         const_first_group_number = constants['first_group_number']
@@ -72,6 +73,19 @@ class Excel_validator_imist(Excel_validator):
                     raise File_not_valid(f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')
             else:
                 raise File_not_valid(f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')        
+
+        if number_of_groups == 4:
+            const_fourth_group_first_column = constants['fourth_group_first_column']
+            const_fourth_group_last_column = constants['fourth_group_last_column']
+            const_fourth_group_number = constants['fourth_group_number']
+            for column in range(const_fourth_group_first_column, const_fourth_group_last_column + 1):
+                viewed_group_cell = worksheet.cell(row = const_group_row, column = column)
+                if self.is_merged(worksheet, viewed_group_cell):
+                    viewed_group_value = self.get_merged_cell_value(worksheet, viewed_group_cell)
+                    if viewed_group_value != const_fourth_group_number:
+                        raise File_not_valid(f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')
+                else:
+                    raise File_not_valid(f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')        
 
     def find_clear_file_name(self, file_name):
         if '1_imist' in file_name:
