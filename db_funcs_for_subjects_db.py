@@ -6,6 +6,11 @@ def create_db(db_name):
     cursor = conn.cursor()
     cursor.execute(f"CREATE TABLE {db_name} (date text, time text)")
 
+def create_db_imist(db_name):
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    cursor.execute(f"CREATE TABLE {db_name} (date text, time text, group_name text, subject text, subject_type text, location text, teacher text)")
+
 
 def drop_db(db_name):
 
@@ -50,7 +55,35 @@ def save_date_and_time(db_name, date, time):
     cursor.execute(
         f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
     conn.commit()
+#date text, time text, group_name text, subject text, location text, teacher text)")
 
+def save_date_and_time_and_group_imist(db_name, date, time, group_name):
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    cursor.execute(
+        f"INSERT INTO {db_name} (date, time, group_name) VALUES ('{date}', '{time}', '{group_name}')")
+    conn.commit()
+
+def save_subj_imist(db_name, date, time, group, subj, subject_type, location, teacher):
+    db_name = db_name
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+
+    req = f"UPDATE {db_name} SET subject = '{subj}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+    
+    req = f"UPDATE {db_name} SET subject_type = '{subject_type}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+    
+    req = f"UPDATE {db_name} SET location = '{location}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+    
+    req = f"UPDATE {db_name} SET teacher = '{teacher}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
 
 def save_dates_and_times(db_name, list_of_dates, list_of_times):
     conn = sqlite3.connect('subjects.db')

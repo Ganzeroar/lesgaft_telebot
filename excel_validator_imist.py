@@ -23,6 +23,21 @@ class Excel_validator_imist(Excel_validator):
                 os.remove(path)
         return f'{work_file_name[35:]} валиден'
 
+    def run_validator_for_excel_parser(self, route):
+        work_files = glob.glob(f'time_tables/{route}/*.xlsx')
+        for work_file_name in work_files:
+            #try:
+            self.check_file_name(work_file_name)
+            work_book = load_workbook(work_file_name)
+            self.check_worksheet_names(work_book.sheetnames)
+            self.check_structure(work_book, work_file_name)
+            self.check_cells_with_lessons(work_book, work_file_name)
+            #finally:
+            #    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), work_file_name)
+            #    os.remove(path)
+        return f'{work_file_name[35:]} валиден'
+
+
     def check_cells_with_lessons(self, work_book, work_file_name):
         constants = self.return_current_file_constants(work_file_name)
         number_of_groups = constants['number_of_groups']
