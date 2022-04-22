@@ -64,38 +64,67 @@ class Excel_validator_imist(Excel_validator):
                 continue
             worksheet = work_book[worksheet_name]
             for number in range(number_of_groups):
-                print(number)
                 first_row = group_cell_constants[number][0]
                 last_row = group_cell_constants[number][1]
                 first_column = group_cell_constants[number][2]
                 self.check_lesson_cells_using_constants(worksheet, worksheet_name, first_row, last_row, first_column)
-        
+
     def check_lesson_cells_using_constants(self, worksheet, worksheet_name, first_lesson_cell_row, last_lesson_cell_row, first_lesson_cell_column):
-        print(111111)
-        print(first_lesson_cell_column)
         for row in range(first_lesson_cell_row, last_lesson_cell_row):
             viewed_lesson_cell = worksheet.cell(row = row, column = first_lesson_cell_column)
-            viewed_location_cell = worksheet.cell(row = row, column = first_lesson_cell_column)
-            viewed_teacher_cell = worksheet.cell(row = row, column = first_lesson_cell_column)
+            viewed_location_cell = worksheet.cell(row = row, column = first_lesson_cell_column + 1)
+            viewed_teacher_cell = worksheet.cell(row = row, column = first_lesson_cell_column + 2)
+            self.check_is_lesson_cell_correct(worksheet, worksheet_name, viewed_lesson_cell)
+            self.check_is_location_cell_correct(worksheet, worksheet_name, viewed_location_cell)
+            self.check_is_teacher_cell_correct(worksheet, worksheet_name, viewed_teacher_cell)
 
-            self.check_is_lesson_cell_correct(worksheet_name, viewed_lesson_cell)
-            #self.check_is_location_cell_correct(viewed_location_cell)
-            #self.check_is_teacher_cell_correct(viewed_teacher_cell)
+    def check_is_teacher_cell_correct(self, worksheet, worksheet_name, viewed_teacher_cell):
+        if self.is_merged(worksheet, viewed_teacher_cell) == True:
+            viewed_teacher_cell_value = self.get_merged_cell_value(worksheet, viewed_teacher_cell)
+        else:
+            viewed_teacher_cell_value = viewed_teacher_cell.value
+        if viewed_teacher_cell_value == None:
+            return
+        teachers = viewed_teacher_cell_value.split('\n')
+        if len(teachers) == 1:
+            if teachers[0] not in configurations.existing_teachers:
+                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name}')
+        if len(teachers) == 2:
+            if teachers[0] not in configurations.existing_teachers:
+                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name}')
+            if teachers[1] not in configurations.existing_teachers:
+                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name}')
 
-    def check_is_lesson_cell_correct(self, worksheet_name, viewed_lesson_cell):
-        viewed_lesson_cell_value = viewed_lesson_cell.value
+
+    def check_is_location_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
+        if self.is_merged(worksheet, viewed_lesson_cell) == True:
+            viewed_location_cell_value = self.get_merged_cell_value(worksheet, viewed_lesson_cell)
+        else:
+            viewed_location_cell_value = viewed_lesson_cell.value
+        if viewed_location_cell_value == None:
+            return
+        location = viewed_location_cell_value
+        if location not in configurations.existing_locations:
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
+
+
+    def check_is_lesson_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
+        if self.is_merged(worksheet, viewed_lesson_cell) == True:
+            viewed_lesson_cell_value = self.get_merged_cell_value(worksheet, viewed_lesson_cell)
+        else:
+            viewed_lesson_cell_value = viewed_lesson_cell.value
         if viewed_lesson_cell_value == None:
             return
         lesson_and_lesson_type = viewed_lesson_cell_value.split('\n')
         if len(lesson_and_lesson_type) != 2:
             raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
-
-        #lesson = lesson_and_lesson_type[0]
-        #lesson_type = lesson_and_lesson_type[1]
-        #if lesson not in configurations.existing_subjects:
-        #    print(lesson)
-        #if lesson_type not in configurations.existing_type_of_subjects:
-        #    print(lesson_type)
+        
+        lesson = lesson_and_lesson_type[0]
+        lesson_type = lesson_and_lesson_type[1]
+        if lesson not in configurations.existing_subjects:
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
+        if lesson_type not in configurations.existing_type_of_subjects:
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
 
 
     def check_structure(self, work_book, work_file_name):
