@@ -17,10 +17,86 @@ class Excel_validator_imist(Excel_validator):
                 work_book = load_workbook(work_file_name)
                 self.check_worksheet_names(work_book.sheetnames)
                 self.check_structure(work_book, work_file_name)
+                self.check_cells_with_lessons(work_book, work_file_name)
             finally:
                 path = os.path.join(os.path.abspath(os.path.dirname(__file__)), work_file_name)
                 os.remove(path)
         return f'{work_file_name[35:]} валиден'
+
+    def check_cells_with_lessons(self, work_book, work_file_name):
+        constants = self.return_current_file_constants(work_file_name)
+        number_of_groups = constants['number_of_groups']
+        first_group_first_lesson_cell_row = constants['first_group_first_lesson_cell_row']
+        first_group_last_lesson_cell_row = constants['first_group_last_lesson_cell_row']
+        first_group_first_lesson_cell_column = constants['first_group_first_lesson_cell_column']
+        second_group_first_lesson_cell_row = constants['second_group_first_lesson_cell_row']
+        second_group_last_lesson_cell_row = constants['second_group_last_lesson_cell_row']
+        second_group_first_lesson_cell_column = constants['second_group_first_lesson_cell_column']
+        third_group_first_lesson_cell_row = constants['third_group_first_lesson_cell_row']
+        third_group_last_lesson_cell_row = constants['third_group_last_lesson_cell_row']
+        third_group_first_lesson_cell_column = constants['third_group_first_lesson_cell_column']
+        group_cell_constants = [
+            [
+                first_group_first_lesson_cell_row,
+                first_group_last_lesson_cell_row,
+                first_group_first_lesson_cell_column,
+            ],
+            [
+                second_group_first_lesson_cell_row,
+                second_group_last_lesson_cell_row,
+                second_group_first_lesson_cell_column,
+            ],
+            [
+                third_group_first_lesson_cell_row,
+                third_group_last_lesson_cell_row,
+                third_group_first_lesson_cell_column,
+            ],
+        ]
+        if number_of_groups == 4:
+            fourth_group_first_lesson_cell_row = constants['fourth_group_first_lesson_cell_row']
+            fourth_group_last_lesson_cell_row = constants['fourth_group_last_lesson_cell_row']
+            fourth_group_first_lesson_cell_column = constants['fourth_group_first_lesson_cell_column']
+            group_cell_constants.append([fourth_group_first_lesson_cell_row, fourth_group_last_lesson_cell_row, fourth_group_first_lesson_cell_column])
+
+
+        for worksheet_name in work_book.sheetnames:
+            if self.is_reason_to_skip(worksheet_name) == True:
+                continue
+            worksheet = work_book[worksheet_name]
+            for number in range(number_of_groups):
+                print(number)
+                first_row = group_cell_constants[number][0]
+                last_row = group_cell_constants[number][1]
+                first_column = group_cell_constants[number][2]
+                self.check_lesson_cells_using_constants(worksheet, worksheet_name, first_row, last_row, first_column)
+        
+    def check_lesson_cells_using_constants(self, worksheet, worksheet_name, first_lesson_cell_row, last_lesson_cell_row, first_lesson_cell_column):
+        print(111111)
+        print(first_lesson_cell_column)
+        for row in range(first_lesson_cell_row, last_lesson_cell_row):
+            viewed_lesson_cell = worksheet.cell(row = row, column = first_lesson_cell_column)
+            viewed_location_cell = worksheet.cell(row = row, column = first_lesson_cell_column)
+            viewed_teacher_cell = worksheet.cell(row = row, column = first_lesson_cell_column)
+
+            self.check_is_lesson_cell_correct(worksheet_name, viewed_lesson_cell)
+            #self.check_is_location_cell_correct(viewed_location_cell)
+            #self.check_is_teacher_cell_correct(viewed_teacher_cell)
+
+    def check_is_lesson_cell_correct(self, worksheet_name, viewed_lesson_cell):
+        viewed_lesson_cell_value = viewed_lesson_cell.value
+        if viewed_lesson_cell_value == None:
+            return
+        lesson_and_lesson_type = viewed_lesson_cell_value.split('\n')
+        if len(lesson_and_lesson_type) != 2:
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
+
+        #lesson = lesson_and_lesson_type[0]
+        #lesson_type = lesson_and_lesson_type[1]
+        #if lesson not in configurations.existing_subjects:
+        #    print(lesson)
+        #if lesson_type not in configurations.existing_type_of_subjects:
+        #    print(lesson_type)
+
 
     def check_structure(self, work_book, work_file_name):
         for worksheet_name in work_book.sheetnames:

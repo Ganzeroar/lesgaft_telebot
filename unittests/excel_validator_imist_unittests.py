@@ -145,6 +145,26 @@ class Test_check_structure(unittest.TestCase):
             obj.check_structure(work_book, work_file_name)
         self.assertEqual('Ошибка в структуре группы в D4 в листе 18.04. - 23.04.', str(context.exception))
 
+class Test_check_cells_with_lessons(unittest.TestCase):
+
+    def test_take_correct_imist_1_file_struct_return_correct_text(self):
+        work_file = glob.glob(f'test_time_tables/full_time_undergraduate_imist/1_imist_1.xlsx')
+        work_file_name = work_file[0]
+        work_book = load_workbook(work_file_name)
+        obj = excel_validator_imist.Excel_validator_imist()
+        result = obj.check_cells_with_lessons(work_book, work_file_name)
+        self.assertEqual('Структура ОК\n', result)
+
+    #def test_take_incorrect_imist_1_file_struct_return_error(self):
+    #    work_file = glob.glob(f'test_time_tables/full_time_undergraduate_imist/1_imist_3.xlsx')
+    #    work_file_name = work_file[0]
+    #    work_book = load_workbook(work_file_name)
+    #    obj = excel_validator_imist.Excel_validator_imist()
+    #    with self.assertRaises(excel_validator_imist.File_not_valid) as context:
+    #        obj.check_cells_with_lessons(work_book, work_file_name)
+    #    self.assertEqual('Ошибка в структуре группы в D4 в листе 18.04. - 23.04.', str(context.exception))
+
+
 
 
 

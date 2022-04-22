@@ -425,6 +425,9 @@ group_constants = {
 }
 
 timetable_constants = {
+    'common_imist': {
+        #TODO вставить сюда общие константы
+    },
     'imist_1': {
         'group_row': 4,
         'group_specialization_row': 3,
@@ -452,6 +455,15 @@ timetable_constants = {
             'Международные отношения 41.03.05',
             'Журналистика 42.03.02',
         ],
+        'first_group_first_lesson_cell_row': 6,
+        'first_group_last_lesson_cell_row': 35,
+        'first_group_first_lesson_cell_column': 4,
+        'second_group_first_lesson_cell_row': 6,
+        'second_group_last_lesson_cell_row': 35,
+        'second_group_first_lesson_cell_column': 7,
+        'third_group_first_lesson_cell_row': 6,
+        'third_group_last_lesson_cell_row': 35,
+        'third_group_first_lesson_cell_column': 10,
     },
     'imist_2': {
         'group_row': 4,
@@ -484,6 +496,18 @@ timetable_constants = {
             'Журналистика 42.03.02',
             'Сервис 43.03.01',
         ],
+        'first_group_first_lesson_cell_row': 6,
+        'first_group_last_lesson_cell_row': 35,
+        'first_group_first_lesson_cell_column': 4,
+        'second_group_first_lesson_cell_row': 6,
+        'second_group_last_lesson_cell_row': 35,
+        'second_group_first_lesson_cell_column': 7,
+        'third_group_first_lesson_cell_row': 6,
+        'third_group_last_lesson_cell_row': 35,
+        'third_group_first_lesson_cell_column': 10,
+        'fourth_group_first_lesson_cell_row': 13,
+        'fourth_group_last_lesson_cell_row': 6,
+        'fourth_group_first_lesson_cell_column': 13,
     },
     'imist_3': {
         'group_row': 4,
@@ -516,6 +540,18 @@ timetable_constants = {
             'Журналистика 42.03.02',
             'Туризм 43.03.02',
         ],
+        'first_group_first_lesson_cell_row': 6,
+        'first_group_last_lesson_cell_row': 35,
+        'first_group_first_lesson_cell_column': 4,
+        'second_group_first_lesson_cell_row': 6,
+        'second_group_last_lesson_cell_row': 35,
+        'second_group_first_lesson_cell_column': 7,
+        'third_group_first_lesson_cell_row': 6,
+        'third_group_last_lesson_cell_row': 35,
+        'third_group_first_lesson_cell_column': 10,
+        'fourth_group_first_lesson_cell_row': 13,
+        'fourth_group_last_lesson_cell_row': 6,
+        'fourth_group_first_lesson_cell_column': 13,
     },
     'imist_4': {
         'group_row': 4,
@@ -544,6 +580,15 @@ timetable_constants = {
             'Международные отношения 41.03.05',
             'Журналистика 42.03.02',
         ],
+        'first_group_first_lesson_cell_row': 6,
+        'first_group_last_lesson_cell_row': 35,
+        'first_group_first_lesson_cell_column': 4,
+        'second_group_first_lesson_cell_row': 6,
+        'second_group_last_lesson_cell_row': 35,
+        'second_group_first_lesson_cell_column': 7,
+        'third_group_first_lesson_cell_row': 6,
+        'third_group_last_lesson_cell_row': 35,
+        'third_group_first_lesson_cell_column': 10,
     },
     
 }
@@ -624,12 +669,38 @@ existing_subjects = [
     'Русский язык и культура речи',
     'ТиМ ОБВС: Гимнастика',
     'Анатомия человека',
+    'Линейная алгебра',
+    'Информатика',
+    'Статистика',
+    'Макроэкономика',
+    'Математика',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
     '',
     '',
     '',
 
 ]
-existing_type_of_subject_type_1 = ['Семинар', 'Лекция']
+existing_type_of_subjects = [
+    'Семинар',
+    'Лекция',
+    'Практическое занятие',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ]
+
 existing_teachers = [
 'Большова Е.В.',
 'Щедрина Ю.А.',
