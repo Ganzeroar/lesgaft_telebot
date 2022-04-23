@@ -47,9 +47,12 @@ invalid_text = """
 
 Чтобы сменить группу просто напиши 3 цифры своей группы, например 321
 """
+
+
 def create_message_group_was_recorded(group_number):
     return f'Твоя группа {group_number} записана!' + \
         group_saved
+
 
 mystical_error_text = """
 Если ты видишь это сообщение, значит ты - тот самый редчайший пользователь, 

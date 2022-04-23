@@ -1,12 +1,12 @@
-import unittest
-
 import sys
 sys_path = sys.path[0]
 path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 
-import site_parser
 import texts_for_tests
+import site_parser
+import unittest
+
 
 class Test_site_parser_undergraduate(unittest.TestCase):
 
@@ -53,6 +53,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
         ]
         self.assertEqual(result, expected_result)
 
+
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
 
     def test_get_lovs_link_return_links(self):
@@ -68,6 +69,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
         ]
         self.assertEqual(result, expected_result)
 
+
 class Test_site_parser_undergraduate_afk(unittest.TestCase):
 
     def test_get_lovs_link_return_links(self):
@@ -82,5 +84,7 @@ class Test_site_parser_undergraduate_afk(unittest.TestCase):
             'http://lesgaft.spb.ru/sites/default/files//shedul/4_afk_11.04.xlsx'
         ]
         self.assertEqual(result, expected_result)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -74,7 +74,8 @@ def return_text_about_time_before_lesson_with_location(chat_id, number_of_lesson
         return texts_for_lesgaft_bot.group_is_not_exist
 
     if name_of_group == 'группа_327':
-        name_of_group = db_funcs_for_students_db.return_new_group_name_327(chat_id)
+        name_of_group = db_funcs_for_students_db.return_new_group_name_327(
+            chat_id)
     else:
         name_of_group = db_funcs_for_subjects_db.return_new_group_name(
             name_of_group, db_name)

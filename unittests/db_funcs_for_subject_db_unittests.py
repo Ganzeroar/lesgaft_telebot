@@ -1,15 +1,13 @@
-import unittest
-from freezegun import freeze_time
-import os
-
 import sys
 sys_path = sys.path[0]
 path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 
-import db_funcs_for_subjects_db
 import db_funcs_for_students_db
-
+import db_funcs_for_subjects_db
+import unittest
+from freezegun import freeze_time
+import os
 
 
 class Test_db_funcs_for_subjects_db(unittest.TestCase):
@@ -95,6 +93,7 @@ class Test_db_funcs_for_subjects_db(unittest.TestCase):
             'группа_416', 'zovs_4')
         self.assertEqual(
             result, 'конькобежный_спорт_фигурное_катание_скалолазание_керлинг_группа_416')
+
 
 if __name__ == '__main__':
     unittest.main()

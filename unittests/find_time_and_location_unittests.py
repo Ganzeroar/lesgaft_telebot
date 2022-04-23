@@ -1,17 +1,16 @@
-import unittest
-from unittest.mock import patch
-import datetime
-from freezegun import freeze_time
-
 import sys
 sys_path = sys.path[0]
 path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 
-import find_time_and_location
-import texts_for_lesgaft_bot
-import db_funcs_for_students_db
 import db_funcs_for_subjects_db
+import db_funcs_for_students_db
+import texts_for_lesgaft_bot
+import find_time_and_location
+import unittest
+from unittest.mock import patch
+import datetime
+from freezegun import freeze_time
 
 
 # @unittest.skip("passed")

@@ -2,7 +2,6 @@
 import requests
 import datetime
 import pytz
-import logging
 from bs4 import BeautifulSoup
 
 import db_funcs_for_site_parser as db
@@ -77,18 +76,18 @@ class Site_parser_undergraduate(Site_parser):
         file_links += zovs_links
         return file_links
 
-
     def get_lovs_links(self, soup_obj):
         lovs_links = []
-        element_1 = soup_obj.find_all('div', class_='views-row views-row-2 views-row-even')[0]
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-2 views-row-even')[0]
         element_2 = element_1.find_all(
             'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
-        element_3 = element_2.find_all('span', class_ = 'file')
+        element_3 = element_2.find_all('span', class_='file')
         lovs_1_span = element_3[0]
         lovs_2_span = element_3[1]
         lovs_3_span = element_3[2]
         lovs_4_span = element_3[3]
-        
+
         lovs_1_link = lovs_1_span.find_all('a', href=True)[0]['href']
         lovs_2_link = lovs_2_span.find_all('a', href=True)[0]['href']
         lovs_3_link = lovs_3_span.find_all('a', href=True)[0]['href']
@@ -98,20 +97,21 @@ class Site_parser_undergraduate(Site_parser):
         lovs_links.append(lovs_2_link)
         lovs_links.append(lovs_3_link)
         lovs_links.append(lovs_4_link)
-        
+
         return lovs_links
 
     def get_zovs_links(self, soup_obj):
         zovs_links = []
-        element_1 = soup_obj.find_all('div', class_='views-row views-row-3 views-row-odd')[0]
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-3 views-row-odd')[0]
         element_2 = element_1.find_all(
             'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
-        element_3 = element_2.find_all('span', class_ = 'file')
+        element_3 = element_2.find_all('span', class_='file')
         zovs_1_span = element_3[0]
         zovs_2_span = element_3[1]
         zovs_3_span = element_3[2]
         zovs_4_span = element_3[3]
-        
+
         zovs_1_link = zovs_1_span.find_all('a', href=True)[0]['href']
         zovs_2_link = zovs_2_span.find_all('a', href=True)[0]['href']
         zovs_3_link = zovs_3_span.find_all('a', href=True)[0]['href']
@@ -138,27 +138,30 @@ class Site_parser_undergraduate(Site_parser):
                 206171081, text)
             return text
 
+
 class Site_parser_undergraduate_imist(Site_parser):
 
     def run_full_time_undergraduate_imst_parser(self):
         html_text = self.get_html_text()
         soup_obj = self.get_soup_obj(html_text)
-    
+
         files_from_site = self.get_imist_links(soup_obj)
-        self.create_new_excel_files('full_time_undergraduate_imist', files_from_site)
+        self.create_new_excel_files(
+            'full_time_undergraduate_imist', files_from_site)
         self.run_excel_parser(files_from_site)
 
     def get_imist_links(self, soup_obj):
         imist_links = []
-        element_1 = soup_obj.find_all('div', class_='views-row views-row-5 views-row-odd')[0]
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-5 views-row-odd')[0]
         element_2 = element_1.find_all(
             'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
-        element_3 = element_2.find_all('span', class_ = 'file')
+        element_3 = element_2.find_all('span', class_='file')
         imist_1_span = element_3[0]
         imist_2_span = element_3[1]
         imist_3_span = element_3[2]
         imist_4_span = element_3[3]
-        
+
         imist_1_link = imist_1_span.find_all('a', href=True)[0]['href']
         imist_2_link = imist_2_span.find_all('a', href=True)[0]['href']
         imist_3_link = imist_3_span.find_all('a', href=True)[0]['href']
@@ -168,7 +171,7 @@ class Site_parser_undergraduate_imist(Site_parser):
         imist_links.append(imist_2_link)
         imist_links.append(imist_3_link)
         imist_links.append(imist_4_link)
-        
+
         return imist_links
 
     def get_name_of_course(self, file_link):
@@ -177,35 +180,38 @@ class Site_parser_undergraduate_imist(Site_parser):
             if name in file_link:
                 return name
 
-    #TODO написать парсер, сейчас ссылается на что-то устаревшее
-    #def run_excel_parser(self, changed_files):
+    # TODO написать парсер, сейчас ссылается на что-то устаревшее
+    # def run_excel_parser(self, changed_files):
     #    for new_file_link in changed_files:
     #        name_of_course = self.get_name_of_course(new_file_link)
     #        parser = excel_parser.Excel_parser_undergraduate_imst()
     #        parser.parse_work_file_using_name(
     #            name_of_course, 'full_time_undergraduate/imst')
 
+
 class Site_parser_undergraduate_afk(Site_parser):
 
     def run_full_time_undergraduate_imst_parser(self):
         html_text = self.get_html_text()
         soup_obj = self.get_soup_obj(html_text)
-    
+
         files_from_site = self.get_afk_links(soup_obj)
-        self.create_new_excel_files('full_time_undergraduate_afk', files_from_site)
+        self.create_new_excel_files(
+            'full_time_undergraduate_afk', files_from_site)
         self.run_excel_parser(files_from_site)
 
     def get_afk_links(self, soup_obj):
         afk_links = []
-        element_1 = soup_obj.find_all('div', class_='views-row views-row-4 views-row-even')[0]
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-4 views-row-even')[0]
         element_2 = element_1.find_all(
             'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
-        element_3 = element_2.find_all('span', class_ = 'file')
+        element_3 = element_2.find_all('span', class_='file')
         afk_1_span = element_3[0]
         afk_2_span = element_3[1]
         afk_3_span = element_3[2]
         afk_4_span = element_3[3]
-        
+
         afk_1_link = afk_1_span.find_all('a', href=True)[0]['href']
         afk_2_link = afk_2_span.find_all('a', href=True)[0]['href']
         afk_3_link = afk_3_span.find_all('a', href=True)[0]['href']
@@ -215,7 +221,7 @@ class Site_parser_undergraduate_afk(Site_parser):
         afk_links.append(afk_2_link)
         afk_links.append(afk_3_link)
         afk_links.append(afk_4_link)
-        
+
         return afk_links
 
     def get_name_of_course(self, file_link):
@@ -224,13 +230,14 @@ class Site_parser_undergraduate_afk(Site_parser):
             if name in file_link:
                 return name
 
-    #TODO написать парсер, сейчас ссылается на что-то устаревшее
-    #def run_excel_parser(self, changed_files):
+    # TODO написать парсер, сейчас ссылается на что-то устаревшее
+    # def run_excel_parser(self, changed_files):
     #    for new_file_link in changed_files:
     #        name_of_course = self.get_name_of_course(new_file_link)
     #        parser = excel_parser.Excel_parser_undergraduate_imst()
     #        parser.parse_work_file_using_name(
     #            name_of_course, 'full_time_undergraduate/imst')
+
 
 class Site_parser_magistracy_fk(Site_parser):
 

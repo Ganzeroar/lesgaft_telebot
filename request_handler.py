@@ -1,11 +1,9 @@
 import telebot
-import time
 import logging
 import datetime
 import pytz
 
 import db_funcs_for_students_db
-import db_funcs_for_subjects_db
 import texts_for_lesgaft_bot
 import find_time_and_location
 import find_lessons_at_date
@@ -20,13 +18,13 @@ def change_group_old(user_id, message_text):
     item1 = telebot.types.KeyboardButton('Где пара?')
     item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
     item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    #item4 = telebot.types.KeyboardButton('Расписание неправильное')
     item5 = telebot.types.KeyboardButton('Вернуться в меню')
 
     main_keyboard.add(item1, item2, item3, item5)
 
     text = db_funcs_for_students_db.overwrite_group(message_text, user_id)
     return text, main_keyboard
+
 
 def start_change_group_nonstandart(message_text):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
@@ -37,46 +35,56 @@ def start_change_group_nonstandart(message_text):
         item2 = telebot.types.KeyboardButton('Плавание II')
     elif message_text == '412':
         item1 = telebot.types.KeyboardButton('Самбо, Атлетизм')
-        item2 = telebot.types.KeyboardButton('Антидопинговое обеспечение в спорте, Танц.спорт, Спорт.акроб., Водные виды спорта, Академ. гребля,Гандбол,Волейбол,Легк. атл., Плавание')
+        item2 = telebot.types.KeyboardButton(
+            'Антидопинговое обеспечение в спорте, Танц.спорт, Спорт.акроб., Водные виды спорта, Академ. гребля,Гандбол,Волейбол,Легк. атл., Плавание')
     elif message_text == '413':
         item1 = telebot.types.KeyboardButton('Борьба, Дзюдо, Фехтование')
-        item2 = telebot.types.KeyboardButton('Менеджмент ФКиС, Худ. Гимн, Водные виды спорта, Водное поло Баскетбол')
+        item2 = telebot.types.KeyboardButton(
+            'Менеджмент ФКиС, Худ. Гимн, Водные виды спорта, Водное поло Баскетбол')
     elif message_text == '328':
-        item1 = telebot.types.KeyboardButton('Спорт. аэробика Лёгк. атл. Теннис Плавание Футбол (антидопинг)')
-        item2 = telebot.types.KeyboardButton('Антидопинг (комп. спорт, тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурное катание, конькобежный спорт, пауэрлифтинг, гиревой спорт)')
+        item1 = telebot.types.KeyboardButton(
+            'Спорт. аэробика Лёгк. атл. Теннис Плавание Футбол (антидопинг)')
+        item2 = telebot.types.KeyboardButton(
+            'Антидопинг (комп. спорт, тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурное катание, конькобежный спорт, пауэрлифтинг, гиревой спорт)')
 
-    
     main_keyboard.add(item1, item2)
 
     text = 'Выбери свою специализацию'
     return text, main_keyboard
 
+
 def start_change_group_327_step_1():
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
-    
+
     item1 = telebot.types.KeyboardButton('ЛОВС')
     item2 = telebot.types.KeyboardButton('ЗОВС')
-    
+
     main_keyboard.add(item1, item2)
 
     text = 'Выбери свой факультет'
     return text, main_keyboard
 
+
 def start_change_group_327_step_2(message_text):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
     if message_text == 'ловс':
-        item1 = telebot.types.KeyboardButton('Направленность (профиль): Менеджмент ФКиС Футбол Волейбол Лёгк. атл. Плавание (менеджмент ФКиС)')
-        item2 = telebot.types.KeyboardButton('Направленность (профиль): ССиИ Плавание (ССиИ)')
+        item1 = telebot.types.KeyboardButton(
+            'Направленность (профиль): Менеджмент ФКиС Футбол Волейбол Лёгк. атл. Плавание (менеджмент ФКиС)')
+        item2 = telebot.types.KeyboardButton(
+            'Направленность (профиль): ССиИ Плавание (ССиИ)')
     elif message_text == 'зовс':
-        item1 = telebot.types.KeyboardButton('Направленность (профиль): Менеджмент ФКиС Менеджмент (тхэквондо, дзюдо, кикбиксинг, скалолазание, керлинг, полиатлон, хоккей, дартс, фехтование)')
-        item2 = telebot.types.KeyboardButton('Направленность (профиль): ССиИ ССиИ (тхэквондо, дартс)')
-    
+        item1 = telebot.types.KeyboardButton(
+            'Направленность (профиль): Менеджмент ФКиС Менеджмент (тхэквондо, дзюдо, кикбиксинг, скалолазание, керлинг, полиатлон, хоккей, дартс, фехтование)')
+        item2 = telebot.types.KeyboardButton(
+            'Направленность (профиль): ССиИ ССиИ (тхэквондо, дартс)')
+
     main_keyboard.add(item1, item2)
 
     text = 'Выбери свою специализацию'
     return text, main_keyboard
+
 
 def change_group_nonstandart(user_id, message_text):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
@@ -113,8 +121,10 @@ def change_group_nonstandart(user_id, message_text):
         db_name = 'zovs_3'
         group_number = '328'
 
-    text = db_funcs_for_students_db.save_timetable_name(user_id, db_name, group_number)
+    text = db_funcs_for_students_db.save_timetable_name(
+        user_id, db_name, group_number)
     return text, main_keyboard
+
 
 def change_group_327(user_id, message_text):
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
@@ -139,10 +149,11 @@ def change_group_327(user_id, message_text):
     elif message_text == 'направленность (профиль): ссии ссии (тхэквондо, дартс)':
         db_name = 'zovs_3'
         group_name = 'направленность_профиль_ссии_ссии_тхэквондо_дартс_группа_327'
-    
+
     group_number = '327'
 
-    text = db_funcs_for_students_db.save_timetable_name(user_id, db_name, group_number)
+    text = db_funcs_for_students_db.save_timetable_name(
+        user_id, db_name, group_number)
     db_funcs_for_students_db.save_education_form(user_id, group_name)
     return text, main_keyboard
 
@@ -280,75 +291,6 @@ def go_to_settings_stage():
     return text, main_keyboard
 
 
-def go_to_subscriptions_and_newsletters_stage(user_id):
-    main_keyboard = telebot.types.ReplyKeyboardMarkup(
-        resize_keyboard=True, row_width=1)
-
-    status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(
-        user_id)
-
-    if status == False:
-        item1 = telebot.types.KeyboardButton(
-            'Подписаться на рассылку новостей')
-    elif status == True:
-        item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
-    item2 = telebot.types.KeyboardButton('Информация о подписках')
-    item3 = telebot.types.KeyboardButton('Вернуться в настройки')
-
-    main_keyboard.add(item1, item2, item3, )
-
-    text = texts_for_lesgaft_bot.go_to_subscriptions_and_newsletters_text
-    return text, main_keyboard
-
-
-def subscribe_user_to_newsletter(user_id):
-    main_keyboard = telebot.types.ReplyKeyboardMarkup(
-        resize_keyboard=True, row_width=1)
-
-    status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(
-        user_id)
-
-    if status == False:
-        print(f'User {user_id} subscribe to newsletter')
-        db_funcs_for_students_db.set_is_subscribe_to_newsletter(user_id, True)
-        item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
-        text = 'Подписка активирована'
-    elif status == True:
-        print(f'User {user_id} unsubscribe to newsletter')
-        db_funcs_for_students_db.set_is_subscribe_to_newsletter(user_id, False)
-        item1 = telebot.types.KeyboardButton(
-            'Подписаться на рассылку новостей')
-        text = 'Подписка отключена'
-
-    item2 = telebot.types.KeyboardButton('Информация о подписках')
-    item3 = telebot.types.KeyboardButton('Вернуться в настройки')
-
-    main_keyboard.add(item1, item2, item3)
-
-    return text, main_keyboard
-
-
-def info_about_subscriptions(user_id):
-    main_keyboard = telebot.types.ReplyKeyboardMarkup(
-        resize_keyboard=True, row_width=1)
-
-    status = db_funcs_for_students_db.get_subscribe_in_newsletter_status(
-        user_id)
-
-    if status == False:
-        item1 = telebot.types.KeyboardButton(
-            'Подписаться на рассылку новостей')
-    elif status == True:
-        item1 = telebot.types.KeyboardButton('Отписаться от рассылки новостей')
-    item2 = telebot.types.KeyboardButton('Информация о подписках')
-    item3 = telebot.types.KeyboardButton('Вернуться в настройки')
-
-    main_keyboard.add(item1, item2, item3)
-
-    text = texts_for_lesgaft_bot.info_about_subscriptions_text
-    return text, main_keyboard
-
-
 def communication_with_developer():
     main_keyboard = telebot.types.ReplyKeyboardMarkup(
         resize_keyboard=True, row_width=1)
@@ -359,46 +301,6 @@ def communication_with_developer():
     main_keyboard.add(item1, item2)
 
     text = texts_for_lesgaft_bot.communication_with_developer_text
-    return text, main_keyboard
-
-
-def save_info_about_wrong_timetables(user_id):
-    main_keyboard = telebot.types.ReplyKeyboardMarkup(
-        resize_keyboard=True, row_width=1)
-
-    item1 = telebot.types.KeyboardButton('Где пара?')
-    item2 = telebot.types.KeyboardButton('Какие сегодня пары?')
-    item3 = telebot.types.KeyboardButton('Какие завтра пары?')
-    item5 = telebot.types.KeyboardButton('Вернуться в меню')
-
-    main_keyboard.add(item1, item2, item3, item5)
-
-    time_now = datetime.datetime.now(tz=pytz.timezone('Europe/Moscow'))
-    number_of_group = db_funcs_for_students_db.get_group_number(user_id)
-    if number_of_group == False:
-        text = 'Ошибка, группы нет в базе'
-        return text, main_keyboard
-    name_of_group = 'группа_' + str(number_of_group)
-    db_name = db_funcs_for_subjects_db.get_db_name(name_of_group)
-    if db_name == None or db_funcs_for_subjects_db.is_group_exist(name_of_group, db_name) == False:
-        text = 'Ошибка, группы нет в базе'
-        return text, main_keyboard
-
-    name_of_group = db_funcs_for_subjects_db.return_new_group_name(
-        name_of_group, db_name)
-    subjects = db_funcs_for_subjects_db.get_subjects_today(
-        name_of_group, db_name, time_now)
-    number_of_date = time_now.strftime("%d.%m.%Y.")
-
-    logging.basicConfig(
-        filename="wrong_timetables_reports.log", level=logging.INFO)
-    log_text = f'{name_of_group} {number_of_date}\n{subjects}\nЮзер: {user_id}'
-
-    logging.info(log_text)
-
-    print(f'User {user_id} report about wrong newsletters')
-
-    text = texts_for_lesgaft_bot.wrong_timetables
     return text, main_keyboard
 
 
@@ -433,20 +335,12 @@ def main_request_handler(message_text, user_id):
     elif message_text == 'вернуться в настройки':
         print(f'User {user_id} go to settings')
         text, keyboard = go_to_settings_stage()
-    elif message_text == 'подписки и рассылки':
-        print(f'User {user_id} go to subscriptions and newsletters stage')
-        text, keyboard = go_to_subscriptions_and_newsletters_stage(user_id)
     elif message_text == 'что умеет лесгафтбот':
         print(f'User {user_id} ask what lesgaftbot can do')
         text, keyboard = what_lesgaftbot_can_do()
-    elif message_text == 'информация о подписках':
-        print(f'User {user_id} ask info about subsctibe')
-        text, keyboard = info_about_subscriptions(user_id)
     elif message_text == 'связь с разработчиком':
         print(f'User {user_id} ask about communication with developer')
         text, keyboard = communication_with_developer()
-    elif message_text == 'подписаться на рассылку новостей' or message_text == 'отписаться от рассылки новостей':
-        text, keyboard = subscribe_user_to_newsletter(user_id)
     elif message_text == 'расписание':
         print(f'User {user_id} go to timetables')
         text, keyboard = go_to_timetables_stage()

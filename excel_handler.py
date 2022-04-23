@@ -1,5 +1,6 @@
 import configurations
 
+
 class Excel_handler():
 
     def is_reason_to_skip(self, worksheet_name):
@@ -25,4 +26,3 @@ class Excel_handler():
                 rng.append(s)
         cell_value = worksheet.cell(rng[0].min_row, rng[0].min_col).value
         return cell_value
-    

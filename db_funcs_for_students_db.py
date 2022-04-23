@@ -3,7 +3,7 @@ import texts_for_lesgaft_bot
 import os
 
 
-def create_db(path = None):
+def create_db(path=None):
     if path == None:
         conn = sqlite3.connect("students.db")
     else:
@@ -28,7 +28,7 @@ def add_columns_for_update():
         f"ALTER TABLE users ADD COLUMN is_subscribe_to_newsletter integer")
 
 
-def drop_db(path = None):
+def drop_db(path=None):
     if path == None:
         conn = sqlite3.connect("students.db")
     else:
@@ -38,56 +38,6 @@ def drop_db(path = None):
 
     cursor = conn.cursor()
     cursor.executescript("DROP TABLE IF EXISTS users")
-
-
-def get_subscribe_in_newsletter_status(user_id):
-    conn = sqlite3.connect("students.db")
-    cursor = conn.cursor()
-    string_sql = f"SELECT is_subscribe_to_newsletter FROM users WHERE chat_id = {user_id}"
-    cursor.execute(string_sql)
-    bool_state = bool(cursor.fetchall()[0][0])
-    return bool_state
-
-
-def get_subscribed_to_newsletter_users():
-    conn = sqlite3.connect("students.db")
-    cursor = conn.cursor()
-    string_sql = f"SELECT chat_id FROM users WHERE is_subscribe_to_newsletter = 1"
-    cursor.execute(string_sql)
-    subscribed_users = cursor.fetchall()
-    return subscribed_users
-
-
-def set_is_subscribe_to_newsletter(chat_id, bool_value):
-    conn = sqlite3.connect("students.db")
-    cursor = conn.cursor()
-
-    if bool_value == True:
-        bool_value = 1
-    elif bool_value == False:
-        bool_value = 0
-
-    string_sql = f"UPDATE users SET is_subscribe_to_newsletter = '{bool_value}' WHERE chat_id = {chat_id}"
-    cursor.execute(string_sql)
-    conn.commit()
-
-
-def set_in_registration_process(chat_id, bool_value):
-    conn = sqlite3.connect("students.db")
-    cursor = conn.cursor()
-
-    string_sql = f"UPDATE users SET in_registration_process = '{bool_value}' WHERE chat_id = {chat_id}"
-    cursor.execute(string_sql)
-    conn.commit()
-
-
-def get_state_of_registragion_process(chat_id):
-    conn = sqlite3.connect("students.db")
-    cursor = conn.cursor()
-    string_sql = f"SELECT in_registration_process FROM users WHERE chat_id = {chat_id}"
-    cursor.execute(string_sql)
-    bool_state = bool(cursor.fetchall()[0][0])
-    return bool_state
 
 
 def save_timetable_name(chat_id, timetable_name, number_of_group):
@@ -100,17 +50,18 @@ def save_timetable_name(chat_id, timetable_name, number_of_group):
     string_sql = f"UPDATE users SET number_of_group  = {number_of_group} WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     conn.commit()
-    text = texts_for_lesgaft_bot.create_message_group_was_recorded(number_of_group)
+    text = texts_for_lesgaft_bot.create_message_group_was_recorded(
+        number_of_group)
     return text
+
 
 def get_db_name(chat_id):
     conn = sqlite3.connect("students.db")
     cursor = conn.cursor()
-    string_sql =  f"SELECT timetable_name FROM users WHERE chat_id = {chat_id}"
+    string_sql = f"SELECT timetable_name FROM users WHERE chat_id = {chat_id}"
     cursor.execute(string_sql)
     db_name = cursor.fetchall()[0][0]
     return db_name
-
 
 
 def save_number_of_course(chat_id, name_of_course):
@@ -141,9 +92,11 @@ def save_education_form(chat_id, education_form):
     cursor.execute(string_sql)
     conn.commit()
 
+
 def return_new_group_name_327(user_id):
     group_name = get_education_form(user_id)
     return group_name
+
 
 def get_education_form(chat_id):
     conn = sqlite3.connect("students.db")
@@ -228,7 +181,8 @@ def update_group(chat_id, number_of_group):
 def overwrite_group(message_text, chat_id):
     number_of_group = int(message_text)
     update_group(chat_id, number_of_group)
-    text = texts_for_lesgaft_bot.create_message_group_was_recorded(number_of_group)
+    text = texts_for_lesgaft_bot.create_message_group_was_recorded(
+        number_of_group)
     print(f'User: {str(chat_id)} changed his group to {str(number_of_group)}')
     return text
 

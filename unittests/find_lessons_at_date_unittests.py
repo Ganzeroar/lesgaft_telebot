@@ -1,18 +1,15 @@
-import unittest
-from freezegun import freeze_time
-import datetime
-
-
 import sys
 sys_path = sys.path[0]
 path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 
-import db_funcs_for_students_db
-import db_funcs_for_subjects_db
-import find_lessons_at_date
 import texts_for_lesgaft_bot
-
+import find_lessons_at_date
+import db_funcs_for_subjects_db
+import db_funcs_for_students_db
+import unittest
+from freezegun import freeze_time
+import datetime
 
 
 class Test_find_lessons_at_date_return_lessons_at_date(unittest.TestCase):

@@ -22,6 +22,7 @@ def job():
         main.send_custom_message_to_user(
             950650249, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {text}')
 
+
 def final_job():
     try:
         text = site_parser.run_undergraduate_parser()
@@ -40,6 +41,7 @@ def final_job():
             950650249, f'ЭКСЕЛЬ ПАРСЕР УМЕР потому что {text}')
         main.send_custom_message_to_user(
             5290593854, f'ЭКСЕЛЬ ПАРСЕР не проходит потому что {text}')
+
 
 schedule.every().day.at("11:00").do(job)
 schedule.every().day.at("12:00").do(job)

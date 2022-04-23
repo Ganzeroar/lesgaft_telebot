@@ -1,3 +1,4 @@
+import main
 import unittest
 from openpyxl import Workbook, load_workbook, utils
 import glob
@@ -8,11 +9,10 @@ path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 path_to_excel_validators = path_to_upper_folder+'\excel_validators\\'
 sys.path.append(path_to_excel_validators)
-import main
 
 
-#class Test_excel_validator(unittest.TestCase):
-#    # потенциально валидировать имя файла + 
+# class Test_excel_validator(unittest.TestCase):
+#    # потенциально валидировать имя файла +
 #    # валидировать количество групп в расписании?
 #    # валидировать на поиск пустых строк?
 #    # ограничить количество групп в каждом расписании, тем самым контроллируя строки?

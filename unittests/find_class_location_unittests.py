@@ -1,11 +1,11 @@
-import unittest
-
 import sys
 sys_path = sys.path[0]
 path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 
 import find_class_location
+import unittest
+
 
 class Test_find_class_location_find_class_location(unittest.TestCase):
 
@@ -20,6 +20,7 @@ class Test_find_class_location_find_class_location(unittest.TestCase):
         result = find_class_location.find_class_location(real_data)
         self.assertEqual(
             result, 'Главный корпус, третий этаж, после лестницы налево и налево, по левую сторону')
+
 
 if __name__ == '__main__':
     unittest.main()

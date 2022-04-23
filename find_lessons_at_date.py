@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import pytz
-import datetime
 import find_time_and_location
 import db_funcs_for_students_db
 import db_funcs_for_subjects_db
@@ -26,7 +24,8 @@ def return_lessons_at_date(user_id, date):
         return texts_for_lesgaft_bot.group_is_not_exist
 
     if name_of_group == 'группа_327':
-        name_of_group = db_funcs_for_students_db.return_new_group_name_327(user_id)
+        name_of_group = db_funcs_for_students_db.return_new_group_name_327(
+            user_id)
     else:
         name_of_group = db_funcs_for_subjects_db.return_new_group_name(
             name_of_group, db_name)

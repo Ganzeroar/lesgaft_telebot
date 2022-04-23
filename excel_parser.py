@@ -27,7 +27,7 @@ class Excel_parser():
         response_is_null_in_db = db_funcs_for_subjects_db.check_is_null_in_db()
         if response_is_null_in_db != 'OK':
             main.send_custom_message_to_user(
-            206171081, f'null в БД {response_is_null_in_db}')
+                206171081, f'null в БД {response_is_null_in_db}')
         else:
             print('DB HAS NOT NULL')
 
@@ -96,7 +96,8 @@ class Excel_parser():
                 if time_value == '9:45':
                     times = []
                     times.append(time_value)
-                    dates = self.get_dates(work_sheet, row, dates_column, db_name)
+                    dates = self.get_dates(
+                        work_sheet, row, dates_column, db_name)
                 elif time_value == '11:30' or time_value == '13:30' or time_value == '15:15':
                     times.append(time_value)
                 elif time_value == '17:00':
@@ -197,12 +198,14 @@ class Excel_parser():
     def validate_date(self, date, db_name):
         dates_in_db = db_funcs_for_subjects_db.get_dates(db_name)
         for elem in dates_in_db:
-            if elem [0] == date:
-                current_date = datetime.datetime.strptime(f"2021-{date[3:5]}-{date[0:2]}","%Y-%m-%d")
+            if elem[0] == date:
+                current_date = datetime.datetime.strptime(
+                    f"2021-{date[3:5]}-{date[0:2]}", "%Y-%m-%d")
                 future_date = datetime.timedelta(days=7)
                 days_to_add = current_date + future_date
                 date_next_week = days_to_add.strftime("%d.%m.%Y.")
-                date_next_week_formatted = date_next_week[0:2] + '.' + date_next_week[3:5] + '.'
+                date_next_week_formatted = date_next_week[0:2] + \
+                    '.' + date_next_week[3:5] + '.'
                 return date_next_week_formatted
 
         return date
@@ -235,7 +238,7 @@ class Excel_parser():
 
     def return_columns_numbers_of_all_groups_cells(self, work_sheet, first_group_name):
         columns_numbers_of_all_groups_cells = []
-        row_number = self.find_number_of_groups_cell_row(   
+        row_number = self.find_number_of_groups_cell_row(
             work_sheet, first_group_name)
         first_group_column = self.const_first_group_column
         for column in range(first_group_column, 25):
@@ -253,7 +256,7 @@ class Excel_parser():
         return False
 
     def is_time(self, time):
-        #TODO убрать так как это делает валидатор
+        # TODO убрать так как это делает валидатор
         times = ['9:45', '09:45', '9.45', '09.45', '11:30', '11.30', '13:30',
                  '13.30', '15:15', '15.15', '17:00', '17.00', '18:40', '18.40', '9:45:00',
                  '09:45:00', '9.45:00', '09.45:00', '11:30:00', '11.30:00', '13:30:00',
@@ -265,7 +268,7 @@ class Excel_parser():
 
     def format_time(self, time):
         time = str(time)
-        #TODO убрать так как это делает валидатор
+        # TODO убрать так как это делает валидатор
         # в расписании чаще всего косячат тут
         first_times = ['9:45', '09:45', '9.45', '09.45',
                        '9:45:00', '09:45:00', '9.45:00', '09.45:00']
@@ -285,7 +288,7 @@ class Excel_parser():
     def is_reason_to_skip(self, worksheet_name):
         month_to_skip = configurations.month_to_skip
 
-        #for num in range(0, -15, -1):
+        # for num in range(0, -15, -1):
         #    if worksheet_name[num-2:num].isdigit():
         #        if worksheet_name[num-2:num] in month_to_skip:
         #            return True
@@ -314,7 +317,7 @@ class Excel_parser():
                     db_name, date, time)
 
     def format_dates(self, dates):
-        #TODO убрать так как это делает валидатор
+        # TODO убрать так как это делает валидатор
 
         dates = dates.replace(' ', '\n')
         list_of_dates = [element.replace(' ', '')
@@ -355,14 +358,15 @@ class Excel_parser():
                 cell_value.append(mergedCell)
                 #column_coor = list(mergedCell)[0][1]
                 #row_coor = list(mergedCell)[1][1]
-                #result_value = work_sheet.cell(
+                # result_value = work_sheet.cell(
                 #    row=row_coor, column=column_coor).value
-        result_value = work_sheet.cell(cell_value[0].min_row, cell_value[0].min_col).value
+        result_value = work_sheet.cell(
+            cell_value[0].min_row, cell_value[0].min_col).value
         return result_value
 
     def find_row_of_first_lesson(self, work_sheet):
         time_column = self.const_time_column
-        #TODO убрать так как это делает валидатор
+        # TODO убрать так как это делает валидатор
 
         times = ['9:45', '09:45', '9.45', '09.45',
                  '9:45:00', '09:45:00', '9.45:00', '09.45:00']
@@ -493,7 +497,7 @@ class Excel_parser():
             group_name = group_name[:-1]
 
         return group_name
-        
+
     def return_first_group_name(self, db_name):
         if db_name == 'magistracy_fk_full_time_1_kurs':
             first_group_name = 'гимнастика'
@@ -600,6 +604,6 @@ def run_all_parsers():
 if __name__ == "__main__":
     run_undergraduate_parser()
 
-#оставить все строчки на 17:00
-#добавить строчку на 18:40 только когда есть пары
-#парсер парсит - видит пустую строку - оповещает об этом составителя расписания
+# оставить все строчки на 17:00
+# добавить строчку на 18:40 только когда есть пары
+# парсер парсит - видит пустую строку - оповещает об этом составителя расписания

@@ -1,4 +1,5 @@
-month_to_skip = ['08', '09', '10', '11', '12', '01', '02', '03', '05', '06', '07']
+month_to_skip = ['08', '09', '10', '11',
+                 '12', '01', '02', '03', '05', '06', '07']
 day_to_parse = ['02']
 words_to_skip = [
     'тимивс',
@@ -20,7 +21,7 @@ words_to_skip = [
     'ин.яз. (2)',
     'тимобвс лыжный спорт (2)',
     'тимобвс гимнастика (2)',
-    
+
 
 ]
 
@@ -42,14 +43,14 @@ non_standart_group_327 = [
     'направленность (профиль): ссии ссии (тхэквондо, дартс)'
 ]
 
-#подбить константы под каждое расписание
+# подбить константы под каждое расписание
 group_constants = {
-    'lovs_1' : {
+    'lovs_1': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 101', 
-        'last_group_column': 16, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 101',
+        'last_group_column': 16,
         'last_group_number': 'Группа 113',
         'date_column': 1,
         'first_date_row': 6,
@@ -75,7 +76,7 @@ group_constants = {
             'Группа 112',
             'Группа 113',
         ],
-        'specialization' : [
+        'specialization': [
             'Худ. гимн.\nХуд. гимн. (антидопинг)',
             'Худ. гимн.',
             'Танц. спорт\nСпорт. аэробика',
@@ -91,12 +92,12 @@ group_constants = {
             'Велоспорт\nГребной спорт\nПарусный спорт\nТриатлон\nАвт. спорт',
         ],
     },
-    'lovs_2' : {
-        'group_row': 4, 
+    'lovs_2': {
+        'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 201', 
-        'last_group_column': 15, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 201',
+        'last_group_column': 15,
         'last_group_number': 'Группа 212',
         'date_column': 1,
         'first_date_row': 6,
@@ -121,7 +122,7 @@ group_constants = {
             'Группа 211',
             'Группа 212',
         ],
-        'specialization' : [
+        'specialization': [
             'Худ. гимн.\nХуд. гимн. (антидопинг)',
             'Худ. гимн.',
             'Танц. спорт\nСпорт. аэробика\nСпорт. аэробика (менеджмент)',
@@ -136,12 +137,12 @@ group_constants = {
             'Велоспорт\nГребной спорт\nПарусный спорт\nВодно-моторный спорт\nАкад. гребля (антидопинг)\nПарусный спорт (менеджмент)',
         ],
     },
-    'lovs_3' : {
+    'lovs_3': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 301', 
-        'last_group_column': 17, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 301',
+        'last_group_column': 17,
         'last_group_number': 'Группа 328',
         'merged_group': 'Группа 327',
         'date_column': 1,
@@ -169,7 +170,7 @@ group_constants = {
             'Группа 327',
             'Группа 328',
         ],
-        'specialization' : [
+        'specialization': [
             'Худ. гимн.',
             'Танц. спорт\nСпорт. гимн.\nАкроб. р-н-рл.',
             'Эстет. гимн.\nСпорт. аэробика\nСпорт. акробатика',
@@ -187,12 +188,12 @@ group_constants = {
         ],
 
     },
-    'lovs_4' : {
+    'lovs_4': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 401', 
-        'last_group_column': 16, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 401',
+        'last_group_column': 16,
         'last_group_number': 'Группа 411',
         'date_column': 1,
         'first_date_row': 6,
@@ -218,7 +219,7 @@ group_constants = {
             'Группа 410',
             'Группа 411',
         ],
-        'specialization' : [
+        'specialization': [
             'Худ. гимн.',
             'Танц. спорт\nСпорт. гимн.\nАкроб. р-н-рл.\nСпорт. аэробика',
             'Спорт. акробатика\nЭстет. гимн.\nХуд. гимн.',
@@ -234,12 +235,12 @@ group_constants = {
             'Велоспорт\nГребной спорт\nПарусный спорт\nВодно-моторный спорт',
         ],
     },
-    'zovs_1' : {
+    'zovs_1': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 114', 
-        'last_group_column': 15, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 114',
+        'last_group_column': 15,
         'last_group_number': 'Группа 125',
         'date_column': 1,
         'first_date_row': 6,
@@ -264,7 +265,7 @@ group_constants = {
             'Группа 124',
             'Группа 125',
         ],
-        'specialization' : [
+        'specialization': [
             'Атлетизм\nТхэквондо\nТхэквондо (антидопинг)',
             'Борьба',
             'Бокс\nБокс (антидопинг)\nКикбоксинг',
@@ -279,12 +280,12 @@ group_constants = {
             'Биатлон\nБиатлон (антидопинг)\nСкалолазание\nКерлинг\nКерлинг (антидопинг)\nКонькобежый спорт',
         ],
     },
-    'zovs_2' : {
+    'zovs_2': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 213', 
-        'last_group_column': 14, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 213',
+        'last_group_column': 14,
         'last_group_number': 'Группа 223',
         'date_column': 1,
         'first_date_row': 6,
@@ -308,7 +309,7 @@ group_constants = {
             'Группа 222',
             'Группа 223',
         ],
-        'specialization' : [
+        'specialization': [
             'Пауэрлифтинг\nГиревой спорт\nБодибилдинг\nТяжелая атлетика\nФехтование\nФехтование (антидопинг)',
             'Борьба\nДзюдо\nСамбо\nГреко-римская\nСамбо (антидопинг)\nДзюдо (менеджмент)\nДзюдо (антидопинг)',
             'Тхэквондо\nТхэквондо (антидопинг)\nКикбоксинг\nБокс',
@@ -322,12 +323,12 @@ group_constants = {
             'Биатлон\nКерлинг\nКонькобежный спорт\nБиатлон (антидопинг)\nБиатлон (ССИ)',
         ],
     },
-    'zovs_3' : {
+    'zovs_3': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 312', 
-        'last_group_column': 18, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 312',
+        'last_group_column': 18,
         'last_group_number': 'Группа 328',
         'merged_group': 'Группа 327',
         'date_column': 1,
@@ -357,7 +358,7 @@ group_constants = {
             'Группа 327',
             'Группа 328',
         ],
-        'specialization' : [
+        'specialization': [
             'Атлетизм\nПауэрлифтинг\nГиревой спорт\nБодибилдинг\nТяжелая атлетика\nБокс',
             'Борьба\nДзюдо',
             'Самбо\nГреко-римская борьба\nТхэквондо',
@@ -376,12 +377,12 @@ group_constants = {
             'Антидопинг\n(комп. спорт, тхэквондо, кикбоксинг, дартс, полиатлон, биатлон, фигурное катание, конькобежный спорт, пауэрлифтинг, гиревой спорт)',
         ],
     },
-    'zovs_4' : {
+    'zovs_4': {
         'group_row': 4,
         'group_specialization_row': 5,
-        'first_group_column': 4, 
-        'first_group_number': 'Группа 412', 
-        'last_group_column': 16, 
+        'first_group_column': 4,
+        'first_group_number': 'Группа 412',
+        'last_group_column': 16,
         'last_group_number': 'Группа 425',
         'date_column': 1,
         'first_date_row': 6,
@@ -407,7 +408,7 @@ group_constants = {
             'Группа 424',
             'Группа 425',
         ],
-        'specialization' : [
+        'specialization': [
             'Самбо\nАтлетизм',
             'Борьба\nДзюдо\nФехтование',
             'Киберспорт\nТхэквондо',
@@ -427,21 +428,21 @@ group_constants = {
 
 timetable_constants = {
     'common_imist': {
-        #TODO вставить сюда общие константы
+        # TODO вставить сюда общие константы
     },
     'imist_1': {
         'group_row': 4,
         'group_specialization_row': 3,
         'number_of_groups': 3,
-        'first_group_first_column': 4, 
-        'first_group_last_column': 6, 
-        'first_group_number': 'Группа 128-М', 
-        'second_group_first_column': 7, 
-        'second_group_last_column': 9, 
-        'second_group_number': 'Группа 129-МО', 
-        'third_group_first_column': 10, 
-        'third_group_last_column': 12, 
-        'third_group_number': 'Группа 130-Жур', 
+        'first_group_first_column': 4,
+        'first_group_last_column': 6,
+        'first_group_number': 'Группа 128-М',
+        'second_group_first_column': 7,
+        'second_group_last_column': 9,
+        'second_group_number': 'Группа 129-МО',
+        'third_group_first_column': 10,
+        'third_group_last_column': 12,
+        'third_group_number': 'Группа 130-Жур',
         'date_column': 1,
         'first_date_row': 6,
         'last_date_row': 35,
@@ -451,7 +452,7 @@ timetable_constants = {
         'time_column': 3,
         'first_time_row': 6,
         'last_time_row': 35,
-        'specialization' : [
+        'specialization': [
             'Менеджмент 38.03.02',
             'Международные отношения 41.03.05',
             'Журналистика 42.03.02',
@@ -470,18 +471,18 @@ timetable_constants = {
         'group_row': 4,
         'group_specialization_row': 3,
         'number_of_groups': 4,
-        'first_group_first_column': 4, 
-        'first_group_last_column': 6, 
-        'first_group_number': 'Группа 226-М', 
-        'second_group_first_column': 7, 
-        'second_group_last_column': 9, 
-        'second_group_number': 'Группа 227-МО', 
-        'third_group_first_column': 10, 
-        'third_group_last_column': 12, 
-        'third_group_number': 'Группа 228-Жур', 
-        'fourth_group_first_column': 13, 
-        'fourth_group_last_column': 15, 
-        'fourth_group_number': 'Группа 229-С', 
+        'first_group_first_column': 4,
+        'first_group_last_column': 6,
+        'first_group_number': 'Группа 226-М',
+        'second_group_first_column': 7,
+        'second_group_last_column': 9,
+        'second_group_number': 'Группа 227-МО',
+        'third_group_first_column': 10,
+        'third_group_last_column': 12,
+        'third_group_number': 'Группа 228-Жур',
+        'fourth_group_first_column': 13,
+        'fourth_group_last_column': 15,
+        'fourth_group_number': 'Группа 229-С',
         'date_column': 1,
         'first_date_row': 6,
         'last_date_row': 35,
@@ -491,7 +492,7 @@ timetable_constants = {
         'time_column': 3,
         'first_time_row': 6,
         'last_time_row': 35,
-        'specialization' : [
+        'specialization': [
             'Менеджмент 38.03.02',
             'Международные отношения 41.03.05',
             'Журналистика 42.03.02',
@@ -514,18 +515,18 @@ timetable_constants = {
         'group_row': 4,
         'group_specialization_row': 3,
         'number_of_groups': 4,
-        'first_group_first_column': 4, 
-        'first_group_last_column': 6, 
-        'first_group_number': 'Группа 329-М', 
-        'second_group_first_column': 7, 
-        'second_group_last_column': 9, 
-        'second_group_number': 'Группа 330-МО', 
-        'third_group_first_column': 10, 
-        'third_group_last_column': 12, 
-        'third_group_number': 'Группа 331-Жур', 
-        'fourth_group_first_column': 13, 
-        'fourth_group_last_column': 15, 
-        'fourth_group_number': 'Группа 332-Т', 
+        'first_group_first_column': 4,
+        'first_group_last_column': 6,
+        'first_group_number': 'Группа 329-М',
+        'second_group_first_column': 7,
+        'second_group_last_column': 9,
+        'second_group_number': 'Группа 330-МО',
+        'third_group_first_column': 10,
+        'third_group_last_column': 12,
+        'third_group_number': 'Группа 331-Жур',
+        'fourth_group_first_column': 13,
+        'fourth_group_last_column': 15,
+        'fourth_group_number': 'Группа 332-Т',
         'date_column': 1,
         'first_date_row': 6,
         'last_date_row': 35,
@@ -535,7 +536,7 @@ timetable_constants = {
         'time_column': 3,
         'first_time_row': 6,
         'last_time_row': 35,
-        'specialization' : [
+        'specialization': [
             'Менеджмент 38.03.02',
             'Международные отношения 41.03.05',
             'Журналистика 42.03.02',
@@ -558,15 +559,15 @@ timetable_constants = {
         'group_row': 4,
         'group_specialization_row': 3,
         'number_of_groups': 3,
-        'first_group_first_column': 4, 
-        'first_group_last_column': 6, 
-        'first_group_number': 'Группа 426-М', 
-        'second_group_first_column': 7, 
-        'second_group_last_column': 9, 
-        'second_group_number': 'Группа 427-МО', 
-        'third_group_first_column': 10, 
-        'third_group_last_column': 12, 
-        'third_group_number': 'Группа 428-Жур', 
+        'first_group_first_column': 4,
+        'first_group_last_column': 6,
+        'first_group_number': 'Группа 426-М',
+        'second_group_first_column': 7,
+        'second_group_last_column': 9,
+        'second_group_number': 'Группа 427-МО',
+        'third_group_first_column': 10,
+        'third_group_last_column': 12,
+        'third_group_number': 'Группа 428-Жур',
         'date_column': 1,
         'first_date_row': 6,
         'last_date_row': 35,
@@ -576,7 +577,7 @@ timetable_constants = {
         'time_column': 3,
         'first_time_row': 6,
         'last_time_row': 35,
-        'specialization' : [
+        'specialization': [
             'Менеджмент 38.03.02',
             'Международные отношения 41.03.05',
             'Журналистика 42.03.02',
@@ -591,17 +592,18 @@ timetable_constants = {
         'third_group_last_lesson_cell_row': 35,
         'third_group_first_lesson_cell_column': 10,
     },
-    
+
 }
 
-string_for_stop_vertical_parsing = ['Начальник УМУ Паульс А.А.', 'Начальник УМУ Овсюк Т.М.']
+string_for_stop_vertical_parsing = [
+    'Начальник УМУ Паульс А.А.', 'Начальник УМУ Овсюк Т.М.']
 
-days_of_week = ['Пн.','Вт.','Ср.','Чт.','Пт.','Сб.']
+days_of_week = ['Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.']
 lesson_start_times = ['9:45', '11:30', '13:30', '15:15', '17:00', '18:40']
 
-#type 1 - 4 lines
-#type 2 - 3 lines
-#type 3 - 2 lines 
+# type 1 - 4 lines
+# type 2 - 3 lines
+# type 3 - 2 lines
 existing_locations = [
     '1 ИМиСТ',
     '2 ИМиСТ',
@@ -795,104 +797,104 @@ existing_type_of_subjects = [
     '',
     '',
     '',
-    ]
+]
 
 existing_teachers = [
-'Большова Е.В.',
-'Щедрина Ю.А.',
-'Захаров Ф.Е.',
-'Макаров А.А.',
-'Сафронова М.А.',
-'Гомзякова И.П.',
-'Латышева Н.Е.',
-'Дранюк О.И.',
-'Андросова Г.А.',
-'Медведева О.А.',
-'Догонова Н.А.',
-'Утишева Е.В.',
-'Оганян К.К.',
-'Белогородцева Э.И.',
-'Селитренникова Т.А.',
-'Предовская М.М.',
-'Селивёрстова В.В.',
-'Кармаев Н.А.',
-'Мурзина А.С.',
-'Дьяченко Н.А.',
-'Димура И.Н.',
-'Цикунова Н.С.',
-'Калашникова Е.В.',
-'Сухляева А.В.',
-'Кротова Н.Ю.',
-'Самсонов М.А.',
-'Гуркин Я.А.',
-'Бородин Д.А.',
-'Рыбакова О.Б.',
-'Ципин Л.Л.',
-'Худякова А.С.',
-'Казаринова Л.В.',
-'Руденко М.А.',
-'Курашова Е.А.',
-'Кудрявцева З.Н.',
-'Говорков Л.П.',
-'Денисенко А.Н.',
-'Пудло П.М.',
-'Щеглов И.М.',
-'Ермаков Д.А.',
-'Аксенова Н.Н.',
-'Косьмина Е.А.',
-'Голокова М.С.',
-'Комева Е.Ю.',
-'Серов С.В.',
-'Биленко А.Г.',
-'Буренко В.О.',
-'Назимкова В.С.',
-'Чудаев М.Е.',
-'Живодёров В.А.',
-'Супрун А.А.',
-'Бердышева Н.Ю.',
-'Смирнов А.А.',
-'Осипова Е.В.',
-'Суровцева О.Н.',
-'Бордовский П.Г.',
-'Верзилин Д.В.',
-'Вакалова Л.Г.',
-'Гренлунд А.Ю.',
-'Мустафина Д.В.',
-'Пыж В.В.',
-'Оганян К.М.',
-'Уколова И.П.',
-'Мальцева С.Г.',
-'Турянская В.А.',
-'Закревская Н.Г.',
-'Ермилова В.В.',
-'Орехова А.В.',
-'Лалочкина А.С.',
-'Мокина Е.И.',
-'Волков П.А.',
-'Давыдова Е.Ю.',
-'Верзилин Д.Н.',
-'Чернова И.М.',
-'Задорожная Н.А.',
-'Егорова Н.М.',
-'Мяконьков В.Б.',
-'Енченко И.В.',
-'Тютиков П.А.',
-'Санникова Ю.А.',
-'Путятова Э.Г.',
-'Кротова Е.Е.',
-'Каражаева М.Б.',
-'Муртазина Г.Х.',
-'Яковлюк А.Н.',
-'Пантелеева Г.В.',
-'Паульс А.А.',
-'Копылова Т.В.',
-'Цеховой В.А.',
-'Федорченко Н.В.',
-'Андреев Вл.Вит.',
-'Бойкова Н.Г.',
-'Бердышева Н.Ю.',
-'',
-'',
+    'Большова Е.В.',
+    'Щедрина Ю.А.',
+    'Захаров Ф.Е.',
+    'Макаров А.А.',
+    'Сафронова М.А.',
+    'Гомзякова И.П.',
+    'Латышева Н.Е.',
+    'Дранюк О.И.',
+    'Андросова Г.А.',
+    'Медведева О.А.',
+    'Догонова Н.А.',
+    'Утишева Е.В.',
+    'Оганян К.К.',
+    'Белогородцева Э.И.',
+    'Селитренникова Т.А.',
+    'Предовская М.М.',
+    'Селивёрстова В.В.',
+    'Кармаев Н.А.',
+    'Мурзина А.С.',
+    'Дьяченко Н.А.',
+    'Димура И.Н.',
+    'Цикунова Н.С.',
+    'Калашникова Е.В.',
+    'Сухляева А.В.',
+    'Кротова Н.Ю.',
+    'Самсонов М.А.',
+    'Гуркин Я.А.',
+    'Бородин Д.А.',
+    'Рыбакова О.Б.',
+    'Ципин Л.Л.',
+    'Худякова А.С.',
+    'Казаринова Л.В.',
+    'Руденко М.А.',
+    'Курашова Е.А.',
+    'Кудрявцева З.Н.',
+    'Говорков Л.П.',
+    'Денисенко А.Н.',
+    'Пудло П.М.',
+    'Щеглов И.М.',
+    'Ермаков Д.А.',
+    'Аксенова Н.Н.',
+    'Косьмина Е.А.',
+    'Голокова М.С.',
+    'Комева Е.Ю.',
+    'Серов С.В.',
+    'Биленко А.Г.',
+    'Буренко В.О.',
+    'Назимкова В.С.',
+    'Чудаев М.Е.',
+    'Живодёров В.А.',
+    'Супрун А.А.',
+    'Бердышева Н.Ю.',
+    'Смирнов А.А.',
+    'Осипова Е.В.',
+    'Суровцева О.Н.',
+    'Бордовский П.Г.',
+    'Верзилин Д.В.',
+    'Вакалова Л.Г.',
+    'Гренлунд А.Ю.',
+    'Мустафина Д.В.',
+    'Пыж В.В.',
+    'Оганян К.М.',
+    'Уколова И.П.',
+    'Мальцева С.Г.',
+    'Турянская В.А.',
+    'Закревская Н.Г.',
+    'Ермилова В.В.',
+    'Орехова А.В.',
+    'Лалочкина А.С.',
+    'Мокина Е.И.',
+    'Волков П.А.',
+    'Давыдова Е.Ю.',
+    'Верзилин Д.Н.',
+    'Чернова И.М.',
+    'Задорожная Н.А.',
+    'Егорова Н.М.',
+    'Мяконьков В.Б.',
+    'Енченко И.В.',
+    'Тютиков П.А.',
+    'Санникова Ю.А.',
+    'Путятова Э.Г.',
+    'Кротова Е.Е.',
+    'Каражаева М.Б.',
+    'Муртазина Г.Х.',
+    'Яковлюк А.Н.',
+    'Пантелеева Г.В.',
+    'Паульс А.А.',
+    'Копылова Т.В.',
+    'Цеховой В.А.',
+    'Федорченко Н.В.',
+    'Андреев Вл.Вит.',
+    'Бойкова Н.Г.',
+    'Бердышева Н.Ю.',
+    '',
+    '',
 ]
 
 existing_practice = [
@@ -914,8 +916,8 @@ strings_to_skip_while_no_format = [
 
 existing_location_type_3 = []
 #existing_subjects_type_3 = []
-#existing_teachers_type_1 = {
+# existing_teachers_type_1 = {
 #    ''
-#}
+# }
 existing_location_type_2 = []
 #existing_subjects_type_2 = []
