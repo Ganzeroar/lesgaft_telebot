@@ -37,42 +37,10 @@ class Excel_validator_imist(Excel_validator):
             #    os.remove(path)
         return f'{work_file_name[35:]} валиден'
 
-
     def check_cells_with_lessons(self, work_book, work_file_name):
         constants = self.return_current_file_constants(work_file_name)
         number_of_groups = constants['number_of_groups']
-        first_group_first_lesson_cell_row = constants['first_group_first_lesson_cell_row']
-        first_group_last_lesson_cell_row = constants['first_group_last_lesson_cell_row']
-        first_group_first_lesson_cell_column = constants['first_group_first_lesson_cell_column']
-        second_group_first_lesson_cell_row = constants['second_group_first_lesson_cell_row']
-        second_group_last_lesson_cell_row = constants['second_group_last_lesson_cell_row']
-        second_group_first_lesson_cell_column = constants['second_group_first_lesson_cell_column']
-        third_group_first_lesson_cell_row = constants['third_group_first_lesson_cell_row']
-        third_group_last_lesson_cell_row = constants['third_group_last_lesson_cell_row']
-        third_group_first_lesson_cell_column = constants['third_group_first_lesson_cell_column']
-        group_cell_constants = [
-            [
-                first_group_first_lesson_cell_row,
-                first_group_last_lesson_cell_row,
-                first_group_first_lesson_cell_column,
-            ],
-            [
-                second_group_first_lesson_cell_row,
-                second_group_last_lesson_cell_row,
-                second_group_first_lesson_cell_column,
-            ],
-            [
-                third_group_first_lesson_cell_row,
-                third_group_last_lesson_cell_row,
-                third_group_first_lesson_cell_column,
-            ],
-        ]
-        if number_of_groups == 4:
-            fourth_group_first_lesson_cell_row = constants['fourth_group_first_lesson_cell_row']
-            fourth_group_last_lesson_cell_row = constants['fourth_group_last_lesson_cell_row']
-            fourth_group_first_lesson_cell_column = constants['fourth_group_first_lesson_cell_column']
-            group_cell_constants.append([fourth_group_first_lesson_cell_row, fourth_group_last_lesson_cell_row, fourth_group_first_lesson_cell_column])
-
+        group_cell_constants = self.get_group_cell_constants(constants)
 
         for worksheet_name in work_book.sheetnames:
             if self.is_reason_to_skip(worksheet_name) == True:
@@ -103,13 +71,12 @@ class Excel_validator_imist(Excel_validator):
         teachers = viewed_teacher_cell_value.split('\n')
         if len(teachers) == 1:
             if teachers[0] not in configurations.existing_teachers:
-                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name}')
+                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
         if len(teachers) == 2:
             if teachers[0] not in configurations.existing_teachers:
-                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name}')
+                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
             if teachers[1] not in configurations.existing_teachers:
-                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name}')
-
+                raise File_not_valid(f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
 
     def check_is_location_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
         if self.is_merged(worksheet, viewed_lesson_cell) == True:
@@ -120,8 +87,7 @@ class Excel_validator_imist(Excel_validator):
             return
         location = viewed_location_cell_value
         if location not in configurations.existing_locations:
-            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
-
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в локации "{location}"')
 
     def check_is_lesson_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
         if self.is_merged(worksheet, viewed_lesson_cell) == True:
@@ -132,15 +98,42 @@ class Excel_validator_imist(Excel_validator):
             return
         lesson_and_lesson_type = viewed_lesson_cell_value.split('\n')
         if len(lesson_and_lesson_type) != 2:
-            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
         
         lesson = lesson_and_lesson_type[0]
         lesson_type = lesson_and_lesson_type[1]
         if lesson not in configurations.existing_subjects:
-            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
         if lesson_type not in configurations.existing_type_of_subjects:
-            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name}')
+            raise File_not_valid(f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+    
+    def get_group_cell_constants(self, constants):
+        number_of_groups = constants['number_of_groups']
 
+        group_cell_constants = [
+            [
+                constants['first_group_first_lesson_cell_row'],
+                constants['first_group_last_lesson_cell_row'],
+                constants['first_group_first_lesson_cell_column'],
+            ],
+            [
+                constants['second_group_first_lesson_cell_row'],
+                constants['second_group_last_lesson_cell_row'],
+                constants['second_group_first_lesson_cell_column'],
+            ],
+            [
+                constants['third_group_first_lesson_cell_row'],
+                constants['third_group_last_lesson_cell_row'],
+                constants['third_group_first_lesson_cell_column'],
+            ],
+        ]
+        if number_of_groups == 4:
+            fourth_group_first_lesson_cell_row = constants['fourth_group_first_lesson_cell_row']
+            fourth_group_last_lesson_cell_row = constants['fourth_group_last_lesson_cell_row']
+            fourth_group_first_lesson_cell_column = constants['fourth_group_first_lesson_cell_column']
+            group_cell_constants.append([fourth_group_first_lesson_cell_row, fourth_group_last_lesson_cell_row, fourth_group_first_lesson_cell_column])
+
+        return group_cell_constants
 
     def check_structure(self, work_book, work_file_name):
         for worksheet_name in work_book.sheetnames:
