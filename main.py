@@ -3,6 +3,7 @@ import sys
 sys_path = sys.path[0]
 path_to_excel_validators = sys_path+'\excel_validators'
 sys.path.append(path_to_excel_validators)
+print(sys.path)
 
 import excel_validator_lovs_zovs
 import excel_validator_imist
