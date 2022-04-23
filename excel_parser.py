@@ -4,7 +4,6 @@ import datetime
 
 import db_funcs_for_subjects_db
 import configurations
-import excel_validator
 import excel_validator_lovs_zovs
 import main
 

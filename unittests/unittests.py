@@ -1,6 +1,11 @@
 import unittest
 
-import unittest
+import sys
+sys_path = sys.path[0]
+path_to_upper_folder = sys_path[:-10]
+path_to_excel_validators = path_to_upper_folder+'\excel_validators'
+sys.path.append(path_to_excel_validators)
+
 import db_funcs_for_subject_db_unittests
 import excel_validator_imist_unittests
 import excel_validator_lovs_zovs_unittests

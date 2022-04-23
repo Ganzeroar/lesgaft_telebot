@@ -5,6 +5,11 @@ import time
 import logging
 import os
 
+import sys
+sys_path = sys.path[0]
+path_to_excel_validators = sys_path+'\excel_validators'
+sys.path.append(path_to_excel_validators)
+
 import config
 import db_funcs_for_students_db
 import texts_for_lesgaft_bot
@@ -103,17 +108,17 @@ def handle_docs_photo(message):
         if 'imist' in message.document.file_name:
             bot.reply_to(message, "Сканирование запущено")
             obj = excel_validator_imist.Excel_validator_imist()
-            result = obj.run_validator('documents_for_validate')
+            result = obj.run_validator(path_3)
             bot.reply_to(message, result)
         elif 'lovs' in message.document.file_name:
             bot.reply_to(message, "Сканирование запущено")
             obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
-            result = obj.run_validator('documents_for_validate')
+            result = obj.run_validator(path_3)
             bot.reply_to(message, result)
         elif 'zovs' in message.document.file_name:
             bot.reply_to(message, "Сканирование запущено")
             obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
-            result = obj.run_validator('documents_for_validate')
+            result = obj.run_validator(path_3)
             bot.reply_to(message, result)
     except Exception as e:
         bot.reply_to(message, e)
