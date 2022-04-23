@@ -1,4 +1,3 @@
-from typing import final
 from openpyxl import load_workbook
 import glob
 import re
@@ -20,8 +19,6 @@ class Excel_validator_lovs_zovs(Excel_validator):
                 self.check_worksheet_names(work_book.sheetnames)
                 self.check_structure(work_book, work_file_name)
                 
-                #result_message += self.check_content_of_servise_cells(work_book, work_file_name)
-                #result_message += self.check_class_schedule(work_book, work_file_name)
                 print(f'{work_file_name} валиден')
             finally:
                 path = os.path.join(os.path.abspath(os.path.dirname(__file__)), work_file_name)
