@@ -143,6 +143,7 @@ group_constants = {
         'first_group_number': 'Группа 301', 
         'last_group_column': 17, 
         'last_group_number': 'Группа 328',
+        'merged_group': 'Группа 327',
         'date_column': 1,
         'first_date_row': 6,
         'last_date_row': 35,
