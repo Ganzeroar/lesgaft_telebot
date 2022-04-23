@@ -6,6 +6,7 @@ sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'excel_
 
 import excel_validator_lovs_zovs
 import excel_validator_imist
+import excel_validator_mag_fk
 import request_handler
 import texts_for_lesgaft_bot
 import db_funcs_for_students_db
@@ -98,6 +99,11 @@ def handle_docs_photo(message):
         elif 'zovs' in message.document.file_name:
             bot.reply_to(message, "Сканирование запущено")
             obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
+            result = obj.run_validator(path_3)
+            bot.reply_to(message, result)
+        elif 'mag_fk' in message.document.file_name:
+            bot.reply_to(message, "Сканирование запущено")
+            obj = excel_validator_mag_fk.Excel_validator_mag_fk()
             result = obj.run_validator(path_3)
             bot.reply_to(message, result)
     except Exception as e:

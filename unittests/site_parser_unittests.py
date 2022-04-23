@@ -56,7 +56,7 @@ class Test_site_parser_undergraduate(unittest.TestCase):
 
 class Test_site_parser_undergraduate_imist(unittest.TestCase):
 
-    def test_get_lovs_link_return_links(self):
+    def test_get_imist_link_return_links(self):
         obj = site_parser.Site_parser_undergraduate_imist()
         html_text = texts_for_tests.html_text
         soup_obj = obj.get_soup_obj(html_text)
@@ -72,7 +72,7 @@ class Test_site_parser_undergraduate_imist(unittest.TestCase):
 
 class Test_site_parser_undergraduate_afk(unittest.TestCase):
 
-    def test_get_lovs_link_return_links(self):
+    def test_get_afk_link_return_links(self):
         obj = site_parser.Site_parser_undergraduate_afk()
         html_text = texts_for_tests.html_text
         soup_obj = obj.get_soup_obj(html_text)

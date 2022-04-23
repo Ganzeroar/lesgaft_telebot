@@ -2,12 +2,13 @@ from openpyxl import load_workbook
 import glob
 import configurations
 import os
+import re
 
 from file_not_valid_exception import File_not_valid
 from excel_validator import Excel_validator
 
 
-class Excel_validator_imist(Excel_validator):
+class Excel_validator_mag_fk(Excel_validator):
 
     def run_validator(self, route):
         work_files = glob.glob(str(route) + '/*.xlsx')
@@ -73,6 +74,8 @@ class Excel_validator_imist(Excel_validator):
             viewed_teacher_cell_value = viewed_teacher_cell.value
         if viewed_teacher_cell_value == None:
             return
+        if 'практика' in viewed_teacher_cell_value:
+            return
         teachers = viewed_teacher_cell_value.split('\n')
         if len(teachers) == 1:
             if teachers[0] not in configurations.existing_teachers:
@@ -95,6 +98,8 @@ class Excel_validator_imist(Excel_validator):
         if viewed_location_cell_value == None:
             return
         location = viewed_location_cell_value
+        if 'практика' in location:
+            return
         if location not in configurations.existing_locations:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в локации "{location}"')
@@ -113,13 +118,28 @@ class Excel_validator_imist(Excel_validator):
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
 
         lesson = lesson_and_lesson_type[0]
-        lesson_type = lesson_and_lesson_type[1]
+        lesson_type = lesson_and_lesson_type[1] #в случае практики - даты
+        if 'практика' in lesson:
+            self.check_practice_cell(viewed_lesson_cell, worksheet_name, lesson, lesson_type)
+            return
+            
         if lesson not in configurations.existing_subjects:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
         if lesson_type not in configurations.existing_type_of_subjects:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+
+    def check_practice_cell(self, viewed_lesson_cell, worksheet_name, lesson, lesson_type):
+        if lesson not in configurations.existing_practice:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в практике "{lesson}"')
+        result = re.fullmatch(
+                r'\d{2}[.]\d{2}[.]\s[-]\s\d{2}[.]\d{2}[.]', lesson_type)
+        if result == None:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
+        pass
 
     def get_group_cell_constants(self, constants):
         number_of_groups = constants['number_of_groups']
@@ -232,14 +252,10 @@ class Excel_validator_imist(Excel_validator):
                         f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')
 
     def find_clear_file_name(self, file_name):
-        if '1_imist' in file_name:
-            return 'imist_1'
-        elif '2_imist' in file_name:
-            return 'imist_2'
-        elif '3_imist' in file_name:
-            return 'imist_3'
-        elif '4_imist' in file_name:
-            return 'imist_4'
+        if '1_mag_fk' in file_name:
+            return 'mag_fk_1'
+        elif '2_mag_fk' in file_name:
+            return 'mag_fk_2'
         else:
             return None
 
@@ -250,13 +266,9 @@ class Excel_validator_imist(Excel_validator):
 
     # TODO потенциально можно вынести в константы и объединить с другими
     def check_file_name(self, work_file_name):
-        if '1_imist' in work_file_name:
+        if '1_mag_fk' in work_file_name:
             return 'Имя файла ОК\n'
-        elif '2_imist' in work_file_name:
-            return 'Имя файла ОК\n'
-        elif '3_imist' in work_file_name:
-            return 'Имя файла ОК\n'
-        elif '4_imist' in work_file_name:
+        elif '2_mag_fk' in work_file_name:
             return 'Имя файла ОК\n'
         else:
             raise File_not_valid(f'Ошибка в имени файла {work_file_name}')

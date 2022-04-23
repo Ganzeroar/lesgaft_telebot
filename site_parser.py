@@ -1,3 +1,7 @@
+import os
+
+import sys
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'excel_validators'))
 
 import requests
 import datetime
@@ -242,173 +246,176 @@ class Site_parser_undergraduate_afk(Site_parser):
 class Site_parser_magistracy_fk(Site_parser):
 
     def run_full_time_magistracy_fk(self):
-
-        changed_files = self.find_changed_files()
-        if len(changed_files) > 0:
-            self.create_new_excel_files(
-                'full_time_magistracy_fk', changed_files)
-            self.run_excel_parser(changed_files)
-
-    def return_file_link_full_time_magistracy_fk(self, number_of_course):
         html_text = self.get_html_text()
         soup_obj = self.get_soup_obj(html_text)
 
-        element = soup_obj.find_all(
-            'div', class_=f'views-row views-row-11 views-row-odd')
-        if number_of_course == 0:
-            element_2 = element[0].find_all('div', class_='field-item even')
-            try:
-                new_file_link = element_2[1].find_all('a', href=True)[
-                    0]['href']
-            except IndexError:
-                new_file_link = element_2[2].find_all('a', href=True)[
-                    0]['href']
-        elif number_of_course == 1:
-            element_2 = element[0].find_all('div', class_='field-item odd')
-            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-        return new_file_link
+        files_from_site = self.get_magistracy_fk_links(soup_obj)
+        self.create_new_excel_files(
+            'full_time_magistracy_fk', files_from_site)
+        self.run_excel_parser(files_from_site)
 
-    def find_changed_files(self):
-        changed_files = []
+    def get_magistracy_fk_links(self, soup_obj):
+        mag_fk_links = []
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-6 views-row-even')[0]
+        element_2 = element_1.find_all(
+            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
+        element_3 = element_2.find_all('span', class_='file')
+        mag_fk_1_span = element_3[1]
+        mag_fk_2_span = element_3[3]
 
-        for number in range(2):
-            new_file_link = self.return_file_link_full_time_magistracy_fk(
-                number)
-            print(new_file_link)
-            if self.is_changed(new_file_link):
-                changed_files.append(new_file_link)
-        return changed_files
+        mag_fk_1_link = mag_fk_1_span.find_all('a', href=True)[0]['href']
+        mag_fk_2_link = mag_fk_2_span.find_all('a', href=True)[0]['href']
+
+        mag_fk_links.append(mag_fk_1_link)
+        mag_fk_links.append(mag_fk_2_link)
+
+        return mag_fk_links
 
     def get_name_of_course(self, file_link):
-        course_names = ['mag_1_kurs_fk_sport_ppo', 'mag_2_kurs_fk_sport_ppo']
+        course_names = ['1_mag_fk', '2_mag_fk']
         for name in course_names:
             if name in file_link:
-                name_of_course = self.formate_name(name)
-                return name_of_course
+                return name
 
-    def formate_name(self, name):
-        if 'mag_1_kurs_fk_sport_ppo' in name:
-            return 'magistracy_fk_full_time_1_kurs'
-        elif 'mag_2_kurs_fk_sport_ppo' in name:
-            return 'magistracy_fk_full_time_2_kurs'
+    # TODO написать парсер, сейчас ссылается на что-то устаревшее
+    # def run_excel_parser(self, changed_files):
+    #    for new_file_link in changed_files:
+    #        name_of_course = self.get_name_of_course(new_file_link)
+    #        parser = excel_parser.Excel_parser_undergraduate_imst()
+    #        parser.parse_work_file_using_name(
+    #            name_of_course, 'full_time_undergraduate/imst')
 
-    def run_excel_parser(self, changed_files):
-        for new_file_link in changed_files:
-            name_of_course = self.get_name_of_course(new_file_link)
-            parser = excel_parser.Excel_parser()
-            parser.parse_work_file_using_name(
-                name_of_course, 'full_time_magistracy_fk')
 
+class Site_parser_magistracy_sport(Site_parser):
+
+    def run_full_time_magistracy_sport(self):
+        html_text = self.get_html_text()
+        soup_obj = self.get_soup_obj(html_text)
+
+        files_from_site = self.get_magistracy_sport_links(soup_obj)
+        self.create_new_excel_files(
+            'full_time_magistracy_sport', files_from_site)
+        self.run_excel_parser(files_from_site)
+
+    def get_magistracy_sport_links(self, soup_obj):
+        mag_sport_links = []
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-6 views-row-even')[0]
+        element_2 = element_1.find_all(
+            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
+        element_3 = element_2.find_all('span', class_='file')
+        mag_sport_1_span = element_3[0]
+        mag_sport_2_span = element_3[2]
+
+        mag_sport_1_link = mag_sport_1_span.find_all('a', href=True)[0]['href']
+        mag_sport_2_link = mag_sport_2_span.find_all('a', href=True)[0]['href']
+
+        mag_sport_links.append(mag_sport_1_link)
+        mag_sport_links.append(mag_sport_2_link)
+
+        return mag_sport_links
+
+    def get_name_of_course(self, file_link):
+        course_names = ['1_mag_sport', '2_mag_sport']
+        for name in course_names:
+            if name in file_link:
+                return name
+
+    # TODO написать парсер, сейчас ссылается на что-то устаревшее
+    # def run_excel_parser(self, changed_files):
+    #    for new_file_link in changed_files:
+    #        name_of_course = self.get_name_of_course(new_file_link)
+    #        parser = excel_parser.Excel_parser_undergraduate_imst()
+    #        parser.parse_work_file_using_name(
+    #            name_of_course, 'full_time_undergraduate/imst')
 
 class Site_parser_magistracy_afk(Site_parser):
 
     def run_full_time_magistracy_afk(self):
-
-        changed_files = self.find_changed_files()
-        if len(changed_files) > 0:
-            self.create_new_excel_files(
-                'full_time_magistracy_afk', changed_files)
-            self.run_excel_parser(changed_files)
-
-    def return_file_link_full_time_magistracy_afk(self, number_of_course):
         html_text = self.get_html_text()
         soup_obj = self.get_soup_obj(html_text)
 
-        element = soup_obj.find_all(
-            'div', class_=f'views-row views-row-12 views-row-even')
-        if number_of_course == 0:
-            element_2 = element[0].find_all('div', class_='field-item even')
-            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
-        elif number_of_course == 1:
-            element_2 = element[0].find_all('div', class_='field-item odd')
-            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-        return new_file_link
+        files_from_site = self.get_magistracy_afk_links(soup_obj)
+        self.create_new_excel_files(
+            'full_time_magistracy_afk', files_from_site)
+        self.run_excel_parser(files_from_site)
 
-    def find_changed_files(self):
-        changed_files = []
+    def get_magistracy_afk_links(self, soup_obj):
+        mag_afk_links = []
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-7 views-row-odd')[0]
+        element_2 = element_1.find_all(
+            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
+        element_3 = element_2.find_all('span', class_='file')
+        mag_afk_1_span = element_3[0]
+        mag_afk_2_span = element_3[1]
 
-        for number in range(2):
-            new_file_link = self.return_file_link_full_time_magistracy_afk(
-                number)
-            print(new_file_link)
-            if self.is_changed(new_file_link):
-                changed_files.append(new_file_link)
-        return changed_files
+        mag_afk_1_link = mag_afk_1_span.find_all('a', href=True)[0]['href']
+        mag_afk_2_link = mag_afk_2_span.find_all('a', href=True)[0]['href']
+
+        mag_afk_links.append(mag_afk_1_link)
+        mag_afk_links.append(mag_afk_2_link)
+
+        return mag_afk_links
 
     def get_name_of_course(self, file_link):
-        course_names = ['mag_1_kurs_afk', 'mag_2_kurs_afk']
+        course_names = ['1_mag_afk', '2_mag_afk']
         for name in course_names:
             if name in file_link:
-                name_of_course = self.formate_name(name)
-                return name_of_course
+                return name
 
-    def formate_name(self, name):
-        if 'mag_1_kurs_afk' in name:
-            return 'magistracy_afk_full_time_1_kurs'
-        elif 'mag_2_kurs_afk' in name:
-            return 'magistracy_afk_full_time_2_kurs'
+    # TODO написать парсер, сейчас ссылается на что-то устаревшее
+    # def run_excel_parser(self, changed_files):
+    #    for new_file_link in changed_files:
+    #        name_of_course = self.get_name_of_course(new_file_link)
+    #        parser = excel_parser.Excel_parser_undergraduate_imst()
+    #        parser.parse_work_file_using_name(
+    #            name_of_course, 'full_time_undergraduate/imst')
 
-    def run_excel_parser(self, changed_files):
-        for new_file_link in changed_files:
-            name_of_course = self.get_name_of_course(new_file_link)
-            parser = excel_parser.Excel_parser()
-            parser.parse_work_file_using_name(
-                name_of_course, 'full_time_magistracy_afk')
+class Site_parser_magistracy_imist(Site_parser):
 
-
-class Site_parser_magistracy_imst(Site_parser):
-
-    def run_full_time_magistracy_imst(self):
-        changed_files = self.find_changed_files()
-        if len(changed_files) > 0:
-            self.create_new_excel_files(
-                'full_time_magistracy_imst', changed_files)
-            self.run_excel_parser(changed_files)
-
-    def return_file_link_full_time_magistracy_imst(self, number_of_course):
+    def run_full_time_magistracy_imist(self):
         html_text = self.get_html_text()
         soup_obj = self.get_soup_obj(html_text)
 
-        element = soup_obj.find_all(
-            'div', class_=f'views-row views-row-13 views-row-odd')
-        if number_of_course == 0:
-            element_2 = element[0].find_all('div', class_='field-item even')
-            new_file_link = element_2[1].find_all('a', href=True)[0]['href']
-        elif number_of_course == 1:
-            element_2 = element[0].find_all('div', class_='field-item odd')
-            new_file_link = element_2[0].find_all('a', href=True)[0]['href']
-        return new_file_link
+        files_from_site = self.get_magistracy_imist_links(soup_obj)
+        self.create_new_excel_files(
+            'full_time_magistracy_imist', files_from_site)
+        self.run_excel_parser(files_from_site)
 
-    def find_changed_files(self):
-        changed_files = []
+    def get_magistracy_imist_links(self, soup_obj):
+        mag_imist_links = []
+        element_1 = soup_obj.find_all(
+            'div', class_='views-row views-row-8 views-row-even')[0]
+        element_2 = element_1.find_all(
+            'div', class_='field field-name-field-fl1 field-type-file field-label-hidden')[0]
+        element_3 = element_2.find_all('span', class_='file')
+        mag_imist_1_span = element_3[0]
+        mag_imist_2_span = element_3[1]
 
-        for number in range(2):
-            new_file_link = self.return_file_link_full_time_magistracy_imst(
-                number)
-            print(new_file_link)
-            if self.is_changed(new_file_link):
-                changed_files.append(new_file_link)
-        return changed_files
+        mag_imist_1_link = mag_imist_1_span.find_all('a', href=True)[0]['href']
+        mag_imist_2_link = mag_imist_2_span.find_all('a', href=True)[0]['href']
+
+        mag_imist_links.append(mag_imist_1_link)
+        mag_imist_links.append(mag_imist_2_link)
+
+        return mag_imist_links
 
     def get_name_of_course(self, file_link):
-        course_names = ['mag_1_kurs_imst', 'mag_2_kurs_imst']
+        course_names = ['1_mag_imist', '2_mag_imist']
         for name in course_names:
             if name in file_link:
-                name_of_course = self.formate_name(name)
-                return name_of_course
+                return name
 
-    def formate_name(self, name):
-        if 'mag_1_kurs_imst' in name:
-            return 'magistracy_imst_full_time_1_kurs'
-        elif 'mag_2_kurs_imst' in name:
-            return 'magistracy_imst_full_time_2_kurs'
+    # TODO написать парсер, сейчас ссылается на что-то устаревшее
+    # def run_excel_parser(self, changed_files):
+    #    for new_file_link in changed_files:
+    #        name_of_course = self.get_name_of_course(new_file_link)
+    #        parser = excel_parser.Excel_parser_undergraduate_imst()
+    #        parser.parse_work_file_using_name(
+    #            name_of_course, 'full_time_undergraduate/imst')
 
-    def run_excel_parser(self, changed_files):
-        for new_file_link in changed_files:
-            name_of_course = self.get_name_of_course(new_file_link)
-            parser = excel_parser.Excel_parser()
-            parser.parse_work_file_using_name(
-                name_of_course, 'full_time_magistracy_fk')
 
 
 def run_undergraduate_parser():
@@ -431,15 +438,18 @@ def run_magistracy_fk_parser():
     parser = Site_parser_magistracy_fk()
     parser.run_full_time_magistracy_fk()
 
+def run_magistracy_sport_parser():
+    parser = Site_parser_magistracy_sport()
+    parser.run_full_time_magistracy_sport()
 
 def run_magistracy_afk_parser():
     parser = Site_parser_magistracy_afk()
     parser.run_full_time_magistracy_afk()
 
 
-def run_magistracy_imst_parser():
-    parser = Site_parser_magistracy_imst()
-    parser.run_full_time_magistracy_imst()
+def run_magistracy_imist_parser():
+    parser = Site_parser_magistracy_imist()
+    parser.run_full_time_magistracy_imist()
 
 
 def run_all_parsers():
@@ -451,7 +461,7 @@ def run_all_parsers():
     parser_3.run_full_time_magistracy_fk()
     parser_4 = Site_parser_magistracy_afk()
     parser_4.run_full_time_magistracy_afk()
-    parser_5 = Site_parser_magistracy_imst()
+    parser_5 = Site_parser_magistracy_imist()
     parser_5.run_full_time_magistracy_imst()
 
 
@@ -465,9 +475,9 @@ def tested_run_all_parsers_with_all_new_links():
     parser_3.run_full_time_magistracy_fk()
     parser_4 = Site_parser_magistracy_afk()
     parser_4.run_full_time_magistracy_afk()
-    parser_5 = Site_parser_magistracy_imst()
+    parser_5 = Site_parser_magistracy_imist()
     parser_5.run_full_time_magistracy_imst()
 
 
 if __name__ == "__main__":
-    run_undergraduate_imist_parser()
+    run_magistracy_imist_parser()
