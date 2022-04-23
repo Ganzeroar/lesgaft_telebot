@@ -52,6 +52,15 @@ class Test_check_group_struct(unittest.TestCase):
         obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
         result = obj.check_group_struct(worksheet, work_file_name, '11.04. - 16.04.')
         self.assertIsNone(result)
+    
+    def test_take_correct_lovs_3_group_name_no_return(self):
+        work_file = glob.glob(f'test_time_tables/full_time_undergraduate/3_lovs_1.xlsx')
+        work_file_name = work_file[0]
+        work_book = load_workbook(work_file_name)
+        worksheet = work_book['11.04. - 16.04.']
+        obj = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
+        result = obj.check_group_struct(worksheet, work_file_name, '11.04. - 16.04.')
+        self.assertIsNone(result)
 
     def test_take_incorrect_lovs_1_group_name_return_error(self):
         work_file = glob.glob(f'test_time_tables/full_time_undergraduate/1_lovs_1.xlsx')

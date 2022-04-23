@@ -5,6 +5,7 @@ import datetime
 import db_funcs_for_subjects_db
 import configurations
 import excel_validator
+import excel_validator_lovs_zovs
 import main
 
 
@@ -17,10 +18,8 @@ class Excel_parser():
 
     def run_parser(self, route):
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
-        validator = excel_validator.Excel_validator()
-        result_message = validator.run_validator_for_excel_parser(route)
-        if 'Ошибка' in result_message:
-            return result_message
+        validator = excel_validator_lovs_zovs.Excel_validator_lovs_zovs()
+        validator.run_validator_for_excel_parser(route)
 
         for work_file in work_files:
             print('file = ' + work_file)

@@ -10,6 +10,7 @@ path_to_upper_folder = sys_path[:-10]
 sys.path.append(path_to_upper_folder)
 import excel_parser_imist
 import configurations
+import excel_validator
 
 class Test_get_groups_name(unittest.TestCase):
 
@@ -26,7 +27,7 @@ class Test_get_groups_name(unittest.TestCase):
 
     def test_take_incorrect_name_return_error_with_correct_text(self):
         obj = excel_parser_imist.Excel_parser_imist()
-        with self.assertRaises(excel_parser_imist.File_not_valid) as context:
+        with self.assertRaises(excel_validator.File_not_valid) as context:
             obj.check_file_name('1_imst')
         self.assertEqual('Ошибка в имени файла 1_imst', str(context.exception))
 
