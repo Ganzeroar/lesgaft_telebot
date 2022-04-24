@@ -14,6 +14,12 @@ def create_db_imist(db_name):
     cursor.execute(
         f"CREATE TABLE {db_name} (date text, time text, group_name text, subject text, subject_type text, location text, teacher text)")
 
+def create_db_mag_fk(db_name):
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    cursor.execute(
+        f"CREATE TABLE {db_name} (date text, time text, group_name text, subject text, subject_type text, location text, teacher text)")
+
 
 def drop_db(db_name):
 
@@ -70,8 +76,36 @@ def save_date_and_time_and_group_imist(db_name, date, time, group_name):
         f"INSERT INTO {db_name} (date, time, group_name) VALUES ('{date}', '{time}', '{group_name}')")
     conn.commit()
 
+def save_date_and_time_and_group_mag_fk(db_name, date, time, group_name):
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+    cursor.execute(
+        f"INSERT INTO {db_name} (date, time, group_name) VALUES ('{date}', '{time}', '{group_name}')")
+    conn.commit()
+
 
 def save_subj_imist(db_name, date, time, group, subj, subject_type, location, teacher):
+    db_name = db_name
+    conn = sqlite3.connect('subjects.db')
+    cursor = conn.cursor()
+
+    req = f"UPDATE {db_name} SET subject = '{subj}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+
+    req = f"UPDATE {db_name} SET subject_type = '{subject_type}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+
+    req = f"UPDATE {db_name} SET location = '{location}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+
+    req = f"UPDATE {db_name} SET teacher = '{teacher}' WHERE date = '{date}' AND time = '{time}' AND group_name = '{group}'"
+    cursor.execute(req)
+    conn.commit()
+
+def save_subj_mag_fk(db_name, date, time, group, subj, subject_type, location, teacher):
     db_name = db_name
     conn = sqlite3.connect('subjects.db')
     cursor = conn.cursor()

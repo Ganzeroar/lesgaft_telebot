@@ -80,14 +80,14 @@ class Excel_validator_mag_fk(Excel_validator):
         if len(teachers) == 1:
             if teachers[0] not in configurations.existing_teachers:
                 raise File_not_valid(
-                    f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
+                    f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers[0]}')
         if len(teachers) == 2:
             if teachers[0] not in configurations.existing_teachers:
                 raise File_not_valid(
-                    f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
+                    f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers[0]}')
             if teachers[1] not in configurations.existing_teachers:
                 raise File_not_valid(
-                    f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
+                    f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers[1]}')
 
     def check_is_location_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
         if self.is_merged(worksheet, viewed_lesson_cell) == True:
@@ -124,11 +124,13 @@ class Excel_validator_mag_fk(Excel_validator):
             return
             
         if lesson not in configurations.existing_subjects:
-            raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+            print(lesson)
+
+            #raise File_not_valid(
+            #    f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
         if lesson_type not in configurations.existing_type_of_subjects:
             raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в типе предмет "{lesson_type}"')
 
     def check_practice_cell(self, viewed_lesson_cell, worksheet_name, lesson, lesson_type):
         if lesson not in configurations.existing_practice:
@@ -139,7 +141,7 @@ class Excel_validator_mag_fk(Excel_validator):
         if result == None:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
-        pass
+        
 
     def get_group_cell_constants(self, constants):
         number_of_groups = constants['number_of_groups']
