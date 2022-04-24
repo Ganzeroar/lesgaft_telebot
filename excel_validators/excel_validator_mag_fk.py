@@ -124,24 +124,11 @@ class Excel_validator_mag_fk(Excel_validator):
             return
             
         if lesson not in configurations.existing_subjects:
-            print(lesson)
-
-            #raise File_not_valid(
-            #    f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
         if lesson_type not in configurations.existing_type_of_subjects:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в типе предмет "{lesson_type}"')
-
-    def check_practice_cell(self, viewed_lesson_cell, worksheet_name, lesson, lesson_type):
-        if lesson not in configurations.existing_practice:
-            raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в практике "{lesson}"')
-        result = re.fullmatch(
-                r'\d{2}[.]\d{2}[.]\s[-]\s\d{2}[.]\d{2}[.]', lesson_type)
-        if result == None:
-            raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
-        
 
     def get_group_cell_constants(self, constants):
         number_of_groups = constants['number_of_groups']

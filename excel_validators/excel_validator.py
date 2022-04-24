@@ -2,9 +2,21 @@ import re
 
 from file_not_valid_exception import File_not_valid
 from excel_handler import Excel_handler
+import configurations
 
 
 class Excel_validator(Excel_handler):
+
+    def check_practice_cell(self, viewed_lesson_cell, worksheet_name, lesson, lesson_type):
+        if lesson not in configurations.existing_practice:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в практике "{lesson}"')
+        result = re.fullmatch(
+                r'\d{2}[.]\d{2}[.]\s[-]\s\d{2}[.]\d{2}[.]', lesson_type)
+        if result == None:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
+        pass
 
     def check_worksheet_names(self, worksheet_names):
         for worksheet_name in worksheet_names:
