@@ -8,20 +8,11 @@ import datetime
 import pytz
 from bs4 import BeautifulSoup
 
-import db_funcs_for_site_parser as db
 import excel_parser
 import main
 
 
 class Site_parser():
-
-    def is_changed(self, new_file_link):
-        name_of_course = self.get_name_of_course(new_file_link)
-        current_file_link = db.get_current_link(name_of_course)
-        if current_file_link != new_file_link:
-            return True
-        else:
-            return False
 
     def is_file_exist(self, new_file_link):
         resp = requests.get(new_file_link)
@@ -466,7 +457,6 @@ def run_all_parsers():
 
 
 def tested_run_all_parsers_with_all_new_links():
-    db.drop_and_create_current_links_db()
     parser_1 = Site_parser_undergraduate()
     parser_1.run_full_time_undergraduate_parser()
     parser_2 = Site_parser_undergraduate_imist()
@@ -480,4 +470,4 @@ def tested_run_all_parsers_with_all_new_links():
 
 
 if __name__ == "__main__":
-    run_magistracy_imist_parser()
+    run_undergraduate_parser()
