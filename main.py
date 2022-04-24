@@ -49,7 +49,7 @@ def start_message(message):
     if db_funcs_for_students_db.user_already_in_db(message.from_user.id):
         text = texts_for_lesgaft_bot.after_returning
     else:
-        db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(
+        db_funcs_for_students_db.starting_insert_data(int(message.from_user.id), str(
             message.from_user.first_name), str(message.from_user.last_name), int(message.date))
     try:
         bot.send_message(message.from_user.id, text, reply_markup=keyboard)
@@ -57,13 +57,18 @@ def start_message(message):
         print('\n50\nОшибка в стартовой функции\n')
         print(exception)
 
+#message.text
+#message.from_user.id
+#message.from_user.first_name
+#message.from_user.last_name
+#message.date
 
 @bot.message_handler(content_types=["text"])
 def handle_request_and_send_answer(message):
     text, keyboard = request_handler.main_request_handler(
         message.text, message.from_user.id)
     if db_funcs_for_students_db.user_already_in_db(message.from_user.id) == False:
-        db_funcs_for_students_db.starting_insert_data(int(message.chat.id), str(
+        db_funcs_for_students_db.starting_insert_data(int(message.from_user.id), str(
             message.from_user.first_name), str(message.from_user.last_name), int(message.date))
 
     try:
