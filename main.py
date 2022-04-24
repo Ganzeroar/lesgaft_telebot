@@ -15,6 +15,7 @@ import telebot
 import time
 import logging
 import os
+import message_emulator_for_unittest
 
 
 bot = telebot.TeleBot(config.token)
@@ -62,7 +63,7 @@ def start_message(message):
 #message.from_user.first_name
 #message.from_user.last_name
 #message.date
-
+# message.frou_user.username - записывать, потенциально это юзернейм в тележке
 @bot.message_handler(content_types=["text"])
 def handle_request_and_send_answer(message):
     text, keyboard = request_handler.main_request_handler(
