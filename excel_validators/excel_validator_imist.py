@@ -2,6 +2,7 @@ from openpyxl import load_workbook
 import glob
 import configurations
 import os
+import re
 
 from file_not_valid_exception import File_not_valid
 from excel_validator import Excel_validator
@@ -73,6 +74,8 @@ class Excel_validator_imist(Excel_validator):
             viewed_teacher_cell_value = viewed_teacher_cell.value
         if viewed_teacher_cell_value == None:
             return
+        if 'практика' in viewed_teacher_cell_value:
+            return
         teachers = viewed_teacher_cell_value.split('\n')
         if len(teachers) == 1:
             if teachers[0] not in configurations.existing_teachers:
@@ -85,7 +88,18 @@ class Excel_validator_imist(Excel_validator):
             if teachers[1] not in configurations.existing_teachers:
                 raise File_not_valid(
                     f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
-
+    
+    def check_practice_cell(self, viewed_lesson_cell, worksheet_name, lesson, lesson_type):
+        if lesson not in configurations.existing_practice:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в практике "{lesson}"')
+        result = re.fullmatch(
+                r'\d{2}[.]\d{2}[.]\s[-]\s\d{2}[.]\d{2}[.]', lesson_type)
+        if result == None:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
+        pass
+    
     def check_is_location_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
         if self.is_merged(worksheet, viewed_lesson_cell) == True:
             viewed_location_cell_value = self.get_merged_cell_value(
@@ -95,6 +109,8 @@ class Excel_validator_imist(Excel_validator):
         if viewed_location_cell_value == None:
             return
         location = viewed_location_cell_value
+        if 'практика' in location:
+            return
         if location not in configurations.existing_locations:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в локации "{location}"')
@@ -114,6 +130,9 @@ class Excel_validator_imist(Excel_validator):
 
         lesson = lesson_and_lesson_type[0]
         lesson_type = lesson_and_lesson_type[1]
+        if 'практика' in lesson:
+            self.check_practice_cell(viewed_lesson_cell, worksheet_name, lesson, lesson_type)
+            return
         if lesson not in configurations.existing_subjects:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
