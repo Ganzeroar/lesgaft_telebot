@@ -29,10 +29,14 @@ class Excel_validator_lovs_zovs(Excel_validator):
     def run_validator_for_excel_parser(self, route):
         work_files = glob.glob(f'time_tables/{route}/*.xlsx')
         for work_file_name in work_files:
-            self.check_file_name(work_file_name)
-            work_book = load_workbook(work_file_name)
-            self.check_worksheet_names(work_book.sheetnames)
-            self.check_structure(work_book, work_file_name)
+            try:
+                self.check_file_name(work_file_name)
+                work_book = load_workbook(work_file_name)
+                self.check_worksheet_names(work_book.sheetnames)
+                self.check_structure(work_book, work_file_name)
+            except Exception as exception:
+                raise File_not_valid(
+                    f'{exception} в файле {work_file_name[36:]}')
             print(f'{work_file_name} валиден')
 
     def check_structure(self, work_book, file_name):
