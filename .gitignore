@@ -3,7 +3,7 @@ students.db
 *.db
 *.log
 *.pyc
-*.xlsx
+
 config.py
 tasks.txt
 time_tables/full_time_undergraduate/*.xlsx
