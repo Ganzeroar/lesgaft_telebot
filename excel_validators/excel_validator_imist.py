@@ -158,14 +158,16 @@ class Excel_validator_imist(Excel_validator):
         return group_cell_constants
 
     def check_structure(self, work_book, work_file_name):
+        constants = self.return_current_file_constants(work_file_name)
+
         for worksheet_name in work_book.sheetnames:
             if self.is_reason_to_skip(worksheet_name) == True:
                 continue
             worksheet = work_book[worksheet_name]
             self.check_group_struct(worksheet, work_file_name, worksheet_name)
-            self.check_date_struct(worksheet, work_file_name, worksheet_name)
-            self.check_day_struct(worksheet, work_file_name, worksheet_name)
-            self.check_time_struct(worksheet, work_file_name, worksheet_name)
+            self.check_date_struct(worksheet, worksheet_name, constants)
+            self.check_day_struct(worksheet, worksheet_name, constants)
+            self.check_time_struct(worksheet, worksheet_name, constants)
         return 'Структура ОК\n'
 
     def check_group_struct(self, worksheet, work_file_name, worksheet_name):

@@ -39,15 +39,17 @@ class Excel_validator_lovs_zovs(Excel_validator):
                     f'{exception} в файле {work_file_name[36:]}')
             print(f'{work_file_name} валиден')
 
-    def check_structure(self, work_book, file_name):
+    def check_structure(self, work_book, work_file_name):
+        constants = self.return_current_file_constants(work_file_name)
+
         for worksheet_name in work_book.sheetnames:
             if self.is_reason_to_skip(worksheet_name) == True:
                 continue
             worksheet = work_book[worksheet_name]
-            self.check_group_struct(worksheet, file_name, worksheet_name)
-            self.check_date_struct(worksheet, file_name, worksheet_name)
-            self.check_day_struct(worksheet, file_name, worksheet_name)
-            self.check_time_struct(worksheet, file_name, worksheet_name)
+            self.check_group_struct(worksheet, work_file_name, worksheet_name)
+            self.check_date_struct(worksheet, worksheet_name, constants)
+            self.check_day_struct(worksheet, worksheet_name, constants)
+            self.check_time_struct(worksheet, worksheet_name, constants)
         return 'Структура ОК\n'
 
     def check_group_struct(self, worksheet, work_file_name, worksheet_name):

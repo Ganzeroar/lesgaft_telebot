@@ -6,6 +6,7 @@ sys.path.append(path_to_excel_validators)
 
 import unittest
 import db_funcs_for_subject_db_unittests
+import excel_validator_unittests
 import excel_validator_imist_unittests
 import excel_validator_lovs_zovs_unittests
 import find_class_location_unittests
@@ -13,6 +14,7 @@ import find_lessons_at_date_unittests
 import find_time_and_location_unittests
 import request_handler_unittests
 import site_parser_unittests
+
 
 
 
@@ -36,12 +38,6 @@ calcTestSuite.addTest(unittest.makeSuite(
 calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_imist_unittests.Test_check_group_struct))
 calcTestSuite.addTest(unittest.makeSuite(
-    excel_validator_imist_unittests.Test_check_date_struct))
-calcTestSuite.addTest(unittest.makeSuite(
-    excel_validator_imist_unittests.Test_check_day_struct))
-calcTestSuite.addTest(unittest.makeSuite(
-    excel_validator_imist_unittests.Test_check_time_struct))
-calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_imist_unittests.Test_check_structure))
 calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_lovs_zovs_unittests.Test_check_file_name))
@@ -50,12 +46,6 @@ calcTestSuite.addTest(unittest.makeSuite(
 calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_lovs_zovs_unittests.Test_check_group_struct))
 calcTestSuite.addTest(unittest.makeSuite(
-    excel_validator_lovs_zovs_unittests.Test_check_date_struct))
-calcTestSuite.addTest(unittest.makeSuite(
-    excel_validator_lovs_zovs_unittests.Test_check_day_struct))
-calcTestSuite.addTest(unittest.makeSuite(
-    excel_validator_lovs_zovs_unittests.Test_check_time_struct))
-calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_lovs_zovs_unittests.Test_check_structure))
 calcTestSuite.addTest(unittest.makeSuite(
     site_parser_unittests.Test_site_parser_undergraduate))
@@ -63,6 +53,17 @@ calcTestSuite.addTest(unittest.makeSuite(
     site_parser_unittests.Test_site_parser_undergraduate_imist))
 calcTestSuite.addTest(unittest.makeSuite(
     site_parser_unittests.Test_site_parser_undergraduate_afk))
+calcTestSuite.addTest(unittest.makeSuite(
+    excel_validator_unittests.Test_excel_validator))
+calcTestSuite.addTest(unittest.makeSuite(
+    excel_validator_unittests.Test_check_worksheet_name))
+calcTestSuite.addTest(unittest.makeSuite(
+    excel_validator_unittests.Test_check_date_struct))
+calcTestSuite.addTest(unittest.makeSuite(
+    excel_validator_unittests.Test_check_day_struct))
+calcTestSuite.addTest(unittest.makeSuite(
+    excel_validator_unittests.Test_check_time_struct))
+
 
 runner = unittest.TextTestRunner(verbosity=1)
 

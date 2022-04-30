@@ -29,8 +29,8 @@ class Excel_validator(Excel_handler):
                     f'Ошибка в имени листа {worksheet_name}\n')
         return 'Имена листов ОК\n'
 
-    def check_day_struct(self, worksheet, file_name, worksheet_name):
-        constants = self.return_current_file_constants(file_name)
+    def check_day_struct(self, worksheet, worksheet_name, constants):
+        #constants = self.return_current_file_constants(work_file_name)
         const_day_column = constants['day_column']
         const_first_day_row = constants['first_day_row']
         const_last_day_row = constants['last_day_row']
@@ -48,8 +48,8 @@ class Excel_validator(Excel_handler):
                 raise File_not_valid(
                     f'Ошибка в структуре дня в {viewed_date_cell.coordinate} в листе {worksheet_name}')
 
-    def check_date_struct(self, worksheet, work_file_name, worksheet_name):
-        constants = self.return_current_file_constants(work_file_name)
+    def check_date_struct(self, worksheet, worksheet_name, constants):
+        #constants = self.return_current_file_constants(work_file_name)
         const_date_column = constants['date_column']
         const_first_date_row = constants['first_date_row']
         const_last_date_row = constants['last_date_row']
@@ -67,8 +67,8 @@ class Excel_validator(Excel_handler):
                 raise File_not_valid(
                     f'Ошибка в структуре даты в {viewed_date_cell.coordinate} в листе {worksheet_name}')
 
-    def check_time_struct(self, worksheet, work_file_name, worksheet_name):
-        constants = self.return_current_file_constants(work_file_name)
+    def check_time_struct(self, worksheet, worksheet_name, constants):
+        #constants = self.return_current_file_constants(work_file_name)
         const_time_column = constants['time_column']
         const_first_time_row = constants['first_time_row']
         const_last_time_row = constants['last_time_row']
