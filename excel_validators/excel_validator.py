@@ -30,7 +30,6 @@ class Excel_validator(Excel_handler):
         return 'Имена листов ОК\n'
 
     def check_day_struct(self, worksheet, worksheet_name, constants):
-        #constants = self.return_current_file_constants(work_file_name)
         const_day_column = constants['day_column']
         const_first_day_row = constants['first_day_row']
         const_last_day_row = constants['last_day_row']
@@ -49,7 +48,6 @@ class Excel_validator(Excel_handler):
                     f'Ошибка в структуре дня в {viewed_date_cell.coordinate} в листе {worksheet_name}')
 
     def check_date_struct(self, worksheet, worksheet_name, constants):
-        #constants = self.return_current_file_constants(work_file_name)
         const_date_column = constants['date_column']
         const_first_date_row = constants['first_date_row']
         const_last_date_row = constants['last_date_row']
@@ -59,16 +57,26 @@ class Excel_validator(Excel_handler):
             if self.is_merged(worksheet, viewed_date_cell):
                 viewed_date_value = self.get_merged_cell_value(
                     worksheet, viewed_date_cell)
-                result = re.fullmatch(r'\d{2}[.]\d{2}[.]', viewed_date_value)
-                if result == None:
-                    raise File_not_valid(
-                        f'Ошибка в структуре даты в {viewed_date_cell.coordinate} в листе {worksheet_name}')
+                if '\n' in viewed_date_value:
+                    possible_dates = viewed_date_value.split('\n')
+                    for date in possible_dates:
+                        if date == '':
+                            raise File_not_valid(
+                                f'Ошибка в структуре даты в {viewed_date_cell.coordinate} в листе {worksheet_name} перенос строки')
+                        result = re.fullmatch(r'\d{2}[.]\d{2}[.]', date)
+                        if result == None:
+                            raise File_not_valid(
+                                f'Ошибка в структуре даты в {viewed_date_cell.coordinate} в листе {worksheet_name} в дате "{viewed_date_value}"')
+                else:
+                    result = re.fullmatch(r'\d{2}[.]\d{2}[.]', viewed_date_value)
+                    if result == None:
+                        raise File_not_valid(
+                            f'Ошибка в структуре даты в {viewed_date_cell.coordinate} в листе {worksheet_name} в дате "{viewed_date_value}"')
             else:
                 raise File_not_valid(
                     f'Ошибка в структуре даты в {viewed_date_cell.coordinate} в листе {worksheet_name}')
 
     def check_time_struct(self, worksheet, worksheet_name, constants):
-        #constants = self.return_current_file_constants(work_file_name)
         const_time_column = constants['time_column']
         const_first_time_row = constants['first_time_row']
         const_last_time_row = constants['last_time_row']
@@ -78,7 +86,7 @@ class Excel_validator(Excel_handler):
                 row=row, column=const_time_column)
             if self.is_merged(worksheet, viewed_time_cell):
                 raise File_not_valid(
-                    f'Ошибка в структуре времени в {viewed_time_cell.coordinate} в листе {worksheet_name}')
+                    f'Ошибка в структуре времени в {viewed_time_cell.coordinate} в листе {worksheet_name} (возможно неверное количество ячеек времени)')
             else:
                 if viewed_time_cell.value == None:
                     raise File_not_valid(

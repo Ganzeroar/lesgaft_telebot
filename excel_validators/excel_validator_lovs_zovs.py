@@ -47,9 +47,9 @@ class Excel_validator_lovs_zovs(Excel_validator):
                 continue
             worksheet = work_book[worksheet_name]
             self.check_group_struct(worksheet, work_file_name, worksheet_name)
+            self.check_time_struct(worksheet, worksheet_name, constants)
             self.check_date_struct(worksheet, worksheet_name, constants)
             self.check_day_struct(worksheet, worksheet_name, constants)
-            self.check_time_struct(worksheet, worksheet_name, constants)
         return 'Структура ОК\n'
 
     def check_group_struct(self, worksheet, work_file_name, worksheet_name):

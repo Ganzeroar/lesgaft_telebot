@@ -1,6 +1,9 @@
 from openpyxl import Workbook, load_workbook, utils
 import glob
 import datetime
+import os
+import sys
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'excel_validators'))
 
 import db_funcs_for_subjects_db
 import configurations

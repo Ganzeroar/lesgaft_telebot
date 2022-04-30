@@ -62,6 +62,20 @@ class Test_check_date_struct(unittest.TestCase):
         result = obj.check_date_struct(worksheet, work_book.sheetnames[0], constants)
         self.assertIsNone(result)
 
+    def test_take_correct_date_struct_with_many_dates_return_correct_message(self):
+        obj = excel_validator.Excel_validator()
+        work_file = glob.glob(
+            f'test_time_tables/full_time_undergraduate/4_lovs_1.xlsx')
+        work_file_name = work_file[0]
+        work_book = load_workbook(work_file_name)
+        worksheet = work_book[work_book.sheetnames[0]]
+
+        constants = configurations.group_constants['lovs_4']
+        result = obj.check_date_struct(worksheet, work_book.sheetnames[0], constants)
+        self.assertIsNone(result)
+
+    
+
     def test_take_incorrect_lovs_1_date_struct_return_error(self):
         work_file = glob.glob(
             f'test_time_tables/full_time_undergraduate/1_lovs_1.xlsx')
@@ -73,7 +87,7 @@ class Test_check_date_struct(unittest.TestCase):
         with self.assertRaises(File_not_valid) as context:
             obj.check_date_struct(worksheet, '25.04. - 30.04.', constants)
         self.assertEqual(
-            'Ошибка в структуре даты в A26 в листе 25.04. - 30.04.', str(context.exception))
+            'Ошибка в структуре даты в A26 в листе 25.04. - 30.04. перенос строки', str(context.exception))
 
 
 
