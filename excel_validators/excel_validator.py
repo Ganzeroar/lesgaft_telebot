@@ -7,7 +7,14 @@ import configurations
 
 class Excel_validator(Excel_handler):
 
-    def check_practice_cell(self, viewed_lesson_cell, worksheet_name, lesson, lesson_type):
+    def check_practice_cell(self, viewed_lesson_cell, worksheet_name, viewed_lesson_cell_value):
+        lesson_and_lesson_type = viewed_lesson_cell_value.split('\n')
+        if len(lesson_and_lesson_type) != 2:
+            raise File_not_valid(
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+        lesson = lesson_and_lesson_type[0]
+        lesson_type = lesson_and_lesson_type[1]
+
         if lesson not in configurations.existing_practice:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в практике "{lesson}"')

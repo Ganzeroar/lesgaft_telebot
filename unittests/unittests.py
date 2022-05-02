@@ -40,6 +40,8 @@ calcTestSuite.addTest(unittest.makeSuite(
 calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_imist_unittests.Test_check_structure))
 calcTestSuite.addTest(unittest.makeSuite(
+    excel_validator_imist_unittests.Test_check_practice_cell))
+calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_lovs_zovs_unittests.Test_check_file_name))
 calcTestSuite.addTest(unittest.makeSuite(
     excel_validator_lovs_zovs_unittests.Test_check_worksheet_names))

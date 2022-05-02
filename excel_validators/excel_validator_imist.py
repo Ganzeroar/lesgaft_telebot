@@ -66,15 +66,15 @@ class Excel_validator_imist(Excel_validator):
                 worksheet, worksheet_name, viewed_teacher_cell)
 
     def check_is_teacher_cell_correct(self, worksheet, worksheet_name, viewed_teacher_cell):
-        if self.is_merged(worksheet, viewed_teacher_cell) == True:
-            viewed_teacher_cell_value = self.get_merged_cell_value(
-                worksheet, viewed_teacher_cell)
-        else:
-            viewed_teacher_cell_value = viewed_teacher_cell.value
+        viewed_teacher_cell_value = self.get_cell_value(worksheet, viewed_teacher_cell)
+            
         if viewed_teacher_cell_value == None:
             return
         if 'практика' in viewed_teacher_cell_value:
             return
+        if viewed_teacher_cell_value in configurations.cell_values_to_skip_validator:
+            return
+
         teachers = viewed_teacher_cell_value.split('\n')
         if len(teachers) == 1:
             if teachers[0] not in configurations.existing_teachers:
@@ -88,45 +88,52 @@ class Excel_validator_imist(Excel_validator):
                 raise File_not_valid(
                     f'Ошибка в ячейке в {viewed_teacher_cell.coordinate} в листе {worksheet_name} в преподавателе {teachers}')
     
-    def check_is_location_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
-        if self.is_merged(worksheet, viewed_lesson_cell) == True:
-            viewed_location_cell_value = self.get_merged_cell_value(
-                worksheet, viewed_lesson_cell)
-        else:
-            viewed_location_cell_value = viewed_lesson_cell.value
+    def check_is_location_cell_correct(self, worksheet, worksheet_name, viewed_location_cell):
+        viewed_location_cell_value = self.get_cell_value(worksheet, viewed_location_cell)
+
         if viewed_location_cell_value == None:
             return
+        if viewed_location_cell_value in configurations.cell_values_to_skip_validator:
+            return
+
         location = viewed_location_cell_value
         if 'практика' in location:
             return
         if location not in configurations.existing_locations:
             raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в локации "{location}"')
+                f'Ошибка в ячейке в {viewed_location_cell.coordinate} в листе {worksheet_name} в локации "{location}"')
 
     def check_is_lesson_cell_correct(self, worksheet, worksheet_name, viewed_lesson_cell):
-        if self.is_merged(worksheet, viewed_lesson_cell) == True:
-            viewed_lesson_cell_value = self.get_merged_cell_value(
-                worksheet, viewed_lesson_cell)
-        else:
-            viewed_lesson_cell_value = viewed_lesson_cell.value
+        viewed_lesson_cell_value = self.get_cell_value(worksheet, viewed_lesson_cell)
+        
         if viewed_lesson_cell_value == None:
+            return
+        if 'практика' in viewed_lesson_cell_value:
+            self.check_practice_cell(viewed_lesson_cell, worksheet_name, viewed_lesson_cell_value)
+            return
+
+        if viewed_lesson_cell_value in configurations.cell_values_to_skip_validator:
             return
         lesson_and_lesson_type = viewed_lesson_cell_value.split('\n')
         if len(lesson_and_lesson_type) != 2:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
-
         lesson = lesson_and_lesson_type[0]
         lesson_type = lesson_and_lesson_type[1]
-        if 'практика' in lesson:
-            self.check_practice_cell(viewed_lesson_cell, worksheet_name, lesson, lesson_type)
-            return
         if lesson not in configurations.existing_subjects:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
         if lesson_type not in configurations.existing_type_of_subjects:
             raise File_not_valid(
                 f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+
+    def get_cell_value(self, worksheet, viewed_cell):
+        if self.is_merged(worksheet, viewed_cell) == True:
+            viewed_cell_value = self.get_merged_cell_value(
+                worksheet, viewed_cell)
+        else:
+            viewed_cell_value = viewed_cell.value
+        return viewed_cell_value
 
     def get_group_cell_constants(self, constants):
         number_of_groups = constants['number_of_groups']

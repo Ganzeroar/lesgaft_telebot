@@ -177,8 +177,18 @@ class Test_check_cells_with_lessons(unittest.TestCase):
         self.assertEqual(
             'Ошибка в ячейке в I11 в листе 11.04. - 16.04. в преподавателе [\'Ермилова В.В.\', \'В.А.\']', str(context.exception))
 
+    def test_take_timtable_with_holiday_return_no_exception(self):
+        configurations.month_to_skip = ['01', '02', '03', '05']
+        work_file = glob.glob(
+            f'test_time_tables/full_time_undergraduate_imist/1_imist_13.xlsx')
+        work_file_name = work_file[0]
+        work_book = load_workbook(work_file_name)
+        obj = excel_validator_imist.Excel_validator_imist()
+        result = obj.check_cells_with_lessons(work_book, work_file_name)
+        self.assertIsNone(result)
 
-class Test_check_practive_cell(unittest.TestCase):
+
+class Test_check_practice_cell(unittest.TestCase):
 
     def test_take_correct_imist_1_practice_no_return(self):
         configurations.month_to_skip = ['01', '02', '03', '05']
