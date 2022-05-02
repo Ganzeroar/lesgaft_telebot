@@ -63,6 +63,7 @@ class Test_check_date_struct(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_take_correct_date_struct_with_many_dates_return_correct_message(self):
+        configurations.month_to_skip = ['05']
         obj = excel_validator.Excel_validator()
         work_file = glob.glob(
             f'test_time_tables/full_time_undergraduate/4_lovs_1.xlsx')
