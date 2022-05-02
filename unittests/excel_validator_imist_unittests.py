@@ -187,6 +187,16 @@ class Test_check_cells_with_lessons(unittest.TestCase):
         result = obj.check_cells_with_lessons(work_book, work_file_name)
         self.assertIsNone(result)
 
+    def test_take_timtable_with_event_return_no_exception(self):
+        configurations.month_to_skip = ['01', '02', '03', '05']
+        work_file = glob.glob(
+            f'test_time_tables/full_time_undergraduate_imist/1_imist_14.xlsx')
+        work_file_name = work_file[0]
+        work_book = load_workbook(work_file_name)
+        obj = excel_validator_imist.Excel_validator_imist()
+        result = obj.check_cells_with_lessons(work_book, work_file_name)
+        self.assertIsNone(result)
+
 
 class Test_check_practice_cell(unittest.TestCase):
 

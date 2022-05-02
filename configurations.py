@@ -38,6 +38,7 @@ words_to_skip = [
 
 cell_values_to_skip_validator = [
     'Выходной/праздничный день',
+    'Актовый зал\nТоржественное мероприятие посвященное Дню Победы',
 ]
 
 non_standart_group = [
