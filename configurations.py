@@ -965,7 +965,8 @@ existing_teachers = [
 
 existing_practice = [
     'Учебная практика',
-    'Производственная практика'
+    'Производственная практика',
+    'Педагогическая практика'
 ]
 
 strings_to_skip_while_no_format = [
