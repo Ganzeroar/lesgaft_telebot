@@ -108,7 +108,7 @@ class Excel_validator_imist(Excel_validator):
         
         if viewed_lesson_cell_value == None:
             return
-
+    
         if viewed_lesson_cell_value in configurations.cell_values_to_skip_validator:
             return
 
