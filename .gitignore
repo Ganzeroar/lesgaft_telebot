@@ -3,7 +3,9 @@ students.db
 *.db
 *.log
 *.pyc
-
+time_tables/full_time_undergraduate_imist/
+time_tables/full_time_magistracy_imist/
+time_tables/full_time_magistracy_sport/
 config.py
 tasks.txt
 time_tables/full_time_undergraduate/*.xlsx
