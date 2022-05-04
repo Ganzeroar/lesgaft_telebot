@@ -48,6 +48,22 @@ class Test_check_worksheet_name(unittest.TestCase):
         self.assertEqual(
             'Ошибка в имени листа 24.01 - 29.01\n', str(context.exception))
 
+    def test_take_file_return_correct_message(self):
+        configurations.month_to_skip = ['05']
+        obj = excel_validator.Excel_validator()
+        work_file = glob.glob(
+            f'test_time_tables/full_time_undergraduate/1_lovs_7.xlsx')
+        work_file_name = work_file[0]
+        work_book = load_workbook(work_file_name)
+        worksheet_names = work_book.sheetnames
+
+        with self.assertRaises(File_not_valid) as context:
+            obj.check_worksheet_names(worksheet_names)
+        self.assertEqual(
+            'Ошибка в имени листа 05.05.- 30.05.\n', str(context.exception))
+
+
+
 
 class Test_check_date_struct(unittest.TestCase):
     def test_take_correct_date_struct_return_correct_message(self):

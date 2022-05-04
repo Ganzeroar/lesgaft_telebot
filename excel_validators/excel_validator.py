@@ -27,7 +27,7 @@ class Excel_validator(Excel_handler):
 
     def check_worksheet_names(self, worksheet_names):
         for worksheet_name in worksheet_names:
-            if self.is_reason_to_skip(worksheet_name) == True:
+            if self.is_worksheet_name_in_words_to_skip(worksheet_name) == True:
                 continue
             result = re.fullmatch(
                 r'\d{2}[.]\d{2}[.]\s[-]\s\d{2}[.]\d{2}[.]', worksheet_name)
