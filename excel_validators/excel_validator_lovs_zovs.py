@@ -276,17 +276,3 @@ class Excel_validator_lovs_zovs(Excel_validator):
             return 'lovs_4'
         else:
             return None
-
-    # def check_group_numbers(self, work_book):
-    #    message = ''
-    #    for worksheet_name in work_book.sheetnames:
-    #        worksheet = work_book[worksheet_name]
-    #        for column in range(self.const_group_column, 25):
-    #            group_number = worksheet.cell(row = self.const_group_row, column = column).value
-    #            print(group_number)
-    #            result = re.fullmatch(r'\bГруппа\s\d{3}', group_number)
-    #            if result == None:
-    #                message += f'Ошибка в номере группы {group_number} в листе {worksheet_name}'
-    #    if message == '':
-    #        message = 'Имена групп ОК'
-    #    return message
