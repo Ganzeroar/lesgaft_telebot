@@ -192,7 +192,7 @@ class Excel_validator_mag_fk(Excel_validator):
                     worksheet, viewed_group_cell)
                 if viewed_group_value != const_first_group_number:
                     raise File_not_valid(
-                        f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')
+                        f'Ошибка в стру  ктуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')
             else:
                 raise File_not_valid(
                     f'Ошибка в структуре группы в {viewed_group_cell.coordinate} в листе {worksheet_name}')
@@ -243,7 +243,7 @@ class Excel_validator_mag_fk(Excel_validator):
     def find_clear_file_name(self, file_name):
         if '1_mag_fk' in file_name:
             return 'mag_fk_1'
-        elif '2_mag_fk' in file_name:
+        elif '2_mag_fk_ppo' in file_name:
             return 'mag_fk_2'
         else:
             return None
@@ -257,7 +257,7 @@ class Excel_validator_mag_fk(Excel_validator):
     def check_file_name(self, work_file_name):
         if '1_mag_fk' in work_file_name:
             return 'Имя файла ОК\n'
-        elif '2_mag_fk' in work_file_name:
+        elif '2_mag_fk_ppo' in work_file_name:
             return 'Имя файла ОК\n'
         else:
             raise File_not_valid(f'Ошибка в имени файла {work_file_name}')
