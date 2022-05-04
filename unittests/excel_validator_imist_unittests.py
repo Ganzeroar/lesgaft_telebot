@@ -219,7 +219,7 @@ class Test_check_practice_cell(unittest.TestCase):
         with self.assertRaises(excel_validator_imist.File_not_valid) as context:
             obj.check_cells_with_lessons(work_book, work_file_name)
         self.assertEqual(
-            'Ошибка в ячейке в D6 в листе 11.04. - 16.04. в практике "Производственая практика"', str(context.exception))
+            'Ошибка в практике в D6 в листе 11.04. - 16.04. в датах "21.03. - 03.05"', str(context.exception))
 
 
 if __name__ == '__main__':

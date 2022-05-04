@@ -22,7 +22,7 @@ class Excel_validator(Excel_handler):
                 r'\d{2}[.]\d{2}[.]\s[-]\s\d{2}[.]\d{2}[.]', lesson_type)
         if result == None:
             raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
+                f'Ошибка в практике в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в датах "{lesson_type}"')
         pass
 
     def check_worksheet_names(self, worksheet_names):

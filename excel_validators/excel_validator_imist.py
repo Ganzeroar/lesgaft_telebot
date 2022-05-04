@@ -112,9 +112,10 @@ class Excel_validator_imist(Excel_validator):
         if viewed_lesson_cell_value in configurations.cell_values_to_skip_validator:
             return
 
-        if 'практика' in viewed_lesson_cell_value:
-            self.check_practice_cell(viewed_lesson_cell, worksheet_name, viewed_lesson_cell_value)
-            return
+        for practice in configurations.existing_practice:
+            if practice in viewed_lesson_cell_value:
+                self.check_practice_cell(viewed_lesson_cell, worksheet_name, viewed_lesson_cell_value)
+                return
         lesson_and_lesson_type = viewed_lesson_cell_value.split('\n')
         if len(lesson_and_lesson_type) != 2:
             raise File_not_valid(
