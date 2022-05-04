@@ -66,7 +66,6 @@ def save_date_and_time(db_name, date, time):
     cursor.execute(
         f"INSERT INTO {db_name} (date, time) VALUES ('{date}', '{time}')")
     conn.commit()
-# date text, time text, group_name text, subject text, location text, teacher text)")
 
 
 def save_date_and_time_and_group_imist(db_name, date, time, group_name):

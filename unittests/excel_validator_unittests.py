@@ -5,12 +5,14 @@ sys.path.append(path_to_upper_folder)
 path_to_excel_validators = path_to_upper_folder+'\excel_validators\\'
 sys.path.append(path_to_excel_validators)
 
+sys.path.append('../')
+
 import configurations
-import excel_validator
+import excel_validators.excel_validator as excel_validator 
 import unittest
 from openpyxl import load_workbook
 import glob
-from file_not_valid_exception import File_not_valid
+from excel_validators.file_not_valid_exception import File_not_valid
 
 
 class Test_excel_validator(unittest.TestCase):

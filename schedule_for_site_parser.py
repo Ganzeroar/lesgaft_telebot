@@ -26,6 +26,8 @@ def job():
 def final_job():
     try:
         text = site_parser.run_undergraduate_parser()
+        if bool(text):
+            raise
         main.send_custom_message_to_user(
             206171081, 'Парсинг прошёл успешно')
         main.send_custom_message_to_user(

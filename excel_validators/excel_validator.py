@@ -1,6 +1,6 @@
 import re
 
-from file_not_valid_exception import File_not_valid
+from excel_validators.file_not_valid_exception import File_not_valid
 from excel_handler import Excel_handler
 import configurations
 

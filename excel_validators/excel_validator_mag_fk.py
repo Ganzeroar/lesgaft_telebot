@@ -4,8 +4,8 @@ import configurations
 import os
 import re
 
-from file_not_valid_exception import File_not_valid
-from excel_validator import Excel_validator
+from excel_validators.file_not_valid_exception import File_not_valid
+from excel_validators.excel_validator import Excel_validator
 
 
 class Excel_validator_mag_fk(Excel_validator):

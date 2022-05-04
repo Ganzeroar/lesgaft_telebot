@@ -4,7 +4,7 @@ import re
 import configurations
 import os
 
-from file_not_valid_exception import File_not_valid
+from excel_validators.file_not_valid_exception import File_not_valid
 from excel_validators.excel_validator import Excel_validator
 
 
