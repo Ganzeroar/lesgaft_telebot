@@ -124,10 +124,10 @@ class Excel_validator_imist(Excel_validator):
         lesson_type = lesson_and_lesson_type[1]
         if lesson not in configurations.existing_subjects:
             raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson}"')
         if lesson_type not in configurations.existing_type_of_subjects:
             raise File_not_valid(
-                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в предмете "{lesson_and_lesson_type}"')
+                f'Ошибка в ячейке в {viewed_lesson_cell.coordinate} в листе {worksheet_name} в типе предмете "{lesson_type}"')
 
     def get_cell_value(self, worksheet, viewed_cell):
         if self.is_merged(worksheet, viewed_cell) == True:

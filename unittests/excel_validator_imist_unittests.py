@@ -131,7 +131,7 @@ class Test_check_cells_with_lessons(unittest.TestCase):
         with self.assertRaises(excel_validator_imist.File_not_valid) as context:
             obj.check_cells_with_lessons(work_book, work_file_name)
         self.assertEqual(
-            'Ошибка в ячейке в G8 в листе 11.04. - 16.04. в предмете "[\'Делавые коммуникации\', \'Лекция\']"', str(context.exception))
+            'Ошибка в ячейке в G8 в листе 11.04. - 16.04. в предмете "Делавые коммуникации"', str(context.exception))
 
     def test_take_incorrect_imist_1_lesson_cell_with_not_existing_subj_type_return_exception(self):
         work_file = glob.glob(
@@ -142,7 +142,7 @@ class Test_check_cells_with_lessons(unittest.TestCase):
         with self.assertRaises(excel_validator_imist.File_not_valid) as context:
             obj.check_cells_with_lessons(work_book, work_file_name)
         self.assertEqual(
-            'Ошибка в ячейке в D7 в листе 11.04. - 16.04. в предмете "[\'Философия\', \'Практическое занятее\']"', str(context.exception))
+            'Ошибка в ячейке в D7 в листе 11.04. - 16.04. в типе предмете "Практическое занятее"', str(context.exception))
 
     def test_take_incorrect_imist_1_location_cell_with_not_existing_location_return_exception(self):
         work_file = glob.glob(
